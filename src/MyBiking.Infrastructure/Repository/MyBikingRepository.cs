@@ -31,7 +31,7 @@ namespace MyBiking.Infrastructure.Repository
             this.signInManager = signInManager;
         }
 
-        public async Task<List<Nationality>> GetNationalities() => await _myBikingDbContext.Nationalities.ToListAsync();
+        public async Task<List<string>> GetNationalities() => await _myBikingDbContext.Nationalities.Select(n=>n.NationalityName).ToListAsync();
 
         public Task CreateUser(User user)
         {

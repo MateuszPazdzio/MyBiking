@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Register";
+    List<string> nationalities = (List<string>)ViewData["Nationalities"];
 }
 
 <h1>Register</h1>
@@ -12,11 +13,6 @@
     <div class="col-md-4">
         <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-@*             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div> *@
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
                 <input asp-for="UserName" class="form-control" />
@@ -26,12 +22,14 @@
                 <label asp-for="DateOfBirth" class="control-label"></label>
                 <input asp-for="DateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
+            </div>      
             <div class="form-group">
                 <label asp-for="Nationality" class="control-label"></label>
-                <input asp-for="Nationality" class="form-control" />
-                <select>
-                    <option value="value">text</option>
+                <select class="form-select">
+                    @foreach (string nationality in nationalities)
+                    {
+                        <option value="@nationality">@nationality</option>
+                    }
                 </select>
                 <span asp-validation-for="Nationality" class="text-danger"></span>
             </div>

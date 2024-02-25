@@ -9,7 +9,7 @@ namespace MyBiking.Entity.Models
 {
     public interface IMyBikingRepository
     {
-        public Task<List<Nationality>> GetNationalities();
+        public Task<List<string>> GetNationalities();
         public Task<bool> GetUserByEmail(string email);
         public Task CreateUser(User user);
         string LoginUser(User user);

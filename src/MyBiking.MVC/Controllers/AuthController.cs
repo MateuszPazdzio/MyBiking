@@ -41,6 +41,7 @@ namespace MyBiking.MVC.Controllers
         public async Task<IActionResult> Register()
         {
             var nationalities =await myBikingRepository.GetNationalities();
+            ViewData["Nationalities"] = nationalities;
             return View();
         }
         [HttpPost]
