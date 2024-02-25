@@ -1,34 +1,34 @@
 ﻿using FluentValidation;
 using MyBiking.Application.Dtos;
+using MyBiking.Entity.Models;
 using System.Linq;
 
 namespace MyBiking.Application.Validation
 {
     public class RegisterUserDtoRule : AbstractValidator<RegisterUserDto>
     {
-        //private readonly IMyBikingRepository _context;
+        private readonly IMyBikingRepository _context;
 
-        //public RegisterUserDtoRule(IMyBikingRepository context)
-        public RegisterUserDtoRule()
+        public RegisterUserDtoRule(IMyBikingRepository context)
         {
-            //this._context = context;
+            this._context = context;
 
-            //RuleFor(u => u.Email)
-            //    .EmailAddress()
-            //    .WithMessage("Email is not valid")
-            //    .Custom((value, context) =>
-            //    {
-            //        if ( _context.GetUserByEmail(value).Result)
-            //        {
-            //            context.AddFailure("User with this email already exists");
-            //        }
-            //    }).NotEmpty();
+            RuleFor(u => u.Email)
+                .EmailAddress()
+                .WithMessage("Email is not valid")
+                .Custom((value, context) =>
+                {
+                    if (_context.GetUserByEmail(value).Result)
+                    {
+                        context.AddFailure("User with this email already exists");
+                    }
+                }).NotEmpty();
 
             RuleFor(u => u.Password)
                 .Length(8,18)
                 .WithMessage("Password must be between 8-18 characters")
-                .Matches(@".*\d.*\d.*")
-                .WithMessage("At least two characters must integers");
+                .Matches(@".*\d.*\d.*[^\w]")
+                .WithMessage("At least two characters must be integers and at least one character must be non-alphanumeric");
 
             RuleFor(u => u.Password)
                 .Equal(u => u.PasswordVerification)

@@ -63,6 +63,11 @@ namespace MyBiking.MVC.Controllers
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index","Home");
             }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
             //int result = _userService.Register(registerUserDto);
             //if (result == 0)
             //{

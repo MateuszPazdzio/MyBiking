@@ -32,6 +32,10 @@ namespace MyBiking.Infrastructure
             //var x = modelBuilder.Model.ToDebugString();
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<IdentityRole>()
+                .Ignore(c => c.ConcurrencyStamp)
+                .Ignore(c => c.NormalizedName);
+
             modelBuilder.Entity<User>().Ignore(c => c.AccessFailedCount)
                                            .Ignore(c => c.LockoutEnabled)
                                            .Ignore(c => c.TwoFactorEnabled)
