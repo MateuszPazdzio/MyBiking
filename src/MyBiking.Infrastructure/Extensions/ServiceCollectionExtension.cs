@@ -5,12 +5,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MyBiking.Application.Models;
+using MyBiking.Entity.Models;
+using MyBiking.Infrastructure.Repository;
+
+
 
 //using MyBiking.Domain.Enitity;
 //using MyBiking.Infrastructure.Repository;
 //using MyBiking.Models;
-using MyBikingApi.Models;
-using MyBikingApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,17 +29,21 @@ namespace MyBiking.Infrastructure.Extensions
             services.AddDbContext<MyBikingDbContext>(opt =>
                 opt.UseSqlServer(configuration.GetConnectionString("MyBikingDbConnection")));
 
-            //services.AddIdentity<User,IdentityRole>()
-            //    .AddEntityFrameworkStores<MyBikingDbContext>();
+            services.AddIdentity<User,IdentityRole>
+                (options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<MyBikingDbContext>();
 
-            //var authenticationSettings = configuration.GetSection("Authentication").Get<AuthenticationSettings>();
 
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = "Bearer";
-            //    options.DefaultChallengeScheme = "Bearer";
-            //    options.DefaultScheme = "Bearer";
-            //})
+            var authenticationSettings = configuration.GetSection("Authentication").Get<AuthenticationSettings>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "Bearer";
+                options.DefaultChallengeScheme = "Bearer";
+                options.DefaultScheme = "Bearer";
+            });
+
+            
             //.AddJwtBearer(options =>
             //{
             //    options.RequireHttpsMetadata = false;
@@ -50,14 +56,11 @@ namespace MyBiking.Infrastructure.Extensions
             //    };
             //});
 
-            //services.AddDbContext<MyBikingDbContext>(opt=>
-            //    opt.UseSqlServer(configuration.GetConnectionString("DbConnectionString")));
+            services.AddScoped<IMyBikingRepository, MyBikingRepository>();
+            services.AddScoped<MyBikingDbSeeder>();
+            services.AddSingleton<AuthenticationSettings>(authenticationSettings);
 
-            //services.AddScoped<IMyBikingRepository, MyBikingRepository>();
-            //services.AddScoped<MyBikingDbSeeder>();
-            //services.AddSingleton<AuthenticationSettings>(authenticationSettings);
-            
-            
+
         }
     }
 }

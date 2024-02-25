@@ -1,7 +1,14 @@
+using MyBiking.Infrastructure.Extensions;
+using MyBiking.Application.Extensions;
+using MyBiking.Infrastructure.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
@@ -12,6 +19,11 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+//var scope = app.Services.CreateScope();
+//var seeder = scope.ServiceProvider.GetRequiredService<MyBikingDbSeeder>();
+//seeder.Seed();
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
