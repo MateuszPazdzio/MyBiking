@@ -6,8 +6,8 @@
         public int BikeId { get; set; }
         public List<Point> Points { get; set; }
         public List<WheelieRide> WheeleRides { get; set; }
-        public User User { get; set; }
-        public string UserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+        public string ApplicationUserId { get; set; }
         public DateTime StartingDateTime { get; set; }
         public DateTime EndingDateTime { get; set; }
 

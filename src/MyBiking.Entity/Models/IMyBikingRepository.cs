@@ -1,4 +1,6 @@
-﻿using MyBiking.Application.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using MyBiking.Application.Dtos;
+using MyBiking.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,9 @@ namespace MyBiking.Entity.Models
     {
         public Task<List<string>> GetNationalities();
         public Task<bool> GetUserByEmail(string email);
-        public Task CreateUser(User user);
-        string LoginUser(User user);
+        public Task<Status> CreateUser(ApplicationUser user);
+        public Task<Status> LoginUser(ApplicationUser user);
+
+
     }
 }

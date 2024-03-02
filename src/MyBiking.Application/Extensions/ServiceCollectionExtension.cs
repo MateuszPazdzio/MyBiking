@@ -5,7 +5,6 @@ using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-
 using Microsoft.AspNetCore.Identity;
 using MyBiking.Application.Mapper;
 using MyBiking.Application.Validation;
@@ -24,7 +23,17 @@ namespace MyBiking.Application.Extensions
                 .AddFluentValidationAutoValidation()
                 .AddFluentValidationClientsideAdapters();
 
-            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                //options.Cookie.Name = "YourAppNameCookie";
+                //options.Cookie.HttpOnly = true;
+                //options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Adjust expiration time as needed
+                options.LoginPath = "/Auth/Login"; // Specify your login path
+                //options.AccessDeniedPath = "/Account/AccessDenied"; // Specify your access denied path
+                //options.SlidingExpiration = true;
+            });
+
+            services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
         }
     }
 }

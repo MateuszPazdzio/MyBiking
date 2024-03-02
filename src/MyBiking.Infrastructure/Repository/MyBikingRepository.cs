@@ -10,38 +10,80 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using MyBiking.Entity.Models;
+using MyBiking.Application.Dtos;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MyBiking.Infrastructure.Repository
 {
     public class MyBikingRepository : IMyBikingRepository
     {
         private readonly MyBikingDbContext _myBikingDbContext;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
         private readonly AuthenticationSettings _authenticationSettings;
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public MyBikingRepository(MyBikingDbContext myBikingDbContext, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings,
-            UserManager<User> userManager, SignInManager<User> signInManager)
+        public MyBikingRepository(MyBikingDbContext myBikingDbContext, IPasswordHasher<ApplicationUser> passwordHasher,
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             this._myBikingDbContext = myBikingDbContext;
             this._passwordHasher = passwordHasher;
-            this._authenticationSettings = authenticationSettings;
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            //this._authenticationSettings = authenticationSettings;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
         }
 
-        public async Task<List<string>> GetNationalities() => await _myBikingDbContext.Nationalities.Select(n=>n.NationalityName).ToListAsync();
+        public async Task<List<string>> GetNationalities() => await _myBikingDbContext.Nationalities.Select(n => n.NationalityName).ToListAsync();
 
-        public Task CreateUser(User user)
+        public async Task<Status> CreateUser(ApplicationUser user)
         {
+            var status = new Status();
+            var userExists = await _userManager.FindByNameAsync(user.UserName);
+            if (userExists != null)
+            {
+                status.StatusCode = 0;
+                status.Message = "User already exist";
+                return status;
+            }
+            var result = await _userManager.CreateAsync(user, userExists.Password);
+            if (!result.Succeeded)
+            {
+                status.StatusCode = 0;
+                status.Message = "User creation failed";
+                return status;
+            }
+
+            await _userManager.AddToRoleAsync(user, "Member");
+
+            //if (!await _roleManager.RoleExistsAsync(model.Role))
+            //    await _roleManager.CreateAsync(new IdentityRole(model.Role));
+
+
+            //if (await roleManager.RoleExistsAsync(model.Role))
+            //{
+            //    await userManager.AddToRoleAsync(user, model.Role);
+            //}
+
+            status.StatusCode = 1;
+            status.Message = "You have registered successfully";
+            return status;
+
+
+                //await _signInManager.SignInAsync(user, true);
+                //var d = User.IsInRole("Member");
+                //if (User.Identity.IsAuthenticated)
+                //{
+                //    await Console.Out.WriteLineAsync("");
+                //}
+                //return RedirectToAction("Index", "Home");
+                //return Task.CompletedTask;
 
             //user.PasswordHashed = _passwordHasher.HashPassword(user, user.PasswordHelpers.Password);
             //user.RoleId= 3;
-            userManager.CreateAsync(user);
+            //userManager.AddToRoleAsync(user, "Standard");
+            //userManager.CreateAsync(user);
             //_myBikingDbContext.Users.Add(user);
             //_myBikingDbContext.SaveChanges();
-            return Task.CompletedTask;
         }
 
         public async Task<bool> GetUserByEmail(string email)
@@ -49,16 +91,58 @@ namespace MyBiking.Infrastructure.Repository
             return await _myBikingDbContext.Users.AnyAsync(p => p.Email == email);
         }
 
-        public string LoginUser(User user)
+        public async Task<Status> LoginUser(ApplicationUser user)
         {
-            //User userMapped = _mapper.Map<User>(loginDto);
+            var status = new Status();
+            var userFound = await _userManager.FindByNameAsync(user.UserName);
+
+            if (user == null)
+            {
+                status.StatusCode = 0;
+                status.Message = "Invalid username";
+                return status;
+            }
+
+            if (!await _userManager.CheckPasswordAsync(userFound, userFound.Password))
+            {
+                status.StatusCode = 0;
+                status.Message = "Invalid Password";
+                return status;
+            }
+            var signInResult = await _signInManager.PasswordSignInAsync(user, userFound.Password, false, true);
+            if (signInResult.Succeeded)
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var authClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                };
+
+                foreach (var userRole in userRoles)
+                {
+                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                }
+                status.StatusCode = 1;
+                status.Message = "Logged in successfully";
+            }
+            else if (signInResult.IsLockedOut)
+            {
+                status.StatusCode = 0;
+                status.Message = "User is locked out";
+            }
+            else
+            {
+                status.StatusCode = 0;
+                status.Message = "Error on logging in";
+            }
+
+            return status;
 
             //var validUser = AuthenticateUser(user);
             //var claims = GenerateListOfClaims(validUser);
             //var token = GenerateToken(claims);
 
             //return token;
-            return "";
         }
 
         //private User AuthenticateUser(User userMapped)

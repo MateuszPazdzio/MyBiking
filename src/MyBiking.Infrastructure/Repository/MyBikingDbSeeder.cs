@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Bogus.DataSets;
 using Microsoft.EntityFrameworkCore;
 using MyBiking.Application.Models;
 using System;
@@ -20,14 +21,11 @@ namespace MyBiking.Infrastructure.Repository
 
         public void Seed()
         {
-            var faker = new Faker<Nationality>()
-                .RuleFor(n => n.NationalityName, f => f.Address.Country())
-                .Generate(150);
-
-            faker = faker.OrderBy(p => p.NationalityName).ToList();
-            _myBikingDbContext.Nationalities.AddRange(faker);
-            _myBikingDbContext.SaveChanges();
-
+            if(this._myBikingDbContext.Nationalities.Any() != null)
+            {
+                SeedNationalities();
+            }
+            //SeedRoles();
             //if (_myBikingDbContext.Database.CanConnect())
             //{
             var pendingMigrations = _myBikingDbContext.Database.GetPendingMigrations();
@@ -37,5 +35,31 @@ namespace MyBiking.Infrastructure.Repository
             }
             //}
         }
+
+        private void SeedNationalities()
+        {
+            var faker = new Faker<Nationality>()
+                .RuleFor(n => n.NationalityName, f => f.Address.Country())
+                .Generate(150);
+
+            faker = faker.OrderBy(p => p.NationalityName).ToList();
+            //_myBikingDbContext.Nationalities.AddRange(faker);
+            _myBikingDbContext.SaveChanges();
+        }
+
+        //private void SeedRoles()
+        //{
+        //    _myBikingDbContext.Roles.AddRange(new List<Role>(){
+        //            new Role()
+        //            {
+        //                Name = "Admin"
+        //            },
+        //            new Role()
+        //            {
+        //                Name = "Standard"
+        //            },
+        //        });
+        //    _myBikingDbContext.SaveChanges();
+        //}
     }
 }

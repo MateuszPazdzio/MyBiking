@@ -4,22 +4,24 @@ using Microsoft.AspNetCore.Mvc;
 using MyBiking.Application.Dtos;
 using MyBiking.Application.Models;
 using MyBiking.Entity.Models;
+using MyBiking.Infrastructure.Repository;
+using System.Security.Claims;
 
 namespace MyBiking.MVC.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
-        private readonly IMyBikingRepository myBikingRepository;
+        private readonly IMyBikingRepository _myBikingRepository;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager , IMapper mapper, IMyBikingRepository myBikingRepository)
+        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager , IMapper mapper, IMyBikingRepository myBikingRepository)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._mapper = mapper;
-            this.myBikingRepository = myBikingRepository;
+            this._myBikingRepository = myBikingRepository;
         }
 
         public IActionResult Index()
@@ -31,17 +33,31 @@ namespace MyBiking.MVC.Controllers
         {
             return View();
         }
-
-        public IActionResult Login(LoginUserDto loginUserDto)
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginUserDto loginUserDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var user = _mapper.Map<ApplicationUser>(loginUserDto);
+
+            var result =await _myBikingRepository.LoginUser(user);
+            if(result.StatusCode == 1)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            TempData["msg"] = result.Message;
             return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> Register()
         {
-            var nationalities =await myBikingRepository.GetNationalities();
+            var nationalities = await _myBikingRepository.GetNationalities();
             ViewData["Nationalities"] = nationalities;
+
             return View();
         }
         [HttpPost]
@@ -55,26 +71,27 @@ namespace MyBiking.MVC.Controllers
             {
                 return View(registerUserDto);
             }
-            var user = _mapper.Map<User>(registerUserDto);
 
-            var result =await _userManager.CreateAsync(user, user.PasswordHelpers.Password);
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index","Home");
-            }
+            var user = _mapper.Map<ApplicationUser>(registerUserDto);
+            var result =await _myBikingRepository.CreateUser(user);
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
-            //int result = _userService.Register(registerUserDto);
-            //if (result == 0)
+            //if (result.Succeeded)
             //{
-            //    return BadRequest();
+            //    if(User.Identity.IsAuthenticated)
+            //    {
+            //        await Console.Out.WriteLineAsync("");
+            //    }
+            //    return RedirectToAction("Index","Home");
             //}
-            return View(registerUserDto);
-            //return Created($"Created user id: {result}", null);
+
+            //foreach (var error in result.Errors)
+            //{
+            //    ModelState.AddModelError("", error.Description);
+            //}
+            return Ok(result);
+            //var nationalities = await _myBikingRepository.GetNationalities();
+            //ViewData["Nationalities"] = nationalities;
+            //return View(registerUserDto);
         }
     }
 }

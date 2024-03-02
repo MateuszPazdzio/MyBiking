@@ -1,8 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using MyBiking.Application.Models
 
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (!string.IsNullOrEmpty(User.Identity.Name))
+{
+    <li><a href="">ChangePassword</a></li>
+    <li><a href="">Logout</a></li>
+}
 
 @if (SignInManager.IsSignedIn(User))
 {
