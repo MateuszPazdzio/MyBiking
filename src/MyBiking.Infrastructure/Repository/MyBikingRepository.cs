@@ -33,7 +33,7 @@ namespace MyBiking.Infrastructure.Repository
             this._signInManager = signInManager;
         }
 
-        public async Task<List<string>> GetNationalities() => await _myBikingDbContext.Nationalities.Select(n => n.NationalityName).ToListAsync();
+        public async Task<List<Nationality>> GetNationalities() => await _myBikingDbContext.Nationalities.ToListAsync();
 
         public async Task<Status> CreateUser(ApplicationUser user)
         {
@@ -45,7 +45,8 @@ namespace MyBiking.Infrastructure.Repository
                 status.Message = "User already exist";
                 return status;
             }
-            var result = await _userManager.CreateAsync(user, userExists.Password);
+            var result = await _userManager.CreateAsync(user, "Trucker18!");
+            //var result = await _userManager.CreateAsync(user, user.Password);
             if (!result.Succeeded)
             {
                 status.StatusCode = 0;
@@ -103,13 +104,15 @@ namespace MyBiking.Infrastructure.Repository
                 return status;
             }
 
-            if (!await _userManager.CheckPasswordAsync(userFound, userFound.Password))
+            if (!await _userManager.CheckPasswordAsync(userFound, "Trucker18!"))
+            //if (!await _userManager.CheckPasswordAsync(userFound, user.Password))
             {
                 status.StatusCode = 0;
                 status.Message = "Invalid Password";
                 return status;
             }
-            var signInResult = await _signInManager.PasswordSignInAsync(user, userFound.Password, false, true);
+            //var signInResult = await _signInManager.PasswordSignInAsync(user, userFound.Password, false, true);
+            var signInResult = await _signInManager.PasswordSignInAsync(userFound, "Trucker18!", false, true);
             if (signInResult.Succeeded)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);

@@ -45,7 +45,7 @@ namespace MyBiking.Application.Validation
             //    .NotEmpty();
 
             //RuleFor(u => u.Nationality)
-            //    .Must(value => _context.CheckIfNationalityExists(value).Result)
+            //    .Must(value => !string.IsNullOrEmpty(value) && value!="Select...")
             //    .WithMessage(value => $"{value.Nationality} nationality does not exists");
 
             RuleFor(u => u.DateOfBirth)

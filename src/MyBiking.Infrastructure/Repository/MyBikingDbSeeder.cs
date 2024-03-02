@@ -21,7 +21,7 @@ namespace MyBiking.Infrastructure.Repository
 
         public void Seed()
         {
-            if(this._myBikingDbContext.Nationalities.Any() != null)
+            if(this._myBikingDbContext.Nationalities.Count()==0)
             {
                 SeedNationalities();
             }
@@ -43,7 +43,7 @@ namespace MyBiking.Infrastructure.Repository
                 .Generate(150);
 
             faker = faker.OrderBy(p => p.NationalityName).ToList();
-            //_myBikingDbContext.Nationalities.AddRange(faker);
+            _myBikingDbContext.Nationalities.AddRange(faker);
             _myBikingDbContext.SaveChanges();
         }
 

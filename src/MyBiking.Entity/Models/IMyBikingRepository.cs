@@ -11,7 +11,7 @@ namespace MyBiking.Entity.Models
 {
     public interface IMyBikingRepository
     {
-        public Task<List<string>> GetNationalities();
+        public Task<List<Nationality>> GetNationalities();
         public Task<bool> GetUserByEmail(string email);
         public Task<Status> CreateUser(ApplicationUser user);
         public Task<Status> LoginUser(ApplicationUser user);

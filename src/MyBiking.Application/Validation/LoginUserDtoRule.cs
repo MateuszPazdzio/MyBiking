@@ -7,10 +7,10 @@ namespace MyBiking.Application.Validation
     {
         public LoginUserDtoRule()
         {
-            RuleFor(l => l.Email)
-                .EmailAddress()
-                .NotEmpty()
-                .WithMessage("Email is not valid");
+            //RuleFor(l => l.Email)
+            //    .EmailAddress()
+            //    .NotEmpty()
+            //    .WithMessage("Email is not valid");
         }
     }
 }

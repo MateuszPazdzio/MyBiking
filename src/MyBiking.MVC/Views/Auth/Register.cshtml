@@ -1,8 +1,9 @@
-﻿@model MyBiking.Application.Dtos.RegisterUserDto
+﻿@using MyBiking.Application.Models
+@model MyBiking.Application.Dtos.RegisterUserDto
 
 @{
     ViewData["Title"] = "Register";
-    List<string> nationalities = (List<string>)ViewData["Nationalities"];
+    // List<Nationality> nationalities = (List<Nationality>)ViewData["Nationalities"];
 }
 
 <h1>Register</h1>
@@ -23,16 +24,14 @@
                 <input asp-for="DateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>      
-            <div class="form-group">
+@*             <div class="form-group">
                 <label asp-for="Nationality" class="control-label"></label>
-                <select class="form-select">
-@*                     @foreach (string nationality in nationalities)
-                    {
-                        <option value="@nationality">@nationality</option>
-                    } *@
+                <select class="form-select" asp-for="Nationality"
+                        asp-items="@(new SelectList(Model.Nationalities,nameof(Nationality.Id),nameof(Nationality.NationalityName)))">
+                        <option>Select...</option>
                 </select>
                 <span asp-validation-for="Nationality" class="text-danger"></span>
-            </div>
+            </div> *@
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
@@ -40,7 +39,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input type="password"  asp-for="Password" class="form-control" />
+                <input type="password" asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -48,6 +47,14 @@
                 <input type="password" asp-for="PasswordVerification" class="form-control" />
                 <span asp-validation-for="PasswordVerification" class="text-danger"></span>
             </div>
+
+            @if (TempData["msg"] != null)
+            {
+                <div class="form-group">
+                    <span class="text-info">@TempData["msg"]</span>
+                </div>
+            }
+
             <div class="form-group">
                 <input type="submit" value="Register" class="btn btn-primary" />
             </div>

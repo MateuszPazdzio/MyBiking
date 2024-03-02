@@ -56,9 +56,10 @@ namespace MyBiking.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Register()
         {
-            var nationalities = await _myBikingRepository.GetNationalities();
-            ViewData["Nationalities"] = nationalities;
+            //RegisterUserDto registerModelView = new RegisterUserDto();
+            //registerModelView.Nationalities = await _myBikingRepository.GetNationalities();
 
+            //return View(registerModelView);
             return View();
         }
         [HttpPost]
@@ -70,6 +71,9 @@ namespace MyBiking.MVC.Controllers
             }
             if(!ModelState.IsValid)
             {
+                //registerUserDto.Nationalities = await _myBikingRepository.GetNationalities();
+                //return View(registerUserDto);               
+                //registerUserDto.Nationalities = await _myBikingRepository.GetNationalities();
                 return View(registerUserDto);
             }
 

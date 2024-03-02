@@ -18,10 +18,10 @@ namespace MyBiking.Infrastructure
         //public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Nationality> Nationalities { get; set; }
 
-        //public MyBikingDbContext()
-        //{
+        public MyBikingDbContext()
+        {
 
-        //}
+        }
         public MyBikingDbContext(DbContextOptions<MyBikingDbContext> options) : base(options)
         {
 
@@ -31,22 +31,28 @@ namespace MyBiking.Infrastructure
 
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<IdentityRole>()
-                .Ignore(c => c.ConcurrencyStamp)
-                .Ignore(c => c.NormalizedName);
+            //modelBuilder.Entity<IdentityRole>()
+            //    .Ignore(c => c.ConcurrencyStamp)
+            //    .Ignore(c => c.NormalizedName);
 
-            modelBuilder.Entity<IdentityRole>().ToTable("Roles");
+            //modelBuilder.Entity<IdentityRole>().ToTable("Roles");
 
-            modelBuilder.Entity<ApplicationUser>().Ignore(c => c.AccessFailedCount)
-                                           .Ignore(c => c.LockoutEnabled)
-                                           .Ignore(c => c.TwoFactorEnabled)
-                                           .Ignore(c => c.EmailConfirmed)
-                                           .Ignore(c => c.ConcurrencyStamp)
-                                           .Ignore(c => c.LockoutEnd)
-                                           .Ignore(c => c.PhoneNumberConfirmed)
-                                           .Ignore(c => c.PhoneNumber);
+            //modelBuilder.Entity<ApplicationUser>().Ignore(c => c.AccessFailedCount)
+            //                               .Ignore(c => c.LockoutEnabled)
+            //                               .Ignore(c => c.TwoFactorEnabled)
+            //                               .Ignore(c => c.EmailConfirmed)
+            //                               .Ignore(c => c.ConcurrencyStamp)
+            //                               .Ignore(c => c.LockoutEnd)
+            //                               .Ignore(c => c.PhoneNumberConfirmed)
+            //                               .Ignore(c => c.PhoneNumber);
 
-            modelBuilder.Entity<ApplicationUser>().ToTable("Users");
+            //modelBuilder.Entity<ApplicationUser>()
+            //    .HasOne(p => p.Nationality)
+            //    .WithOne()
+            //    .HasForeignKey<ApplicationUser>(p => p.NationalityId)
+            //    .IsRequired(true);
+
+            //modelBuilder.Entity<ApplicationUser>().ToTable("Users");
 
 
             modelBuilder.Entity<Ride>()

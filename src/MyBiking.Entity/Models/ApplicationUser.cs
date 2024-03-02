@@ -12,10 +12,12 @@ namespace MyBiking.Application.Models
         //public string SecondName { get; set; }
         //public string Username { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string? Nationality { get; set; }
+        //public string? Nationality { get; set; }
+        //public Nationality Nationality { get; set; }
+        //public int NationalityId { get; set; }
         //public DateTime CreationDate { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
+        //public string Password { get; set; }
 
         //public PasswordHelpers PasswordHelpers { get; set; }
         //public string PasswordHashed { get; set; }

@@ -27,12 +27,12 @@ if (!app.Environment.IsDevelopment())
 //var seeder = scope.ServiceProvider.GetRequiredService<MyBikingDbSeeder>();
 //seeder.Seed();
 
-using(var scopeForNationality = app.Services.CreateScope())
-{
-    var nationalityManago = scopeForNationality.ServiceProvider.GetRequiredService<MyBikingDbSeeder>();
-    nationalityManago.Seed();
+//using(var scopeForNationality = app.Services.CreateScope())
+//{
+//    var nationalityManago = scopeForNationality.ServiceProvider.GetRequiredService<MyBikingDbSeeder>();
+//    nationalityManago.Seed();
 
-}
+//}
 
 using (var scopeForRole = app.Services.CreateScope())
 {

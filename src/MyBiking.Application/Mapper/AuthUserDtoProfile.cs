@@ -9,6 +9,9 @@ namespace MyBiking.Application.Mapper
         public AuthUserDtoProfile()
         {
             CreateMap<RegisterUserDto, ApplicationUser>();
+            //    .ForMember(u => u.NationalityId, cfg => cfg.MapFrom(src => Convert.ToInt32(src.Nationality)))
+            //    .ForMember(u => u.Nationality, cfg => cfg.MapFrom(src=>new Nationality() { Id = Convert.ToInt32(src.Nationality)}));
+
             CreateMap<LoginUserDto, ApplicationUser>();
             //CreateMap<LoginUserDto, ApplicationUser>().
             //    ForMember(u => u.PasswordHelpers, cfg => cfg.MapFrom(src => new PasswordHelpers() { Password = src.Password }));

@@ -5,13 +5,8 @@
     string username = User.Identity.Name;
 }
 <div>
-    @if (User.Identity.IsAuthenticated)
-    {
-        <p>Yes</p>
-    }
 
     <p>@User.Identity.Name</p>
-    welcome @username
 </div>
 
 <div class="text-center">
