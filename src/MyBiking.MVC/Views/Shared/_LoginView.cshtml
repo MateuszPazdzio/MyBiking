@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using MyBiking.Application.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@* @if (!string.IsNullOrEmpty(User.Identity.Name))
+{
+    <li><a href="">ChangePassword</a></li>
+    <li><a href="">Logout</a></li>
+}
+ *@
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-controller="Auth" asp-action="logout" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Auth" asp-action="logout" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            </li>
+            <li class="nav-item">
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li class="nav-link text-dark"><a asp-controller="Auth" asp-action="register">Register</a></li>
+        <li class="nav-link text-dark"><a asp-controller="Auth" asp-action="login">Login</a></li>
+    </ul>
+}

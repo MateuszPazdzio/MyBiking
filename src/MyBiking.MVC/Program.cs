@@ -1,7 +1,17 @@
+using MyBiking.Infrastructure.Extensions;
+using MyBiking.Application.Extensions;
+using MyBiking.Infrastructure.Repository;
+using Microsoft.AspNetCore.Identity;
+using static System.Formats.Asn1.AsnWriter;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
+
 
 var app = builder.Build();
 
@@ -13,12 +23,41 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+//var scope = app.Services.CreateScope();
+//var seeder = scope.ServiceProvider.GetRequiredService<MyBikingDbSeeder>();
+//seeder.Seed();
+
+//using(var scopeForNationality = app.Services.CreateScope())
+//{
+//    var nationalityManago = scopeForNationality.ServiceProvider.GetRequiredService<MyBikingDbSeeder>();
+//    nationalityManago.Seed();
+
+//}
+
+using (var scopeForRole = app.Services.CreateScope())
+{
+    var roleManager = scopeForRole.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var roles = new[] { "Admin", "Member" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+}
+
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+//app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
