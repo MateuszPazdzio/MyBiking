@@ -15,7 +15,6 @@ namespace MyBiking.Entity.Models
         public Task<bool> GetUserByEmail(string email);
         public Task<Status> CreateUser(ApplicationUser user);
         public Task<Status> LoginUser(ApplicationUser user);
-
-
+        Task LogoutAsync();
     }
 }

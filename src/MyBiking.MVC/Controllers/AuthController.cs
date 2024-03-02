@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyBiking.Application.Dtos;
@@ -92,6 +93,12 @@ namespace MyBiking.MVC.Controllers
             //var nationalities = await _myBikingRepository.GetNationalities();
             //ViewData["Nationalities"] = nationalities;
             //return View(registerUserDto);
+        }
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await this._myBikingRepository.LogoutAsync();
+            return RedirectToAction(nameof(Login));
         }
     }
 }

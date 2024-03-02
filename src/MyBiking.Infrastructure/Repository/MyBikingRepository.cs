@@ -145,6 +145,11 @@ namespace MyBiking.Infrastructure.Repository
             //return token;
         }
 
+        public async Task LogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+        }
+
         //private User AuthenticateUser(User userMapped)
         //{
         //    var validUser = _myBikingDbContext.Users.Include(user => user.Role).
