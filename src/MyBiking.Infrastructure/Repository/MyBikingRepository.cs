@@ -46,7 +46,6 @@ namespace MyBiking.Infrastructure.Repository
                 return status;
             }
             var result = await _userManager.CreateAsync(user, "Trucker18!");
-            //var result = await _userManager.CreateAsync(user, user.Password);
             if (!result.Succeeded)
             {
                 status.StatusCode = 0;
@@ -56,35 +55,11 @@ namespace MyBiking.Infrastructure.Repository
 
             await _userManager.AddToRoleAsync(user, "Member");
 
-            //if (!await _roleManager.RoleExistsAsync(model.Role))
-            //    await _roleManager.CreateAsync(new IdentityRole(model.Role));
-
-
-            //if (await roleManager.RoleExistsAsync(model.Role))
-            //{
-            //    await userManager.AddToRoleAsync(user, model.Role);
-            //}
 
             status.StatusCode = 1;
             status.Message = "You have registered successfully";
             return status;
 
-
-                //await _signInManager.SignInAsync(user, true);
-                //var d = User.IsInRole("Member");
-                //if (User.Identity.IsAuthenticated)
-                //{
-                //    await Console.Out.WriteLineAsync("");
-                //}
-                //return RedirectToAction("Index", "Home");
-                //return Task.CompletedTask;
-
-            //user.PasswordHashed = _passwordHasher.HashPassword(user, user.PasswordHelpers.Password);
-            //user.RoleId= 3;
-            //userManager.AddToRoleAsync(user, "Standard");
-            //userManager.CreateAsync(user);
-            //_myBikingDbContext.Users.Add(user);
-            //_myBikingDbContext.SaveChanges();
         }
 
         public async Task<bool> GetUserByEmail(string email)
@@ -152,6 +127,24 @@ namespace MyBiking.Infrastructure.Repository
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task<Dictionary<int, HashSet<string>>> GetTimeOfRideActivities()
+        {
+            var result =await _myBikingDbContext.Rides.ToListAsync();
+            Dictionary<int,HashSet<string>> rideTimeActivities = new Dictionary<int, HashSet<string>>();
+            HashSet<int> ints = new HashSet<int>();
+            
+            foreach (var activity in result)
+            {
+                var year = activity.StartingDateTime.Year;
+                rideTimeActivities.TryAdd(year,new HashSet<string>());
+
+                rideTimeActivities[year].Add(activity.StartingDateTime.ToString("MMMM"));
+            }
+
+            return rideTimeActivities;
+        }
+
 
         //private User AuthenticateUser(User userMapped)
         //{
