@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using MyBiking.Entity.Models;
 using MyBiking.Application.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper.Internal;
 
 namespace MyBiking.Infrastructure.Repository
 {
@@ -128,21 +129,43 @@ namespace MyBiking.Infrastructure.Repository
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<Dictionary<int, HashSet<string>>> GetTimeOfRideActivities()
-        {
-            var result =await _myBikingDbContext.Rides.ToListAsync();
-            Dictionary<int,HashSet<string>> rideTimeActivities = new Dictionary<int, HashSet<string>>();
-            HashSet<int> ints = new HashSet<int>();
+        //public async Task<Dictionary<int, HashSet<string>>> GetTimeOfRideActivities()
+        //{
+        //    var result =await _myBikingDbContext.Rides.ToListAsync();
+        //    Dictionary<int,HashSet<string>> rideTimeActivities = new Dictionary<int, HashSet<string>>();
+        //    HashSet<int> ints = new HashSet<int>();
             
+        //    foreach (var activity in result)
+        //    {
+        //        var year = activity.StartingDateTime.Year;
+        //        rideTimeActivities.TryAdd(year,new HashSet<string>());
+
+        //        rideTimeActivities[year].Add(activity.StartingDateTime.ToString("MMMM"));
+        //    }
+
+        //    return rideTimeActivities;
+        //}
+
+        public async Task<List<RideTimeActivity>> GetTimeOfRideActivities()
+        {
+            var result = await _myBikingDbContext.Rides.ToListAsync();
+            List<RideTimeActivity> rideTimeActivities = new List<RideTimeActivity>();
+
             foreach (var activity in result)
             {
-                var year = activity.StartingDateTime.Year;
-                rideTimeActivities.TryAdd(year,new HashSet<string>());
+                var year = activity.StartingDateTime.Year.ToString();
+                var rideTimeActivity = rideTimeActivities.FirstOrDefault(r => r.Year == year);
+                if(rideTimeActivity == null)
+                {
+                    var newRideTimeActivity = new RideTimeActivity() { Year = year, Months = new HashSet<string>() };
+                    newRideTimeActivity.Months.Add(activity.StartingDateTime.ToString("MMMM"));
+                    continue;
+                }
 
-                rideTimeActivities[year].Add(activity.StartingDateTime.ToString("MMMM"));
+                rideTimeActivity.Months.Add(activity.StartingDateTime.ToString("MMMM"));
             }
 
-            return rideTimeActivities;
+            return rideTimeActivities ;
         }
 
 

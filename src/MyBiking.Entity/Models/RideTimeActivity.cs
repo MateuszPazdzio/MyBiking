@@ -9,6 +9,6 @@ namespace MyBiking.Entity.Models
     public class RideTimeActivity
     {
         public string Year;
-        public List<string> Months;
+        public HashSet<string> Months;
     }
 }

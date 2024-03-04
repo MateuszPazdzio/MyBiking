@@ -1,14 +1,32 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyBiking.Entity.Models;
+using MyBiking.Application.Functions.Query.Ride;
+
+using MyBiking.Application.Functions.Query.Ride;
 
 namespace MyBiking.MVC.Controllers
 {
     public class RideController : Controller
     {
+        private readonly IMyBikingRepository myBikingRepository;
+        private readonly IMediator mediator;
+
+        public RideController(IMyBikingRepository myBikingRepository, IMediator mediator)
+        {
+            
+            this.myBikingRepository = myBikingRepository;
+            this.mediator = mediator;
+        }
+
         // GET: RideController
         public ActionResult Index()
         {
-            return View();
+            //zwrócić listę obiektów RideTimeActivity
+            //
+            var results = mediator.Send(new RideTimeActivityQuery());
+            return View(results);
         }
 
         // GET: RideController/Details/5
