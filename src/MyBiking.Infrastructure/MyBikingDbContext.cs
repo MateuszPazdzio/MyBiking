@@ -31,6 +31,8 @@ namespace MyBiking.Infrastructure
 
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<ApplicationUser>()
+                .Ignore(p => p.Password);
             //modelBuilder.Entity<IdentityRole>()
             //    .Ignore(c => c.ConcurrencyStamp)
             //    .Ignore(c => c.NormalizedName);

@@ -16,6 +16,6 @@ namespace MyBiking.Entity.Models
         public Task<Status> CreateUser(ApplicationUser user);
         public Task<Status> LoginUser(ApplicationUser user);
         Task LogoutAsync();
-        public Task<List<RideTimeActivity>> GetTimeOfRideActivities();
+        public Task<Dictionary<int, HashSet<string>>> GetTimeOfRideActivities();
     }
 }

@@ -45,7 +45,7 @@ namespace MyBiking.Infrastructure.Repository
                 status.Message = "User already exist";
                 return status;
             }
-            var result = await _userManager.CreateAsync(user, "Trucker18!");
+            var result = await _userManager.CreateAsync(user, user.Password);
             if (!result.Succeeded)
             {
                 status.StatusCode = 0;
@@ -79,7 +79,7 @@ namespace MyBiking.Infrastructure.Repository
                 return status;
             }
 
-            if (!await _userManager.CheckPasswordAsync(userFound, "Trucker18!"))
+            if (!await _userManager.CheckPasswordAsync(userFound, user.Password))
             //if (!await _userManager.CheckPasswordAsync(userFound, user.Password))
             {
                 status.StatusCode = 0;
@@ -87,7 +87,7 @@ namespace MyBiking.Infrastructure.Repository
                 return status;
             }
             //var signInResult = await _signInManager.PasswordSignInAsync(user, userFound.Password, false, true);
-            var signInResult = await _signInManager.PasswordSignInAsync(userFound, "Trucker18!", false, true);
+            var signInResult = await _signInManager.PasswordSignInAsync(userFound, user.Password, false, true);
             if (signInResult.Succeeded)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);

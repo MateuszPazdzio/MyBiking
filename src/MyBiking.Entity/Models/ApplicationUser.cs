@@ -17,7 +17,7 @@ namespace MyBiking.Application.Models
         //public int NationalityId { get; set; }
         //public DateTime CreationDate { get; set; }
         public string Email { get; set; }
-        //public string Password { get; set; }
+        public string Password { get; set; }
 
         //public PasswordHelpers PasswordHelpers { get; set; }
         //public string PasswordHashed { get; set; }
