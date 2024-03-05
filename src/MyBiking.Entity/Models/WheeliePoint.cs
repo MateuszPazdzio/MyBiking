@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace MyBiking.Application.Models
+namespace MyBiking.Entity.Models
 {
     public class WheeliePoint
     {

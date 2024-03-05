@@ -3,29 +3,29 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyBiking.Entity.Models;
 using MyBiking.Application.Functions.Query.Ride;
-
-using MyBiking.Application.Functions.Query.Ride;
-
+using MyBiking.Application.Dtos;
+using MyBiking.Application.Functions.Command;
+using MyBiking.Application.Functions.Command.Ride;
 namespace MyBiking.MVC.Controllers
 {
     public class RideController : Controller
     {
-        private readonly IMyBikingRepository myBikingRepository;
-        private readonly IMediator mediator;
+        private readonly IMyBikingRepository _myBikingRepository;
+        private readonly IMediator _mediator;
 
         public RideController(IMyBikingRepository myBikingRepository, IMediator mediator)
         {
             
-            this.myBikingRepository = myBikingRepository;
-            this.mediator = mediator;
+            this._myBikingRepository = myBikingRepository;
+            this._mediator = mediator;
         }
 
         // GET: RideController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             //zwrócić listę obiektów RideTimeActivity
             //
-            var results = mediator.Send(new RideTimeActivityQuery());
+            var results =await _mediator.Send(new RideTimeActivityQuery());
             return View(results);
         }
 
@@ -44,16 +44,15 @@ namespace MyBiking.MVC.Controllers
         // POST: RideController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(RideDtoCommand rideDtoCommand)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            //usunąć user id
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(rideDtoCommand);
+            //}
+            _mediator.Send(rideDtoCommand);
+            return RedirectToAction("Index", "Ride");
         }
 
         // GET: RideController/Edit/5

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MyBiking.Application.Models;
+using MyBiking.Entity.Models;
 
 namespace MyBiking.Infrastructure
 {

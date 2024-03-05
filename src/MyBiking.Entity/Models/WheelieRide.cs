@@ -1,4 +1,4 @@
-﻿namespace MyBiking.Application.Models
+﻿namespace MyBiking.Entity.Models
 {
     public class WheelieRide
     {

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyBiking.Application.Dtos;
 using MyBiking.Application.Functions.Command.User;
-using MyBiking.Application.Models;
 using MyBiking.Entity.Models;
 using MyBiking.Infrastructure.Repository;
 using System.Security.Claims;

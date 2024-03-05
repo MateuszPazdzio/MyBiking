@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace MyBiking.Application.Functions.Query.Ride
 {
-    internal class RideTimeActivityHandler : IRequestHandler<RideTimeActivityQuery, List<RideTimeActivity>>
+    internal class RideTimeActivityQueryHandler : IRequestHandler<RideTimeActivityQuery, List<RideTimeActivity>>
     {
         private readonly IMyBikingRepository _myBikingRepository;
 
-        public RideTimeActivityHandler(IMyBikingRepository myBikingRepository)
+        public RideTimeActivityQueryHandler(IMyBikingRepository myBikingRepository)
         {
             this._myBikingRepository = myBikingRepository;
         }

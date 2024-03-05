@@ -1,4 +1,6 @@
-﻿namespace MyBikingApi.Models.Dtos
+﻿using MyBikingApi.Models.Dtos;
+
+namespace MyBiking.Application.Dtos
 {
     public class RideDto
     {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using MyBiking.Entity.Models;
 using MyBiking.Application.Dtos;
 using MyBiking.Application.Functions.Command.User;
-using MyBiking.Application.Models;
 
 namespace MyBiking.Application.Mapper
 {

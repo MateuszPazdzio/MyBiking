@@ -12,18 +12,28 @@
 <table class="table">
     <thead>
         <tr>
-            <th></th>
+            <th>Month</th>
+            <th>Day</th>
+            <th>@Model.Count()</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+            
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Year
+@*                      @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
+                    </td>
+                    <td>
+                        @String.Join(',',item.Months)
+                    </td>
+                </tr>
+            }
+        
+
     </tbody>
 </table>

@@ -4,11 +4,9 @@ using Microsoft.AspNetCore.Diagnostics;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using Microsoft.AspNetCore.Identity;
 using MyBiking.Application.Mapper;
 using MyBiking.Application.Validation;
-using MyBiking.Application.Models;
 using MyBiking.Entity.Models;
 using MediatR;
 using MyBiking.Application.Functions.Command.User;

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using MyBiking.Application.Models;
+using MyBiking.Application.Dtos;
+using MyBiking.Entity.Models;
 using MyBikingApi.Models.Dtos;
 
 namespace MyBiking.Application.Mapper
@@ -9,7 +10,8 @@ namespace MyBiking.Application.Mapper
     {
         public RideDtoProfile()
         {
-            CreateMap<RideDto, Ride>();
+            CreateMap<RideDto, Ride>()
+                .ReverseMap();
             CreateMap<PointDto, Point>();
             CreateMap<WheelieRideDto, WheelieRide>();
             CreateMap<WheelieItemDto, WheelieItem>()

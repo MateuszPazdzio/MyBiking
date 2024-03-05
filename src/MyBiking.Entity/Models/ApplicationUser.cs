@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 
-namespace MyBiking.Application.Models
+namespace MyBiking.Entity.Models
 {
     public class ApplicationUser : IdentityUser
     {

@@ -1,4 +1,4 @@
-﻿using MyBiking.Application.Models;
+﻿using MyBiking.Entity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

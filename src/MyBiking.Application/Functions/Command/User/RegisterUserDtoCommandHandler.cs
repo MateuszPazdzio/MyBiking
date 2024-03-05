@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using MyBiking.Application.Dtos;
-using MyBiking.Application.Models;
 using MyBiking.Entity.Models;
 using System;
 using System.Collections.Generic;

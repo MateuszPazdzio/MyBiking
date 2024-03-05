@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using MyBiking.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -159,6 +158,7 @@ namespace MyBiking.Infrastructure.Repository
                 {
                     var newRideTimeActivity = new RideTimeActivity() { Year = year, Months = new HashSet<string>() };
                     newRideTimeActivity.Months.Add(activity.StartingDateTime.ToString("MMMM"));
+                    rideTimeActivities.Add(newRideTimeActivity);
                     continue;
                 }
 
@@ -166,6 +166,28 @@ namespace MyBiking.Infrastructure.Repository
             }
 
             return rideTimeActivities ;
+        }
+
+        public async Task<Status> CreateRide(Ride ride)
+        {
+            try
+            {
+                ride.ApplicationUserId = "e13e6aad-17a8-4e6e-a496-52725db3be7f";
+                 _myBikingDbContext.Rides.Add(ride);
+                 _myBikingDbContext.SaveChanges();
+                return new Status()
+                {
+                    StatusCode = 1,
+                };
+            }
+            catch (Exception e)
+            {
+                return new Status()
+                {
+                    StatusCode = 1,
+                };
+
+            }
         }
 
 
