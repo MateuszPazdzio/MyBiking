@@ -11,6 +11,8 @@ using MyBiking.Entity.Models;
 using MediatR;
 using MyBiking.Application.Functions.Command.User;
 using System.Reflection;
+using AutoMapper;
+using MyBiking.Application.Models;
 
 
 namespace MyBiking.Application.Extensions
@@ -20,7 +22,15 @@ namespace MyBiking.Application.Extensions
         public static void AddApplication(this IServiceCollection services)
         {
             services.AddMediatR(cfg=>cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-            services.AddAutoMapper(typeof(RideDtoProfile), typeof(AuthUserDtoProfile));
+            //services.AddAutoMapper(typeof(RideDtoProfile), typeof(AuthUserDtoProfile));
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddSingleton<IUserHttpContext, UserHttpContext>();
+
+            services.AddSingleton(provider => new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new AutoMapperProfile(provider.GetService<IUserHttpContext>()));
+            }).CreateMapper());
+
             services.AddValidatorsFromAssemblyContaining<RegisterUserDtoRule>()
                 .AddFluentValidationAutoValidation()
                 .AddFluentValidationClientsideAdapters();

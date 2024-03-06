@@ -128,23 +128,6 @@ namespace MyBiking.Infrastructure.Repository
             await _signInManager.SignOutAsync();
         }
 
-        //public async Task<Dictionary<int, HashSet<string>>> GetTimeOfRideActivities()
-        //{
-        //    var result =await _myBikingDbContext.Rides.ToListAsync();
-        //    Dictionary<int,HashSet<string>> rideTimeActivities = new Dictionary<int, HashSet<string>>();
-        //    HashSet<int> ints = new HashSet<int>();
-            
-        //    foreach (var activity in result)
-        //    {
-        //        var year = activity.StartingDateTime.Year;
-        //        rideTimeActivities.TryAdd(year,new HashSet<string>());
-
-        //        rideTimeActivities[year].Add(activity.StartingDateTime.ToString("MMMM"));
-        //    }
-
-        //    return rideTimeActivities;
-        //}
-
         public async Task<List<RideTimeActivity>> GetTimeOfRideActivities()
         {
             var result = await _myBikingDbContext.Rides.ToListAsync();
@@ -172,7 +155,7 @@ namespace MyBiking.Infrastructure.Repository
         {
             try
             {
-                ride.ApplicationUserId = "e13e6aad-17a8-4e6e-a496-52725db3be7f";
+                //ride.ApplicationUserId = "e13e6aad-17a8-4e6e-a496-52725db3be7f";
                  _myBikingDbContext.Rides.Add(ride);
                  _myBikingDbContext.SaveChanges();
                 return new Status()
