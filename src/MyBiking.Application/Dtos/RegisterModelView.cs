@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MyBiking.Application.Dtos
 {
-    public class RegisterModelView
+    public class RideModelView
     {
-        public RegisterUserDto RegisterUserDto { get; set; }
-        public List<Nationality> Nationalities{ get; set; }
+        public string SelectedDate => RideActivities.Last().Year;
+        public List<RideTimeActivity> RideActivities{ get; set; }
     }
 }

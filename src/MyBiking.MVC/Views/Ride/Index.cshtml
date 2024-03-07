@@ -1,39 +1,40 @@
-﻿@model IEnumerable<MyBiking.Entity.Models.RideTimeActivity>
+﻿@* @model IEnumerable<MyBiking.Entity.Models.RideTimeActivity> *@
+@model MyBiking.Application.Dtos.RideModelView
+@using MyBiking.Entity.Models
+@using System.Globalization
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="container mt-5">
+    <div class=" monthSelector d-flex justify-content-end">
+
+        <div class="form-group col-1">
+            <label class="control-label"></label>
+            <select class="form-select"
+                    asp-items="@(new SelectList(Model.RideActivities.Select(r=>r.Year)))">
+            </select>
+        </div>
+    </div>
+
+        @foreach (DateTime month in 
+            Model.RideActivities
+            .FirstOrDefault(r=>r.Year==Model.SelectedDate)
+            .RideTimeActivitiesDates)
+            {
+                <div class="row">
+                <div class="col border border-dark border-bottom-0 rounded -flex align-content-center">
+                        <div class="monthWrapper col-1 d-flex justify-content-center align-content-center">
+                            <p class="month col text text-black my-2">@month.ToString("MMMM", new CultureInfo("en-US"))</p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+</div>
+
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Month</th>
-            <th>Day</th>
-            <th>@Model.Count()</th>
-        </tr>
-    </thead>
-    <tbody>
-            
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @item.Year
-@*                      @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
-                    </td>
-                    <td>
-                        @String.Join(',',item.Months)
-                    </td>
-                </tr>
-            }
-        
-
-    </tbody>
-</table>

@@ -25,12 +25,20 @@ namespace MyBiking.MVC.Controllers
         {
             //zwrócić listę obiektów RideTimeActivity
             //
-            var results =await _mediator.Send(new RideTimeActivityQuery());
-            return View(results);
-        }
+            RideModelView rideModelView = new RideModelView()
+            {
+                RideActivities = await _mediator.Send(new RideTimeActivityQuery())
+            };
+        
 
-        // GET: RideController/Details/5
-        public ActionResult Details(int id)
+            return View(rideModelView);
+
+        //var results =await _mediator.Send(new RideTimeActivityQuery());
+        //return View(results);
+    }
+
+    // GET: RideController/Details/5
+    public ActionResult Details(int id)
         {
             return View();
         }

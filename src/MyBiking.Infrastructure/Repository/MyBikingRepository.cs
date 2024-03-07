@@ -12,6 +12,7 @@ using MyBiking.Entity.Models;
 using MyBiking.Application.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper.Internal;
+using System.Globalization;
 
 namespace MyBiking.Infrastructure.Repository
 {
@@ -139,16 +140,29 @@ namespace MyBiking.Infrastructure.Repository
                 var rideTimeActivity = rideTimeActivities.FirstOrDefault(r => r.Year == year);
                 if(rideTimeActivity == null)
                 {
-                    var newRideTimeActivity = new RideTimeActivity() { Year = year, Months = new HashSet<string>() };
-                    newRideTimeActivity.Months.Add(activity.StartingDateTime.ToString("MMMM"));
+                    var newRideTimeActivity = new RideTimeActivity() { Year = year, RideTimeActivitiesDates = new List<DateTime>() };
+                    newRideTimeActivity.RideTimeActivitiesDates.Add(activity.StartingDateTime);
                     rideTimeActivities.Add(newRideTimeActivity);
                     continue;
                 }
 
-                rideTimeActivity.Months.Add(activity.StartingDateTime.ToString("MMMM"));
+                rideTimeActivity.RideTimeActivitiesDates.Add(activity.StartingDateTime);
             }
 
-            return rideTimeActivities ;
+            rideTimeActivities.ForEach(activity => {
+
+                activity.RideTimeActivitiesDates=activity.RideTimeActivitiesDates
+                    .DistinctBy(r => r.ToString("MMMM"))
+                    .ToList();
+
+                activity.RideTimeActivitiesDates = activity.RideTimeActivitiesDates
+                    .OrderBy(r => r, new RideTimeActivityDatesComparer())
+                    .ToList();
+
+            });
+            var sortedActivities = rideTimeActivities.OrderBy(c=>c,new RideTimeActivityYearComparer()).ToList();
+
+            return sortedActivities;
         }
 
         public async Task<Status> CreateRide(Ride ride)
@@ -215,5 +229,22 @@ namespace MyBiking.Infrastructure.Repository
 
         //    return tokenHandler.WriteToken(token);
         //}
+    }
+
+    internal class RideTimeActivityYearComparer : IComparer<RideTimeActivity>
+    {
+
+        public int Compare(RideTimeActivity? x, RideTimeActivity? y)
+        {
+            return x.Year.CompareTo(y.Year);
+        }
+    }
+
+    internal class RideTimeActivityDatesComparer : IComparer<DateTime>
+    {
+        public int Compare(DateTime x, DateTime y)
+        {
+            return x.CompareTo(y);
+        }
     }
 }
