@@ -17,5 +17,6 @@ namespace MyBiking.Entity.Models
         Task LogoutAsync();
         public Task<List<RideTimeActivity>> GetTimeOfRideActivities();
         public Task<Status> CreateRide(Ride ride);
+        Task<List<Ride>> GetRidesByMonthAsync(string year,string month);
     }
 }

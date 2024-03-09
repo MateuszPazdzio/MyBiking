@@ -38,9 +38,10 @@ namespace MyBiking.MVC.Controllers
     }
 
     // GET: RideController/Details/5
-    public ActionResult Details(int id)
+        public async Task<ActionResult> Details(AgregatedRideQuery agregatedRideQuery)
         {
-            return View();
+            var response =await _mediator.Send(agregatedRideQuery);
+            return View(response);
         }
 
         // GET: RideController/Create

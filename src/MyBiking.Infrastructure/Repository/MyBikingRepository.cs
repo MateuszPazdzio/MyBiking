@@ -13,6 +13,7 @@ using MyBiking.Application.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper.Internal;
 using System.Globalization;
+using MyBiking.Entity.Constants;
 
 namespace MyBiking.Infrastructure.Repository
 {
@@ -185,6 +186,17 @@ namespace MyBiking.Infrastructure.Repository
                 };
 
             }
+        }
+
+        public async Task<List<Ride>> GetRidesByMonthAsync(string year,string month)
+        {
+            return await _myBikingDbContext.Rides
+                .AsNoTracking()
+                .Include(r=>r.WheeleRides)
+                .Include(r=>r.Points)
+                .Where(r=>r.StartingDateTime.Year.ToString()==year &&
+                Month.Months[r.StartingDateTime.Month] == month)
+                .ToListAsync();
         }
 
 

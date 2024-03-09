@@ -10,6 +10,7 @@
         public string ApplicationUserId { get; set; }
         public DateTime StartingDateTime { get; set; }
         public DateTime EndingDateTime { get; set; }
+        
 
     }
 }
