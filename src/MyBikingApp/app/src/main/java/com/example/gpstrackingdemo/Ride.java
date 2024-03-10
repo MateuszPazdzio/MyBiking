@@ -10,6 +10,7 @@ public class Ride {
     private LocalDateTime startingDateTime;
     private LocalDateTime endingDateTime;
     private String bikeId;
+    private double distance;
     public void AddPoint(Point point){
         pointList.add(point);
     }
@@ -40,5 +41,7 @@ public class Ride {
         this.bikeId = bikeId;
     }
 
-
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
 }

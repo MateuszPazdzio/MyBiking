@@ -71,23 +71,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //current location
     Location currentLocation;
     private String distaceTraveledBetwee2Locations;
-    private double distance;
     private ArrayList<Location> locations = new ArrayList<Location>();
     //GOOGLE APIs for location service
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationCallback locationCallBack;
     private  Ride ride;
     private WheeleRide wheeleRide;
-    private double RideDistance=0.00;
+    private double RideDistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mediaPlayer = MediaPlayer.create(this, R.raw.load_gun);
-//        rotateX = findViewById(R.id.rotateXVal);
         rotateY = findViewById(R.id.rotateYVal);
-//        rotateZ = findViewById(R.id.rotateZVal);
 
         sensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         deviceSensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
@@ -105,19 +103,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         tv_totalWheelieDistance=findViewById(R.id.tv_totalWheelieDistance);
         tv_lastWheeleDistance=findViewById(R.id.tv_lastWheeleDistance);
         tv_lastWheeleTime=findViewById(R.id.tv_lastWheeleTime);
-//        tv_sensor = findViewById(R.id.tv_sensor);
-//        tv_updates = findViewById(R.id.tv_updates);
-//        tv_updates = findViewById(R.id.tv_updates);
         tv_address2 = findViewById(R.id.tv_address2);
-//        sw_gps = findViewById(R.id.sw_gps);
-//        sw_locationupdates = findViewById(R.id.sw_locationsupdates);
-//        btn_newWaypoint = findViewById(R.id.btn_newWayPoint);
-//        btn_showWayPointList = findViewById(R.id.btn_showWayPointList);
-//        tv_wayPointCounts = findViewById(R.id.tv_countOFCrumbs);
-//        btn_showMap=findViewById(R.id.btn_showMap);
-//        btnTester = findViewById(R.id.testBtn);
-
-        //set all properties of LocationRequest
         locationRequest = new LocationRequest();
 
         locationRequest.setInterval(1000*INTERVAL_TIME);
@@ -180,6 +166,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 tv_lastWheeleDistance.setText(tv_totalWheelieDistance.getText().toString());
                 tv_lastWheeleTime.setText(tv_time.getText().toString());
                 stopLocationUpdates();
+                RideDistance = 0.00;
+
             }
         });
         updateGPS();
@@ -197,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         tv_distance.setText("Not tracking location");
 
         ride.setEndingDateTime(LocalDateTime.now());
+        ride.setDistance(RideDistance);
 
         new FetchData(ride).execute();
 
@@ -285,6 +274,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if(Double.parseDouble(distaceTraveledBetwee2Locations)<2.0){
                 distaceTraveledBetwee2Locations = String.valueOf(0.0);
             }
+            RideDistance += Double.parseDouble(distaceTraveledBetwee2Locations);
+            
             if(wheeleRide!=null){
                 wheeleRide.AddIWheeleItem(new WheeleItem(point,location.getSpeed(),location.getAltitude(),address,distaceTraveledBetwee2Locations, Collections.max(rotaionXList)));
             }
@@ -301,7 +292,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(isWheeleMode){
             tv_totalWheelieDistance.setText(String.valueOf(Double.parseDouble(tv_totalWheelieDistance.getText().toString())+Double.parseDouble(distaceTraveledBetwee2Locations)));
         }
+
+
         tv_distance.setText(distaceTraveledBetwee2Locations);
+
         tv_lat.setText(String.valueOf(location.getLatitude()));
         tv_lon.setText(String.valueOf(location.getLongitude()));
         tv_accuracy.setText(String.valueOf(location.getAccuracy()));
