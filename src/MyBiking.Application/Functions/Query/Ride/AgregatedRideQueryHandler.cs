@@ -28,7 +28,7 @@ namespace MyBiking.Application.Functions.Query.Ride
                 Wheelies = rides.Sum(r => r.WheeleRides.Count),
                 WheelieMaxV = Enumerable.Max(rides.SelectMany(r => r.WheeleRides.SelectMany(w => w.WheeleItems.ToList())).ToList(), w => w.Speed),
                 Rides = rides.Count(),
-                TotalWheelieDistance = Enumerable.Sum(rides.SelectMany(r => r.WheeleRides).ToList(), w => w.Distnace),
+                TotalWheelieDistance = Enumerable.Sum(rides.SelectMany(r => r.WheeleRides).ToList(), w => w.Distance),
             };
             //monthlyAgregatedRideResponse
         }

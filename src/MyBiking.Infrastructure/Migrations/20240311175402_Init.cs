@@ -177,7 +177,8 @@ namespace MyBiking.Infrastructure.Migrations
                     BikeId = table.Column<int>(type: "int", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StartingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    EndingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Distance = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,7 +222,7 @@ namespace MyBiking.Infrastructure.Migrations
                     DurationTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Distnace = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Distance = table.Column<double>(type: "float", nullable: false),
                     RideId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -243,7 +244,7 @@ namespace MyBiking.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Speed = table.Column<double>(type: "float", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Distance = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Distance = table.Column<double>(type: "float", nullable: false),
                     MaxRotateX = table.Column<double>(type: "float", nullable: false),
                     WheelePoint_Latitude = table.Column<double>(type: "float", nullable: false),
                     WheelePoint_Longitude = table.Column<double>(type: "float", nullable: false),
