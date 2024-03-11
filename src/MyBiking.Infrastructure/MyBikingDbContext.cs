@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MyBiking.Application.Models;
+using MyBiking.Entity.Models;
 
 namespace MyBiking.Infrastructure
 {
@@ -31,6 +31,8 @@ namespace MyBiking.Infrastructure
 
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<ApplicationUser>()
+                .Ignore(p => p.Password);
             //modelBuilder.Entity<IdentityRole>()
             //    .Ignore(c => c.ConcurrencyStamp)
             //    .Ignore(c => c.NormalizedName);

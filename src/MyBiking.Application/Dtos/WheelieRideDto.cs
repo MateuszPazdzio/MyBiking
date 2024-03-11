@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using MyBiking.Application.Dtos;
+using System.Text.Json.Serialization;
 
 namespace MyBikingApi.Models.Dtos
 {

@@ -12,7 +12,7 @@ using MyBiking.Infrastructure;
 namespace MyBiking.Infrastructure.Migrations
 {
     [DbContext(typeof(MyBikingDbContext))]
-    [Migration("20240302184914_Init")]
+    [Migration("20240304192211_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

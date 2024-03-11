@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using MyBiking.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,6 +11,9 @@ using System.Threading.Tasks;
 using MyBiking.Entity.Models;
 using MyBiking.Application.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper.Internal;
+using System.Globalization;
+using MyBiking.Entity.Constants;
 
 namespace MyBiking.Infrastructure.Repository
 {
@@ -45,8 +47,7 @@ namespace MyBiking.Infrastructure.Repository
                 status.Message = "User already exist";
                 return status;
             }
-            var result = await _userManager.CreateAsync(user, "Trucker18!");
-            //var result = await _userManager.CreateAsync(user, user.Password);
+            var result = await _userManager.CreateAsync(user, user.Password);
             if (!result.Succeeded)
             {
                 status.StatusCode = 0;
@@ -56,35 +57,11 @@ namespace MyBiking.Infrastructure.Repository
 
             await _userManager.AddToRoleAsync(user, "Member");
 
-            //if (!await _roleManager.RoleExistsAsync(model.Role))
-            //    await _roleManager.CreateAsync(new IdentityRole(model.Role));
-
-
-            //if (await roleManager.RoleExistsAsync(model.Role))
-            //{
-            //    await userManager.AddToRoleAsync(user, model.Role);
-            //}
 
             status.StatusCode = 1;
             status.Message = "You have registered successfully";
             return status;
 
-
-                //await _signInManager.SignInAsync(user, true);
-                //var d = User.IsInRole("Member");
-                //if (User.Identity.IsAuthenticated)
-                //{
-                //    await Console.Out.WriteLineAsync("");
-                //}
-                //return RedirectToAction("Index", "Home");
-                //return Task.CompletedTask;
-
-            //user.PasswordHashed = _passwordHasher.HashPassword(user, user.PasswordHelpers.Password);
-            //user.RoleId= 3;
-            //userManager.AddToRoleAsync(user, "Standard");
-            //userManager.CreateAsync(user);
-            //_myBikingDbContext.Users.Add(user);
-            //_myBikingDbContext.SaveChanges();
         }
 
         public async Task<bool> GetUserByEmail(string email)
@@ -104,7 +81,7 @@ namespace MyBiking.Infrastructure.Repository
                 return status;
             }
 
-            if (!await _userManager.CheckPasswordAsync(userFound, "Trucker18!"))
+            if (!await _userManager.CheckPasswordAsync(userFound, user.Password))
             //if (!await _userManager.CheckPasswordAsync(userFound, user.Password))
             {
                 status.StatusCode = 0;
@@ -112,7 +89,7 @@ namespace MyBiking.Infrastructure.Repository
                 return status;
             }
             //var signInResult = await _signInManager.PasswordSignInAsync(user, userFound.Password, false, true);
-            var signInResult = await _signInManager.PasswordSignInAsync(userFound, "Trucker18!", false, true);
+            var signInResult = await _signInManager.PasswordSignInAsync(userFound, user.Password, false, true);
             if (signInResult.Succeeded)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
@@ -152,6 +129,76 @@ namespace MyBiking.Infrastructure.Repository
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task<List<RideTimeActivity>> GetTimeOfRideActivities()
+        {
+            var result = await _myBikingDbContext.Rides.ToListAsync();
+            List<RideTimeActivity> rideTimeActivities = new List<RideTimeActivity>();
+
+            foreach (var activity in result)
+            {
+                var year = activity.StartingDateTime.Year.ToString();
+                var rideTimeActivity = rideTimeActivities.FirstOrDefault(r => r.Year == year);
+                if(rideTimeActivity == null)
+                {
+                    var newRideTimeActivity = new RideTimeActivity() { Year = year, RideTimeActivitiesDates = new List<DateTime>() };
+                    newRideTimeActivity.RideTimeActivitiesDates.Add(activity.StartingDateTime);
+                    rideTimeActivities.Add(newRideTimeActivity);
+                    continue;
+                }
+
+                rideTimeActivity.RideTimeActivitiesDates.Add(activity.StartingDateTime);
+            }
+
+            rideTimeActivities.ForEach(activity => {
+
+                activity.RideTimeActivitiesDates=activity.RideTimeActivitiesDates
+                    .DistinctBy(r => r.ToString("MMMM"))
+                    .ToList();
+
+                activity.RideTimeActivitiesDates = activity.RideTimeActivitiesDates
+                    .OrderBy(r => r, new RideTimeActivityDatesComparer())
+                    .ToList();
+
+            });
+            var sortedActivities = rideTimeActivities.OrderBy(c=>c,new RideTimeActivityYearComparer()).ToList();
+
+            return sortedActivities;
+        }
+
+        public async Task<Status> CreateRide(Ride ride)
+        {
+            try
+            {
+                //ride.ApplicationUserId = "e13e6aad-17a8-4e6e-a496-52725db3be7f";
+                 _myBikingDbContext.Rides.Add(ride);
+                 _myBikingDbContext.SaveChanges();
+                return new Status()
+                {
+                    StatusCode = 1,
+                };
+            }
+            catch (Exception e)
+            {
+                return new Status()
+                {
+                    StatusCode = 1,
+                };
+
+            }
+        }
+
+        public async Task<List<Ride>> GetRidesByMonthAsync(string year,string month)
+        {
+            return await _myBikingDbContext.Rides
+                .AsNoTracking()
+                .Include(r=>r.WheeleRides)
+                .Include(r=>r.Points)
+                .Where(r=>r.StartingDateTime.Year.ToString()==year &&
+                Month.Months[r.StartingDateTime.Month] == month)
+                .ToListAsync();
+        }
+
 
         //private User AuthenticateUser(User userMapped)
         //{
@@ -194,5 +241,22 @@ namespace MyBiking.Infrastructure.Repository
 
         //    return tokenHandler.WriteToken(token);
         //}
+    }
+
+    internal class RideTimeActivityYearComparer : IComparer<RideTimeActivity>
+    {
+
+        public int Compare(RideTimeActivity? x, RideTimeActivity? y)
+        {
+            return x.Year.CompareTo(y.Year);
+        }
+    }
+
+    internal class RideTimeActivityDatesComparer : IComparer<DateTime>
+    {
+        public int Compare(DateTime x, DateTime y)
+        {
+            return x.CompareTo(y);
+        }
     }
 }

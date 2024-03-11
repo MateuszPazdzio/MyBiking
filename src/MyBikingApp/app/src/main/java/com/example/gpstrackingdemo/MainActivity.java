@@ -1,0 +1,415 @@
+package com.example.gpstrackingdemo;
+
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.*;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.media.MediaPlayer;
+import android.os.Build;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import androidx.core.app.ActivityCompat;
+import com.google.android.gms.location.*;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+//import io.appium.java_client.AppiumDriver;
+//import io.appium.java_client.MobileElement;
+//import io.appium.java_client.android.AndroidDriver;
+//import io.appium.java_client.remote.MobileCapabilityType;
+//import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+
+
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
+
+    public static final long INTERVAL_TIME = 4;
+    public static final int PERMISSIONS_FINE_LOCATION = 99;
+    private double lastLongitude=0.00;
+    private double lastLatitude=0.00;
+    private double startTime =0.00;
+//    private TextView rotateX;
+    private TextView rotateY;
+//    private TextView rotateZ;
+    private SensorManager sensorManager;
+    private List<Sensor> deviceSensors;
+    private Button btnStart,btnStop;
+    private MediaPlayer mediaPlayer;
+    private List<Float> rotaionXList = new ArrayList<>();
+    TextView tv_lat, tv_lon, tv_altitude, tv_accuracy, tv_speed, tv_address2,tv_distance,tv_time,tv_totalWheelieDistance,
+            tv_lastWheeleDistance,tv_lastWheeleTime;
+//    TextView tv_wayPointCounts,tv_updates,tv_sensor;
+
+//    Button btn_newWaypoint, btn_showWayPointList, btn_showMap, btnTester;
+    Switch sw_locationupdates;
+//    Switch sw_gps;
+
+    boolean updateOn = false;
+    boolean isWheeleMode = false;
+    boolean isRideModeOn = false;
+
+    LocationRequest locationRequest;
+    //list of saved locations
+    List<Location> savedLocations;
+    //current location
+    Location currentLocation;
+    private String distaceTraveledBetwee2Locations;
+    private ArrayList<Location> locations = new ArrayList<Location>();
+    //GOOGLE APIs for location service
+    FusedLocationProviderClient fusedLocationProviderClient;
+    LocationCallback locationCallBack;
+    private  Ride ride;
+    private WheeleRide wheeleRide;
+    private double RideDistance;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.load_gun);
+        rotateY = findViewById(R.id.rotateYVal);
+
+        sensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        deviceSensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+
+        //give each UI variable a value
+        tv_distance = findViewById(R.id.distanceValue);
+        tv_lat = findViewById(R.id.tv_lat);
+        tv_lon = findViewById(R.id.tv_lon);
+        tv_altitude = findViewById(R.id.tv_altitude);
+        tv_accuracy = findViewById(R.id.tv_accuracy);
+        tv_speed = findViewById(R.id.tv_speed);
+        btnStart = findViewById(R.id.btnStart);
+        btnStop = findViewById(R.id.btnStop);
+        tv_time=findViewById(R.id.tv_time);
+        tv_totalWheelieDistance=findViewById(R.id.tv_totalWheelieDistance);
+        tv_lastWheeleDistance=findViewById(R.id.tv_lastWheeleDistance);
+        tv_lastWheeleTime=findViewById(R.id.tv_lastWheeleTime);
+        tv_address2 = findViewById(R.id.tv_address2);
+        locationRequest = new LocationRequest();
+
+        locationRequest.setInterval(1000*INTERVAL_TIME);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        //event is triggered whenever the update interval is met
+        locationCallBack = new LocationCallback() {
+
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                //save the location
+                Location location = locationResult.getLastLocation();
+                locations.add(location);
+                updateUIValues(location);
+                //currentLocation=location;
+            }
+        };
+
+
+
+
+//        sw_gps.setOnClickListener((new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (sw_gps.isChecked()) {
+//                    //most accurate - use GPS
+//                    locationRequest.setPriority((LocationRequest.PRIORITY_HIGH_ACCURACY));
+//                    tv_sensor.setText("Using GPS sensors");
+//                } else {
+//                    locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+//                    tv_sensor.setText("Using Towers + WIFI");
+//                }
+//            }
+//        }));
+
+//        sw_locationupdates.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (sw_locationupdates.isChecked()) {
+//                    //turn on location tracking
+//                    startLocationUpdates();
+//                } else {
+//                    stopLocationUpdates();
+//                }
+//            }
+//        });
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    isRideModeOn = true;
+                    RideDistance = 0.00;
+                    startLocationUpdates();
+            }
+        });
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isRideModeOn = false;
+                tv_lastWheeleDistance.setText(tv_totalWheelieDistance.getText().toString());
+                tv_lastWheeleTime.setText(tv_time.getText().toString());
+                stopLocationUpdates();
+                RideDistance = 0.00;
+
+            }
+        });
+        updateGPS();
+    }
+
+    private void stopLocationUpdates() {
+//        tv_updates.setText("Location is NOT tracked");
+        tv_lat.setText("Not tracking location");
+        tv_lon.setText("Not tracking location");
+        tv_speed.setText("Not tracking location");
+        tv_address2.setText("Not tracking location");
+        tv_accuracy.setText("Not tracking location");
+//        tv_sensor.setText("Not tracking location");
+        tv_altitude.setText("Not tracking location");
+        tv_distance.setText("Not tracking location");
+
+        ride.setEndingDateTime(LocalDateTime.now());
+        ride.setDistance(RideDistance);
+
+        new FetchData(ride).execute();
+
+
+        fusedLocationProviderClient.removeLocationUpdates(locationCallBack);
+    }
+
+    private void startLocationUpdates() {
+
+//        tv_updates.setText("Location is being tracked");
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the usrfawer grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallBack, null);
+
+        ride = new Ride();
+        ride.setBikeId("1");
+        ride.setStartingDateTime(LocalDateTime.now());
+
+
+        updateGPS();
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch(requestCode){
+            case PERMISSIONS_FINE_LOCATION:
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    updateGPS();
+                }else{
+                    Toast.makeText(this,"This app requires permission to be granted in order to work properlly",
+                            Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
+        }
+    }
+
+    //update fields
+    //gets permissions
+    private void updateGPS(){
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
+            //user provided the permission
+            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    //put the values of location. Put data into UI components
+                    currentLocation=location;
+                    updateUIValues(location);
+                }
+            });
+        }else{
+            //permissions not granted
+           if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+               requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_FINE_LOCATION);
+           }
+        }
+    }
+
+    private void updateRideDetails(Location location) {
+        Geocoder geocoder = new Geocoder(MainActivity.this);
+        String address;
+        if(ride!=null){
+            try{
+                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+                address=addresses.get(0).getAddressLine(0);
+            }
+            catch (Exception e){
+                address="Error";
+            }
+            Point point = new Point(location.getLatitude(),location.getLongitude(),address);
+            ride.AddPoint(point);
+//
+            distaceTraveledBetwee2Locations = calcDistance(point.getLatitude(),point.getLongitude());
+            if(Double.parseDouble(distaceTraveledBetwee2Locations)<2.0){
+                distaceTraveledBetwee2Locations = String.valueOf(0.0);
+            }
+            RideDistance += Double.parseDouble(distaceTraveledBetwee2Locations);
+
+            if(wheeleRide!=null){
+                wheeleRide.AddIWheeleItem(new WheeleItem(point,location.getSpeed(),location.getAltitude(),address,distaceTraveledBetwee2Locations, Collections.max(rotaionXList)));
+            }
+        }
+
+    }
+
+    private void updateUIValues(Location location) {
+        updateRideDetails(location);
+        rotaionXList.clear();
+
+//        distaceTraveledBetwee2Locations = calcDistance(location.getLatitude(),location.getLongitude());
+//        distaceTraveledBetwee2Locations = String.valueOf(distance);
+        if(isWheeleMode){
+            tv_totalWheelieDistance.setText(String.valueOf(Double.parseDouble(tv_totalWheelieDistance.getText().toString())+Double.parseDouble(distaceTraveledBetwee2Locations)));
+        }
+
+
+        tv_distance.setText(distaceTraveledBetwee2Locations);
+
+        tv_lat.setText(String.valueOf(location.getLatitude()));
+        tv_lon.setText(String.valueOf(location.getLongitude()));
+        tv_accuracy.setText(String.valueOf(location.getAccuracy()));
+
+        if(location.hasAltitude()){
+            tv_altitude.setText(String.valueOf(location.getAltitude()));
+        }
+        else{
+            tv_altitude.setText("Not available");
+        }
+
+        if(location.hasSpeed()){
+            tv_speed.setText(String.valueOf(location.getSpeed()*3.6f));
+        }
+        else{
+            tv_speed.setText(String.valueOf("Not available"));
+        }
+
+        Geocoder geocoder = new Geocoder(MainActivity.this);
+        try{
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+            tv_address2.setText(addresses.get(0).getAddressLine(0));
+        }
+        catch (Exception e){
+            tv_address2.setText("Unable to get street address");
+        }
+
+        MyApplication myApplication = (MyApplication) getApplicationContext();
+        savedLocations = myApplication.getMyLocations();
+
+        //show the number of waypoints saved
+    }
+
+    private String calcDistance(double latitude, double longitude) {
+        if(lastLatitude!=0.00 && lastLongitude!=0.00){
+            double distance = Math.sqrt(Math.pow(Math.abs(lastLatitude - latitude), 2) + Math.pow(Math.abs(lastLongitude - longitude), 2))*73*1000;
+            String distanceStr = String.valueOf(distance);
+            lastLongitude=longitude;
+            lastLatitude=latitude;
+            return distanceStr;
+        }
+        lastLongitude=longitude;
+        lastLatitude=latitude;
+        return "0.00";
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        float changedValue = sensorEvent.values[0];
+//        text.setText(String.valueOf(changedValue));
+        if(sensorEvent.sensor.getType()==Sensor.TYPE_GAME_ROTATION_VECTOR && isRideModeOn){
+
+            float x = sensorEvent.values[0];//Rotation around x-axis (roll)
+            float y = sensorEvent.values[1];//Rotation around y-axis (pitch)
+            float z = sensorEvent.values[2];//Rotation around z-axis (yaw)
+//            rotateX.setText(String.valueOf(x));
+            rotateY.setText(String.valueOf(x));
+//            rotateZ.setText(String.valueOf(z));
+            if(x>0.25f && startTime==0.00){
+                rotaionXList.add(x);
+                wheeleRide = new WheeleRide(LocalDateTime.now());
+                if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                    mediaPlayer.start(); // Start playing the sound
+                }
+                isWheeleMode=true;
+                startTime = System.currentTimeMillis();
+                tv_time.setText(String.valueOf(startTime));
+//                tv_totalWheelieDistance.setText((tv_totalWheelieDistance.getText().toString()));
+            }
+            else if(x>0.25f){
+                rotaionXList.add(x);
+                double timeDiff = (System.currentTimeMillis()-startTime)/1000;
+                tv_time.setText(String.valueOf(timeDiff));
+            }
+            else{
+                if(isWheeleMode){
+                    wheeleRide.setDurationTime(tv_time.getText().toString());
+                    wheeleRide.setEndingDateTime(LocalDateTime.now());
+                    wheeleRide.setDistnace(tv_totalWheelieDistance.getText().toString());
+                    if(Double.parseDouble(tv_time.getText().toString())>3.0){
+                        ride.AddWheeleRide(wheeleRide);
+                    }
+                    wheeleRide = null;
+                    tv_lastWheeleDistance.setText(tv_totalWheelieDistance.getText().toString());
+                    tv_lastWheeleTime.setText(tv_time.getText().toString());
+                }
+                isWheeleMode=false;
+
+                startTime=0.00;
+                tv_time.setText(String.valueOf(0.00));
+                tv_totalWheelieDistance.setText(String.valueOf(0.00));
+            }
+
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        sensorManager.registerListener((SensorEventListener) this,sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT),SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener((SensorEventListener) this,sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR),SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener((SensorListener) this);
+    }
+}
+
+
+
