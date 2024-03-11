@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 distaceTraveledBetwee2Locations = String.valueOf(0.0);
             }
             RideDistance += Double.parseDouble(distaceTraveledBetwee2Locations);
-            
+
             if(wheeleRide!=null){
                 wheeleRide.AddIWheeleItem(new WheeleItem(point,location.getSpeed(),location.getAltitude(),address,distaceTraveledBetwee2Locations, Collections.max(rotaionXList)));
             }
