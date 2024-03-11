@@ -1,4 +1,4 @@
-﻿namespace MyBiking.Application.Models
+﻿namespace MyBiking.Entity.Models
 {
     public class Ride
     {
@@ -10,6 +10,8 @@
         public string ApplicationUserId { get; set; }
         public DateTime StartingDateTime { get; set; }
         public DateTime EndingDateTime { get; set; }
+        public double Distance { get; set; }
+        
 
     }
 }

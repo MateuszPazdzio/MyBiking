@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyBiking.Application.Dtos;
-using MyBiking.Application.Models;
+using MyBiking.Application.Functions.Command.User;
 using MyBiking.Entity.Models;
 using MyBiking.Infrastructure.Repository;
 using System.Security.Claims;
@@ -16,13 +17,16 @@ namespace MyBiking.MVC.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
         private readonly IMyBikingRepository _myBikingRepository;
+        private readonly IMediator _mediator;
 
-        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager , IMapper mapper, IMyBikingRepository myBikingRepository)
+        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager , IMapper mapper, 
+            IMyBikingRepository myBikingRepository, IMediator mediator)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._mapper = mapper;
             this._myBikingRepository = myBikingRepository;
+            this._mediator = mediator;
         }
 
         public IActionResult Index()
@@ -35,15 +39,14 @@ namespace MyBiking.MVC.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginUserDto loginUserDto)
+        public async Task<IActionResult> Login(LoginUserDtoCommand loginUserDtoCommand)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            var user = _mapper.Map<ApplicationUser>(loginUserDto);
 
-            var result =await _myBikingRepository.LoginUser(user);
+            var result =await _mediator.Send(loginUserDtoCommand) as Status;
             if(result.StatusCode == 1)
             {
                 return RedirectToAction("Index", "Home");
@@ -63,9 +66,9 @@ namespace MyBiking.MVC.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> Register(RegisterUserDto registerUserDto)
+        public async Task<ActionResult> Register(RegisterUserDtoCommand registerUserDtoCommand)
         {
-            if (registerUserDto == null)
+            if (registerUserDtoCommand == null)
             {
                 return BadRequest();
             }
@@ -74,12 +77,15 @@ namespace MyBiking.MVC.Controllers
                 //registerUserDto.Nationalities = await _myBikingRepository.GetNationalities();
                 //return View(registerUserDto);               
                 //registerUserDto.Nationalities = await _myBikingRepository.GetNationalities();
-                return View(registerUserDto);
+                return View(registerUserDtoCommand);
             }
 
-            var user = _mapper.Map<ApplicationUser>(registerUserDto);
-            var result =await _myBikingRepository.CreateUser(user);
+            var result = await _mediator.Send(registerUserDtoCommand) as Status;
 
+            if (result.StatusCode == 1)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
             //if (result.Succeeded)
             //{
             //    if(User.Identity.IsAuthenticated)
@@ -93,10 +99,10 @@ namespace MyBiking.MVC.Controllers
             //{
             //    ModelState.AddModelError("", error.Description);
             //}
-            return Ok(result);
+            //return Ok(result);
             //var nationalities = await _myBikingRepository.GetNationalities();
             //ViewData["Nationalities"] = nationalities;
-            //return View(registerUserDto);
+            return View(registerUserDtoCommand);
         }
         [Authorize]
         public async Task<IActionResult> Logout()

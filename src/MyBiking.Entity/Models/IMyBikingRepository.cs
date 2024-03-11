@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MyBiking.Application.Dtos;
-using MyBiking.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +15,8 @@ namespace MyBiking.Entity.Models
         public Task<Status> CreateUser(ApplicationUser user);
         public Task<Status> LoginUser(ApplicationUser user);
         Task LogoutAsync();
+        public Task<List<RideTimeActivity>> GetTimeOfRideActivities();
+        public Task<Status> CreateRide(Ride ride);
+        Task<List<Ride>> GetRidesByMonthAsync(string year,string month);
     }
 }

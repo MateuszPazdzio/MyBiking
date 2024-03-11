@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyBiking.Application.Models
+namespace MyBiking.Entity.Models
 {
     public class PasswordHelpers
     {

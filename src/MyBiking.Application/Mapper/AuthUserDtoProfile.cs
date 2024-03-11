@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
+using MyBiking.Entity.Models;
 using MyBiking.Application.Dtos;
-using MyBiking.Application.Models;
+using MyBiking.Application.Functions.Command.User;
 
 namespace MyBiking.Application.Mapper
 {
@@ -13,6 +14,9 @@ namespace MyBiking.Application.Mapper
             //    .ForMember(u => u.Nationality, cfg => cfg.MapFrom(src=>new Nationality() { Id = Convert.ToInt32(src.Nationality)}));
 
             CreateMap<LoginUserDto, ApplicationUser>();
+
+            CreateMap<RegisterUserDtoCommand, ApplicationUser>();
+            CreateMap<LoginUserDtoCommand, ApplicationUser>();
             //CreateMap<LoginUserDto, ApplicationUser>().
             //    ForMember(u => u.PasswordHelpers, cfg => cfg.MapFrom(src => new PasswordHelpers() { Password = src.Password }));
 
