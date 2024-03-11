@@ -9,7 +9,7 @@ namespace MyBiking.Application.Dtos
 {
     public class RideModelView
     {
-        public string SelectedDate => RideActivities.Last().Year;
+        public string SelectedDate => RideActivities.LastOrDefault()?.Year;
         public List<RideTimeActivity> RideActivities{ get; set; }
     }
 }
