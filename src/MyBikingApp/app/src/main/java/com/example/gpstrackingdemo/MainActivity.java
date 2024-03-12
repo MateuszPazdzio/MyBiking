@@ -370,18 +370,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float x = sensorEvent.values[0];//Rotation around x-axis (roll)
             float y = sensorEvent.values[1];//Rotation around y-axis (pitch)
             float z = sensorEvent.values[2];//Rotation around z-axis (yaw)
-//            rotateX.setText(String.valueOf(x));
-            rotateY.setText(String.valueOf(x));
-//            rotateZ.setText(String.valueOf(z));
+//            rotateY.setText(String.valueOf(x));
             if(x>0.25f && startTime==0.00){
                 rotaionXList.add(x);
                 wheeleRide = new WheeleRide(LocalDateTime.now());
                 if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
                     mediaPlayer.start(); // Start playing the sound
                 }
+
                 isWheeleMode=true;
                 startTime = System.currentTimeMillis();
                 tv_time.setText(String.valueOf(startTime));
+                rotateY.setText("Wheelie On");
                 tv_totalWheelieDistance.setText((tv_totalWheelieDistance.getText().toString()));
             }
             else if(x>0.25f){
@@ -405,6 +405,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 startTime=0.00;
                 tv_time.setText(String.valueOf(0.00));
+                rotateY.setText("Wheelie Off");
 //                tv_time.setText("0.00");
                 tv_totalWheelieDistance.setText(String.valueOf(0.00));
             }
