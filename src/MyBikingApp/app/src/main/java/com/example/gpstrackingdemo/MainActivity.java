@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     List<Location> savedLocations;
     //current location
     Location currentLocation;
-    private String distaceTraveledBetwee2Locations;
+    private double distaceTraveledBetwee2Locations;
     private ArrayList<Location> locations = new ArrayList<Location>();
     //GOOGLE APIs for location service
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -271,10 +271,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             ride.AddPoint(point);
 //
             distaceTraveledBetwee2Locations = calcDistance(point.getLatitude(),point.getLongitude());
-            if(Double.parseDouble(distaceTraveledBetwee2Locations)<2.0){
-                distaceTraveledBetwee2Locations = String.valueOf(0.0);
+            if(distaceTraveledBetwee2Locations<2.0){
+                distaceTraveledBetwee2Locations = 0.0;
             }
-            RideDistance += Double.parseDouble(distaceTraveledBetwee2Locations);
+            RideDistance += distaceTraveledBetwee2Locations;
 
             if(wheeleRide!=null){
                 wheeleRide.AddIWheeleItem(new WheeleItem(point,location.getSpeed(),location.getAltitude(),address,distaceTraveledBetwee2Locations, Collections.max(rotaionXList)));
@@ -290,11 +290,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //        distaceTraveledBetwee2Locations = calcDistance(location.getLatitude(),location.getLongitude());
 //        distaceTraveledBetwee2Locations = String.valueOf(distance);
         if(isWheeleMode){
-            tv_totalWheelieDistance.setText(String.valueOf(Double.parseDouble(tv_totalWheelieDistance.getText().toString())+Double.parseDouble(distaceTraveledBetwee2Locations)));
+            tv_totalWheelieDistance.setText(String.valueOf(Double.parseDouble(tv_totalWheelieDistance.getText().toString())+distaceTraveledBetwee2Locations));
         }
 
 
-        tv_distance.setText(distaceTraveledBetwee2Locations);
+        tv_distance.setText(String.valueOf(distaceTraveledBetwee2Locations));
 
         tv_lat.setText(String.valueOf(location.getLatitude()));
         tv_lon.setText(String.valueOf(location.getLongitude()));
@@ -329,17 +329,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //show the number of waypoints saved
     }
 
-    private String calcDistance(double latitude, double longitude) {
+    private double calcDistance(double latitude, double longitude) {
         if(lastLatitude!=0.00 && lastLongitude!=0.00){
             double distance = Math.sqrt(Math.pow(Math.abs(lastLatitude - latitude), 2) + Math.pow(Math.abs(lastLongitude - longitude), 2))*73*1000;
-            String distanceStr = String.valueOf(distance);
+//            String distanceStr = String.valueOf(distance);
             lastLongitude=longitude;
             lastLatitude=latitude;
-            return distanceStr;
+            return distance;
         }
         lastLongitude=longitude;
         lastLatitude=latitude;
-        return "0.00";
+        return 0.00;
     }
 
     @Override
