@@ -2,7 +2,6 @@ package com.example.gpstrackingdemo;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.*;
 import android.location.Address;
@@ -33,10 +32,6 @@ import java.util.List;
 //import io.appium.java_client.remote.MobileCapabilityType;
 //import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -50,10 +45,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //    private TextView rotateZ;
     private SensorManager sensorManager;
     private List<Sensor> deviceSensors;
-    private Button btnStart,btnStop;
+    private Button btnStart;
+//            btnStop;
     private MediaPlayer mediaPlayer;
     private List<Float> rotaionXList = new ArrayList<>();
-    TextView tv_lat, tv_lon, tv_altitude, tv_accuracy, tv_speed, tv_address2,tv_distance,tv_time,tv_totalWheelieDistance,
+    TextView tv_lon, tv_altitude,
+//            tv_accuracy,
+            tv_speed,
+//            tv_address2,
+            tv_distance,
+        tv_time,tv_totalWheelieDistance,
             tv_lastWheeleDistance,tv_lastWheeleTime;
 //    TextView tv_wayPointCounts,tv_updates,tv_sensor;
 
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Switch sw_locationupdates;
 //    Switch sw_gps;
 
-    boolean updateOn = false;
+//    boolean updateOn = false;
     boolean isWheeleMode = false;
     boolean isRideModeOn = false;
 
@@ -92,18 +93,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //give each UI variable a value
         tv_distance = findViewById(R.id.distanceValue);
-        tv_lat = findViewById(R.id.tv_lat);
-        tv_lon = findViewById(R.id.tv_lon);
-        tv_altitude = findViewById(R.id.tv_altitude);
-        tv_accuracy = findViewById(R.id.tv_accuracy);
+//        tv_lat = findViewById(R.id.tv_lat);
+//        tv_lon = findViewById(R.id.tv_lon);
+//        tv_altitude = findViewById(R.id.tv_altitude);
+//        tv_accuracy = findViewById(R.id.tv_accuracy);
         tv_speed = findViewById(R.id.tv_speed);
         btnStart = findViewById(R.id.btnStart);
-        btnStop = findViewById(R.id.btnStop);
+//        btnStop = findViewById(R.id.btnStop);
         tv_time=findViewById(R.id.tv_time);
         tv_totalWheelieDistance=findViewById(R.id.tv_totalWheelieDistance);
-        tv_lastWheeleDistance=findViewById(R.id.tv_lastWheeleDistance);
+        tv_lastWheeleDistance=findViewById(R.id.tv_totalWheelieDistance);
+//        tv_lastWheeleDistance=findViewById(R.id.tv_time);
         tv_lastWheeleTime=findViewById(R.id.tv_lastWheeleTime);
-        tv_address2 = findViewById(R.id.tv_address2);
+//        tv_address2 = findViewById(R.id.tv_address2);
         locationRequest = new LocationRequest();
 
         locationRequest.setInterval(1000*INTERVAL_TIME);
@@ -154,35 +156,48 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String x =btnStart.getText().toString().trim();
+                if(btnStart.getText().toString().trim().toLowerCase().equals("start")){
                     isRideModeOn = true;
                     RideDistance = 0.00;
                     startLocationUpdates();
+                    btnStart.setText("STOP");
+                    btnStart.setBackgroundColor(getResources().getColor(R.color.red));
+                //Case its Stop
+                }else{
+                    isRideModeOn = false;
+                    tv_lastWheeleDistance.setText(tv_totalWheelieDistance.getText().toString());
+                    btnStart.setText("START");
+                    btnStart.setBackgroundColor(getResources().getColor(R.color.green));
+                    tv_lastWheeleTime.setText(tv_time.getText().toString());
+                    stopLocationUpdates();
+                    RideDistance = 0.00;
+                }
             }
         });
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isRideModeOn = false;
-                tv_lastWheeleDistance.setText(tv_totalWheelieDistance.getText().toString());
-                tv_lastWheeleTime.setText(tv_time.getText().toString());
-                stopLocationUpdates();
-                RideDistance = 0.00;
-
-            }
-        });
+//        btnStop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                isRideModeOn = false;
+//                tv_lastWheeleDistance.setText(tv_totalWheelieDistance.getText().toString());
+//                tv_lastWheeleTime.setText(tv_time.getText().toString());
+//                stopLocationUpdates();
+//                RideDistance = 0.00;
+//
+//            }
+//        });
         updateGPS();
     }
 
     private void stopLocationUpdates() {
 //        tv_updates.setText("Location is NOT tracked");
-        tv_lat.setText("Not tracking location");
-        tv_lon.setText("Not tracking location");
-        tv_speed.setText("Not tracking location");
-        tv_address2.setText("Not tracking location");
-        tv_accuracy.setText("Not tracking location");
-//        tv_sensor.setText("Not tracking location");
-        tv_altitude.setText("Not tracking location");
-        tv_distance.setText("Not tracking location");
+//        tv_lat.setText("Not tracking location");
+//        tv_lon.setText("Not tracking location");
+        tv_speed.setText("0.00");
+//        tv_address2.setText("Not tracking location");
+//        tv_accuracy.setText("Not tracking location");
+//        tv_altitude.setText("Not tracking location");
+        tv_distance.setText("0.00");
 
         ride.setEndingDateTime(LocalDateTime.now());
         ride.setDistance(RideDistance);
@@ -211,8 +226,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         ride = new Ride();
         ride.setBikeId("1");
         ride.setStartingDateTime(LocalDateTime.now());
-
-
         updateGPS();
     }
 
@@ -272,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //
             distaceTraveledBetwee2Locations = calcDistance(point.getLatitude(),point.getLongitude());
             if(distaceTraveledBetwee2Locations<2.0){
-                distaceTraveledBetwee2Locations = 0.0;
+                distaceTraveledBetwee2Locations = 0.00;
             }
             RideDistance += distaceTraveledBetwee2Locations;
 
@@ -293,34 +306,40 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             tv_totalWheelieDistance.setText(String.valueOf(Double.parseDouble(tv_totalWheelieDistance.getText().toString())+distaceTraveledBetwee2Locations));
         }
 
+        if(distaceTraveledBetwee2Locations==0.0){
+            tv_distance.setText("0.00");
 
-        tv_distance.setText(String.valueOf(distaceTraveledBetwee2Locations));
+        }else {
+            tv_distance.setText(String.valueOf(distaceTraveledBetwee2Locations));
 
-        tv_lat.setText(String.valueOf(location.getLatitude()));
-        tv_lon.setText(String.valueOf(location.getLongitude()));
-        tv_accuracy.setText(String.valueOf(location.getAccuracy()));
-
-        if(location.hasAltitude()){
-            tv_altitude.setText(String.valueOf(location.getAltitude()));
         }
-        else{
-            tv_altitude.setText("Not available");
-        }
+
+//        tv_lat.setText(String.valueOf(location.getLatitude()));
+//        tv_lon.setText(String.valueOf(location.getLongitude()));
+//        tv_accuracy.setText(String.valueOf(location.getAccuracy()));
+
+//        if(location.hasAltitude()){
+//            tv_altitude.setText(String.valueOf(location.getAltitude()));
+//        }
+//        else{
+//            tv_altitude.setText("Not available");
+//        }
 
         if(location.hasSpeed()){
             tv_speed.setText(String.valueOf(location.getSpeed()*3.6f));
         }
         else{
-            tv_speed.setText(String.valueOf("Not available"));
+            tv_speed.setText(String.valueOf("0.00"));
+//            tv_speed.setText(String.valueOf("Not available"));
         }
 
         Geocoder geocoder = new Geocoder(MainActivity.this);
         try{
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-            tv_address2.setText(addresses.get(0).getAddressLine(0));
+//            tv_address2.setText(addresses.get(0).getAddressLine(0));
         }
         catch (Exception e){
-            tv_address2.setText("Unable to get street address");
+//            tv_address2.setText("Unable to get street address");
         }
 
         MyApplication myApplication = (MyApplication) getApplicationContext();
@@ -339,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         lastLongitude=longitude;
         lastLatitude=latitude;
-        return 0.00;
+        return 0.0;
     }
 
     @Override
@@ -363,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 isWheeleMode=true;
                 startTime = System.currentTimeMillis();
                 tv_time.setText(String.valueOf(startTime));
-//                tv_totalWheelieDistance.setText((tv_totalWheelieDistance.getText().toString()));
+                tv_totalWheelieDistance.setText((tv_totalWheelieDistance.getText().toString()));
             }
             else if(x>0.25f){
                 rotaionXList.add(x);
@@ -386,6 +405,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 startTime=0.00;
                 tv_time.setText(String.valueOf(0.00));
+//                tv_time.setText("0.00");
                 tv_totalWheelieDistance.setText(String.valueOf(0.00));
             }
 
