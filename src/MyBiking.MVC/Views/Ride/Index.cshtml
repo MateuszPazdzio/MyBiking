@@ -13,7 +13,7 @@
 
         <div class="form-group col-1">
             <label class="control-label"></label>
-            <select class="form-select"
+            <select class="form-select" id="Year"
                     asp-items="@(new SelectList(Model.RideActivities.Select(r=>r.Year)))">
             </select>
         </div>
@@ -26,7 +26,7 @@
             <div class="row monthRideDetails">
                 @* <div class="col align-content-center d-flex justify-content-between"> *@
                     <div class="row d-flex justify-content-between">
-                        <div class="monthWrapper col-1 d-flex justify-content-center align-content-center">
+                        <div class="monthName col-1 d-flex justify-content-center align-content-center">
                             <p class="month col text text-black my-2">@month.ToString("MMMM", new CultureInfo("en-US"))</p>
                         </div>
                         <div class="monthWrapper col-1 d-flex justify-content-center align-content-center align-self-center">
