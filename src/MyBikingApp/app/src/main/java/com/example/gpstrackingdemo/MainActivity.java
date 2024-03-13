@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         deviceSensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
 
         //give each UI variable a value
-        tv_distance = findViewById(R.id.distanceValue);
+        tv_distance = findViewById(R.id.tv_distance);
 //        tv_lat = findViewById(R.id.tv_lat);
 //        tv_lon = findViewById(R.id.tv_lon);
 //        tv_altitude = findViewById(R.id.tv_altitude);
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //        btnStop = findViewById(R.id.btnStop);
         tv_time=findViewById(R.id.tv_time);
         tv_totalWheelieDistance=findViewById(R.id.tv_totalWheelieDistance);
-        tv_lastWheeleDistance=findViewById(R.id.tv_totalWheelieDistance);
+        tv_lastWheeleDistance=findViewById(R.id.tv_lastWheelieDistance);
 //        tv_lastWheeleDistance=findViewById(R.id.tv_time);
         tv_lastWheeleTime=findViewById(R.id.tv_lastWheeleTime);
 //        tv_address2 = findViewById(R.id.tv_address2);
@@ -126,33 +126,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         };
 
 
-
-
-//        sw_gps.setOnClickListener((new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (sw_gps.isChecked()) {
-//                    //most accurate - use GPS
-//                    locationRequest.setPriority((LocationRequest.PRIORITY_HIGH_ACCURACY));
-//                    tv_sensor.setText("Using GPS sensors");
-//                } else {
-//                    locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-//                    tv_sensor.setText("Using Towers + WIFI");
-//                }
-//            }
-//        }));
-
-//        sw_locationupdates.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (sw_locationupdates.isChecked()) {
-//                    //turn on location tracking
-//                    startLocationUpdates();
-//                } else {
-//                    stopLocationUpdates();
-//                }
-//            }
-//        });
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -305,14 +278,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(isWheeleMode){
             tv_totalWheelieDistance.setText(String.valueOf(Double.parseDouble(tv_totalWheelieDistance.getText().toString())+distaceTraveledBetwee2Locations));
         }
-
-        if(distaceTraveledBetwee2Locations==0.0){
-            tv_distance.setText("0.00");
-
-        }else {
-            tv_distance.setText(String.valueOf(distaceTraveledBetwee2Locations));
-
-        }
+        tv_distance.setText(String.valueOf(RideDistance));
+//        if(distaceTraveledBetwee2Locations==0.0){
+//            tv_distance.setText("0.00");
+//
+//        }else {
+//            tv_distance.setText(String.valueOf(RideDistance));
+////            tv_distance.setText(String.valueOf(Double.parseDouble(tv_distance.getText().toString())+distaceTraveledBetwee2Locations));
+//
+//        }
 
 //        tv_lat.setText(String.valueOf(location.getLatitude()));
 //        tv_lon.setText(String.valueOf(location.getLongitude()));
@@ -325,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //            tv_altitude.setText("Not available");
 //        }
 
-        if(location.hasSpeed()){
+        if(location.hasSpeed() && isRideModeOn){
             tv_speed.setText(String.valueOf(location.getSpeed()*3.6f));
         }
         else{
