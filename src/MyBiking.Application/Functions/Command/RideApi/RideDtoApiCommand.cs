@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBiking.Application.Functions.Command.Ride
+namespace MyBiking.Application.Functions.Command.RideApi
 {
     public class RideDtoApiCommand: RideDto, IRequest<Status>
     {
