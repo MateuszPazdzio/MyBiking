@@ -190,13 +190,16 @@ namespace MyBiking.Infrastructure.Repository
 
         public async Task<List<Ride>> GetRidesByMonthAsync(string year,string month)
         {
-            return await _myBikingDbContext.Rides
+            var d= await _myBikingDbContext.Rides
                 .AsNoTracking()
-                .Include(r=>r.WheeleRides)
-                .Include(r=>r.Points)
-                .Where(r=>r.StartingDateTime.Year.ToString()==year &&
-                Month.Months[r.StartingDateTime.Month] == month)
+                .Include(r => r.WheeleRides).ThenInclude(w=>w.WheeleItems)
+                .Include(r => r.Points)
+                //.Where(r=>r.StartingDateTime.Year.ToString()==year &&
+                .Where(r=>
+                //Month.Months[r.StartingDateTime.Month] == month)
+                "March" == month)
                 .ToListAsync();
+            return d;
         }
 
 

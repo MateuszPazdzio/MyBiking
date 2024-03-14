@@ -155,7 +155,7 @@ namespace MyBiking.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.ApplicationUser", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -224,7 +224,7 @@ namespace MyBiking.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.Nationality", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.Nationality", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -241,7 +241,7 @@ namespace MyBiking.Infrastructure.Migrations
                     b.ToTable("Nationalities");
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.Point", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.Point", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -269,7 +269,7 @@ namespace MyBiking.Infrastructure.Migrations
                     b.ToTable("Points");
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.Ride", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.Ride", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -284,6 +284,9 @@ namespace MyBiking.Infrastructure.Migrations
                     b.Property<int>("BikeId")
                         .HasColumnType("int");
 
+                    b.Property<double>("Distance")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("EndingDateTime")
                         .HasColumnType("datetime2");
 
@@ -297,7 +300,7 @@ namespace MyBiking.Infrastructure.Migrations
                     b.ToTable("Rides");
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.WheelieItem", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.WheelieItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -312,9 +315,8 @@ namespace MyBiking.Infrastructure.Migrations
                     b.Property<double>("Altitude")
                         .HasColumnType("float");
 
-                    b.Property<string>("Distance")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("Distance")
+                        .HasColumnType("float");
 
                     b.Property<double>("MaxRotateX")
                         .HasColumnType("float");
@@ -332,7 +334,7 @@ namespace MyBiking.Infrastructure.Migrations
                     b.ToTable("WheelieItems");
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.WheelieRide", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.WheelieRide", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -340,9 +342,8 @@ namespace MyBiking.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Distnace")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("Distance")
+                        .HasColumnType("float");
 
                     b.Property<string>("DurationTime")
                         .IsRequired()
@@ -375,7 +376,7 @@ namespace MyBiking.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MyBiking.Application.Models.ApplicationUser", null)
+                    b.HasOne("MyBiking.Entity.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -384,7 +385,7 @@ namespace MyBiking.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MyBiking.Application.Models.ApplicationUser", null)
+                    b.HasOne("MyBiking.Entity.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -399,7 +400,7 @@ namespace MyBiking.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyBiking.Application.Models.ApplicationUser", null)
+                    b.HasOne("MyBiking.Entity.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -408,16 +409,16 @@ namespace MyBiking.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MyBiking.Application.Models.ApplicationUser", null)
+                    b.HasOne("MyBiking.Entity.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.Point", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.Point", b =>
                 {
-                    b.HasOne("MyBiking.Application.Models.Ride", "Ride")
+                    b.HasOne("MyBiking.Entity.Models.Ride", "Ride")
                         .WithMany("Points")
                         .HasForeignKey("RideId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -426,9 +427,9 @@ namespace MyBiking.Infrastructure.Migrations
                     b.Navigation("Ride");
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.Ride", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.Ride", b =>
                 {
-                    b.HasOne("MyBiking.Application.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("MyBiking.Entity.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Rides")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -437,15 +438,15 @@ namespace MyBiking.Infrastructure.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.WheelieItem", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.WheelieItem", b =>
                 {
-                    b.HasOne("MyBiking.Application.Models.WheelieRide", "WheelieRide")
+                    b.HasOne("MyBiking.Entity.Models.WheelieRide", "WheelieRide")
                         .WithMany("WheeleItems")
                         .HasForeignKey("WheelieRideId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("MyBiking.Application.Models.WheeliePoint", "WheelePoint", b1 =>
+                    b.OwnsOne("MyBiking.Entity.Models.WheeliePoint", "WheelePoint", b1 =>
                         {
                             b1.Property<int>("WheelieItemId")
                                 .HasColumnType("int");
@@ -474,9 +475,9 @@ namespace MyBiking.Infrastructure.Migrations
                     b.Navigation("WheelieRide");
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.WheelieRide", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.WheelieRide", b =>
                 {
-                    b.HasOne("MyBiking.Application.Models.Ride", "Ride")
+                    b.HasOne("MyBiking.Entity.Models.Ride", "Ride")
                         .WithMany("WheeleRides")
                         .HasForeignKey("RideId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -485,19 +486,19 @@ namespace MyBiking.Infrastructure.Migrations
                     b.Navigation("Ride");
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.ApplicationUser", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Rides");
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.Ride", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.Ride", b =>
                 {
                     b.Navigation("Points");
 
                     b.Navigation("WheeleRides");
                 });
 
-            modelBuilder.Entity("MyBiking.Application.Models.WheelieRide", b =>
+            modelBuilder.Entity("MyBiking.Entity.Models.WheelieRide", b =>
                 {
                     b.Navigation("WheeleItems");
                 });
