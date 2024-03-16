@@ -182,7 +182,7 @@ namespace MyBiking.Infrastructure.Repository
             {
                 return new Status()
                 {
-                    StatusCode = 1,
+                    StatusCode = 0,
                 };
 
             }

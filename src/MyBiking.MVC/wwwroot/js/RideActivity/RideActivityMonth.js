@@ -1,25 +1,24 @@
-$(document).ready(function () {
+$(document).ready(async function () {
 
     $(".dataRow").hide();
-    $(".monthWrapper").click(function (event) {
-        $(this).parent().parent().find(".dataRow").slideToggle()
+    $(".monthWrapper").click(async function (event) {
 
-        if (!$(this).children("span").hasClass("text-danger")) {
-
-            $(this).children("span").removeClass("text-danger").addClass("text-secondary")
-            //call db for ride details
-            let year = $('#Year').val;
-            //wiersz tytu³owy
-            let titleRowHtmlElement = event.target.parentElement.parentElement
-            //wiersz z danymi zaagregowanymi
-            let aggregatedDatarowHtmlElement = titleRowHtmlElement.nextSibling
+        let aggregatedDatarowHtmlElement = $(this).parent().next()
+        if ($(this).children("span").hasClass("text-secondary") && aggregatedDatarowHtmlElement.children().length==0) {
             
-            let month = titleRowHtmlElement.firstElementChild.textContent.trim()
-            var response = getRideDetails(month, aggregatedDatarowHtmlElement);
+            $(this).children("span").removeClass("text-secondary").addClass("text-danger")
+            let year = $('#Year').val();
+            let month = $(this).prev().children('p').text()
+            console.log(aggregatedDatarowHtmlElement)
+
+            console.log(aggregatedDatarowHtmlElement)
+            var response =await getRideDetails(month, aggregatedDatarowHtmlElement);
+            $(this).parent().parent().find(".dataRow").slideToggle() 
         }
         else {
-
-            $(this).children("span").addClass("text-danger")
+            $(this).parent().parent().find(".dataRow").slideToggle()
+            console.log("xd2")
+            $(this).children("span").removeClass("text-danger").addClass("text-secondary")
         }
 
 
@@ -27,27 +26,48 @@ $(document).ready(function () {
 });
 
 
-function getRideDetails(month, aggregatedDatarowHtmlElement) {
+async function getRideDetails(month, aggregatedDatarowHtmlElement) {
 
 
-    return $.ajax({
-        url: "/RideController/Details",
+    return await $.ajax({
+        url: "/Ride/Details",
         type: "post",
         data: {
             "Year": $("#Year").val(),
             "Month": month,
         },
-        success: function (data) {
-            console.log(data)
-            console.log("succses")
-            if (!data.results.length) {
-                aggregatedDatarowHtmlElement.html("No repositories found")
+        success:async function (data) {
+            //console.log(data)
+            //console.log("succses")
+            if (!data) {
+                aggregatedDatarowHtmlElement.html("No data found")
             } else {
-                fillCodeReposWrapper(data, codeReposWrapper)
+                await fillAggrData(data, aggregatedDatarowHtmlElement)
+                console.log("w")
             }
         },
         error: function () {
             console.log("fail")
         }
     })
+}
+
+const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
+    console.log("123")
+    aggregatedDatarowHtmlElement.append(
+        `<ul class="list-group">
+            <li class="list-group-item">Distance: ${data.distance} </li>
+            <li class="list-group-item">Rides: ${data.rides}</li>
+            <li class="list-group-item">Wheelie Max V: ${data.wheelieMaxV}</li>
+            <li class="list-group-item">Wheelie Distance: ${data.totalWheelieDistance}</li>
+            <li class="list-group-item">Wheelies: ${data.wheelies}</li>
+        </ul>`)
+    //await sleep(5000);
+    console.log(12432)
+
+}
+
+function sleep(ms) {
+    console.log(1243)
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

@@ -30,20 +30,12 @@
                             <p class="month col text text-black my-2">@month.ToString("MMMM", new CultureInfo("en-US"))</p>
                         </div>
                         <div class="monthWrapper col-1 d-flex justify-content-center align-content-center align-self-center">
-                            <span class="dropdown-toggle month-toggle"></span>
+                        <span class="dropdown-toggle month-toggle text-secondary"></span>
                         </div>
                     </div>
-                    <div class="row dataRow">
-                        <ul class="list-group">
-                            <li class="list-group-item">Distance:</li>
-                            <li class="list-group-item">Rides:</li>
-                            <li class="list-group-item">Wheelie Max V :</li>
-                            <li class="list-group-item">Wheelie Distance:</li>
-                            <li class="list-group-item">Wheelies:</li>
-                        </ul>
+                    <div class="row dataRow"></div>
+                <a asp-action="" asp-controller="Wheelie">Watch monthly details</a>
 
-                        <a asp-action="" asp-controller="Wheelie">Watch monthly details</a>
-                    </div>
                 @* </div> *@
             </div>
         }

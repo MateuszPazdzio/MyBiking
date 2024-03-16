@@ -37,6 +37,9 @@ namespace MyBiking.Application.Mapper
 
             CreateMap<RegisterUserDtoCommand, ApplicationUser>();
             CreateMap<LoginUserDtoCommand, ApplicationUser>();
+            CreateMap<RideDto, Ride>()
+                .ForMember(m => m.ApplicationUserId, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser().Id));
+
             CreateMap<RideDtoApiCommand, Ride>()
                 .ForMember(m => m.ApplicationUserId, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser().Id));
         }
