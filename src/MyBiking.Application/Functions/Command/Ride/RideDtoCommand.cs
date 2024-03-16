@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyBiking.Application.Functions.Command.Ride
 {
-    public class RideDtoApiCommand: RideDto, IRequest<Status>
+    public class RideDtoCommand: RideDto, IRequest<Status>
     {
     }
 }

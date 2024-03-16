@@ -130,42 +130,6 @@ namespace MyBiking.Infrastructure.Repository
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<List<RideTimeActivity>> GetTimeOfRideActivities()
-        {
-            var result = await _myBikingDbContext.Rides.ToListAsync();
-            List<RideTimeActivity> rideTimeActivities = new List<RideTimeActivity>();
-
-            foreach (var activity in result)
-            {
-                var year = activity.StartingDateTime.Year.ToString();
-                var rideTimeActivity = rideTimeActivities.FirstOrDefault(r => r.Year == year);
-                if(rideTimeActivity == null)
-                {
-                    var newRideTimeActivity = new RideTimeActivity() { Year = year, RideTimeActivitiesDates = new List<DateTime>() };
-                    newRideTimeActivity.RideTimeActivitiesDates.Add(activity.StartingDateTime);
-                    rideTimeActivities.Add(newRideTimeActivity);
-                    continue;
-                }
-
-                rideTimeActivity.RideTimeActivitiesDates.Add(activity.StartingDateTime);
-            }
-
-            rideTimeActivities.ForEach(activity => {
-
-                activity.RideTimeActivitiesDates=activity.RideTimeActivitiesDates
-                    .DistinctBy(r => r.ToString("MMMM"))
-                    .ToList();
-
-                activity.RideTimeActivitiesDates = activity.RideTimeActivitiesDates
-                    .OrderBy(r => r, new RideTimeActivityDatesComparer())
-                    .ToList();
-
-            });
-            var sortedActivities = rideTimeActivities.OrderBy(c=>c,new RideTimeActivityYearComparer()).ToList();
-
-            return sortedActivities;
-        }
-
         public async Task<Status> CreateRide(Ride ride)
         {
             try
@@ -190,18 +154,49 @@ namespace MyBiking.Infrastructure.Repository
 
         public async Task<List<Ride>> GetRidesByMonthAsync(string year,string month)
         {
-            var d= await _myBikingDbContext.Rides
+            try
+            {
+            var e= await _myBikingDbContext.Rides
                 .AsNoTracking()
                 .Include(r => r.WheeleRides).ThenInclude(w=>w.WheeleItems)
                 .Include(r => r.Points)
-                //.Where(r=>r.StartingDateTime.Year.ToString()==year &&
-                .Where(r=>
-                //Month.Months[r.StartingDateTime.Month] == month)
-                "March" == month)
+                .Where(r => r.StartingDateTime.Month == Month.Months[month])
                 .ToListAsync();
-            return d;
+                return e;
+
+            }
+            catch (Exception)
+            {
+                await Console.Out.WriteLineAsync();
+                throw;
+            }
+            return null;
         }
 
+
+        public Task<List<Ride>> GetRideActivitiesSelectedByYear(int? year)
+        {
+            if(!year.HasValue)
+            {
+                return _myBikingDbContext.Rides.OrderBy(r=>r.StartingDateTime).ToListAsync();
+            }
+
+            try
+            {
+                var a = _myBikingDbContext.Rides
+                    .AsNoTracking()
+                    .Where(r => r.StartingDateTime.Year == year)
+                    .ToListAsync();
+                return a;
+
+
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+        }
 
         //private User AuthenticateUser(User userMapped)
         //{
@@ -246,20 +241,20 @@ namespace MyBiking.Infrastructure.Repository
         //}
     }
 
-    internal class RideTimeActivityYearComparer : IComparer<RideTimeActivity>
-    {
+    //internal class RideTimeActivityYearComparer : IComparer<RideTimeActivity>
+    //{
 
-        public int Compare(RideTimeActivity? x, RideTimeActivity? y)
-        {
-            return x.Year.CompareTo(y.Year);
-        }
-    }
+    //    public int Compare(RideTimeActivity? x, RideTimeActivity? y)
+    //    {
+    //        return x.Year.CompareTo(y.Year);
+    //    }
+    //}
 
-    internal class RideTimeActivityDatesComparer : IComparer<DateTime>
-    {
-        public int Compare(DateTime x, DateTime y)
-        {
-            return x.CompareTo(y);
-        }
-    }
+    //internal class RideTimeActivityDatesComparer : IComparer<DateTime>
+    //{
+    //    public int Compare(DateTime x, DateTime y)
+    //    {
+    //        return x.CompareTo(y);
+    //    }
+    //}
 }

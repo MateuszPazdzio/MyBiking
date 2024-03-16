@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyBiking.Application.Dtos;
 using MyBiking.Application.Functions.Command.Ride;
+using MyBiking.Application.Functions.Command.RideApi;
 
 namespace MyBiking.MVC.Controllers
 {

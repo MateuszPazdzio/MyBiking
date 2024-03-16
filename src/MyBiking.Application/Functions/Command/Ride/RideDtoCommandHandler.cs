@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using MyBiking.Entity.Models;
 using MyBiking.Application.Dtos;
+using MyBiking.Application.Functions.Command.RideApi;
 
 namespace MyBiking.Application.Functions.Command.Ride
 {
-    internal class RideDtoCommandHandler : IRequestHandler<RideDtoApiCommand,Status>
+    internal class RideDtoCommandHandler : IRequestHandler<RideDtoCommand,Status>
     {
         private readonly IMapper _mapper;
         private readonly IMyBikingRepository _myBikingRepository;
@@ -22,7 +23,7 @@ namespace MyBiking.Application.Functions.Command.Ride
             this._myBikingRepository = myBikingRepository;
         }
 
-        public async Task<Status> Handle(RideDtoApiCommand request, CancellationToken cancellationToken)
+        public async Task<Status> Handle(RideDtoCommand request, CancellationToken cancellationToken)
         {
             var ride = _mapper.Map<MyBiking.Entity.Models.Ride>(request);
             Status status =await _myBikingRepository.CreateRide(ride);
