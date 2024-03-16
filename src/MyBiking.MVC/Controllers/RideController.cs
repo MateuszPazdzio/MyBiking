@@ -38,11 +38,10 @@ namespace MyBiking.MVC.Controllers
     }
 
         // GET: RideController/Details/5
-        [Route("RideController/Details")]
         public async Task<ActionResult> Details(AgregatedRideQuery agregatedRideQuery)
         {
             var response =await _mediator.Send(agregatedRideQuery);
-            return View(response);
+            return Ok(response);
         }
 
         // GET: RideController/Create
@@ -54,7 +53,7 @@ namespace MyBiking.MVC.Controllers
         // POST: RideController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(RideDtoCommand rideDtoCommand)
+        public async Task<ActionResult> Create(RideDtoApiCommand rideDtoCommand)
         {
             //usunąć user id
             //if (!ModelState.IsValid)

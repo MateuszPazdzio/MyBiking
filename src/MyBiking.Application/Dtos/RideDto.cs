@@ -10,5 +10,6 @@ namespace MyBiking.Application.Dtos
         public List<WheelieRideDto> WheeleRides { get; set; }
         public DateTime StartingDateTime { get; set; }
         public DateTime EndingDateTime { get; set; }
+        public double Distance { get; set; }
     }
 }

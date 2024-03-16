@@ -20,9 +20,9 @@ namespace MyBiking.Application.Functions.Query.Ride
         public async Task<MonthlyAgregatedRideResponse> Handle(AgregatedRideQuery request, CancellationToken cancellationToken)
         {
             List<Entity.Models.Ride> rides = await _myBikingRepository.GetRidesByMonthAsync(request.Year,request.Month);
-            return new MonthlyAgregatedRideResponse()
+            var x= new MonthlyAgregatedRideResponse()
             {
-                //Distance = rides.Sum(r=>r.Points)
+                Distance = rides.Sum(r => r.Distance),
                 //jezeli da się to zliczyć w aplikacji to zrobic to tą drogą, jak nie to policzyc po Pointach
 
                 Wheelies = rides.Sum(r => r.WheeleRides.Count),
@@ -30,6 +30,7 @@ namespace MyBiking.Application.Functions.Query.Ride
                 Rides = rides.Count(),
                 TotalWheelieDistance = Enumerable.Sum(rides.SelectMany(r => r.WheeleRides).ToList(), w => w.Distance),
             };
+            return x;
             //monthlyAgregatedRideResponse
         }
     }
