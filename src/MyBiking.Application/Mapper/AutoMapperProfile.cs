@@ -2,6 +2,7 @@
 using FluentValidation;
 using MyBiking.Application.Dtos;
 using MyBiking.Application.Functions.Command.Ride;
+using MyBiking.Application.Functions.Command.RideApi;
 using MyBiking.Application.Functions.Command.User;
 using MyBiking.Entity.Models;
 using MyBikingApi.Models.Dtos;
@@ -37,10 +38,10 @@ namespace MyBiking.Application.Mapper
 
             CreateMap<RegisterUserDtoCommand, ApplicationUser>();
             CreateMap<LoginUserDtoCommand, ApplicationUser>();
-            CreateMap<RideDto, Ride>()
+            CreateMap<RideDto, Entity.Models.Ride>()
                 .ForMember(m => m.ApplicationUserId, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser().Id));
 
-            CreateMap<RideDtoApiCommand, Ride>()
+            CreateMap<RideDtoApiCommand, Entity.Models.Ride>()
                 .ForMember(m => m.ApplicationUserId, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser().Id));
         }
     }

@@ -1,19 +1,33 @@
 $(document).ready(async function () {
 
+    setSlider()
+
+
+    $(".form-select").change(function () {
+        var selectedOption = $(this).val();
+        console.log(selectedOption)
+
+        getRideActivities(selectedOption);
+    })
+});
+
+
+
+const setSlider = async() => {
     $(".dataRow").hide();
     $(".monthWrapper").click(async function (event) {
 
         let aggregatedDatarowHtmlElement = $(this).parent().next()
-        if ($(this).children("span").hasClass("text-secondary") && aggregatedDatarowHtmlElement.children().length==0) {
-            
+        console.log(aggregatedDatarowHtmlElement.children().length)
+        if ($(this).children("span").hasClass("text-secondary") && aggregatedDatarowHtmlElement.children().length <= 1) {
+
             $(this).children("span").removeClass("text-secondary").addClass("text-danger")
             let year = $('#Year').val();
             let month = $(this).prev().children('p').text()
             console.log(aggregatedDatarowHtmlElement)
 
-            console.log(aggregatedDatarowHtmlElement)
-            var response =await getRideDetails(month, aggregatedDatarowHtmlElement);
-            $(this).parent().parent().find(".dataRow").slideToggle() 
+            var response = await getRideDetails(month, aggregatedDatarowHtmlElement);
+            $(this).parent().parent().find(".dataRow").slideToggle()
         }
         else {
             $(this).parent().parent().find(".dataRow").slideToggle()
@@ -23,8 +37,55 @@ $(document).ready(async function () {
 
 
     });
-});
+}
 
+const getRideActivities = async (selectedOption) => {
+    return await $.ajax({
+        url: "/Ride/Index",
+        type: "post",
+        data: {
+            "Year": selectedOption,
+        },
+        success: async function (data) {
+            if (!data) {
+                aggregatedDatarowHtmlElement.html("No data found")
+            } else {
+                console.log(data)
+                $(".ride-activities").empty();
+                await fillRideActivity(data)
+            }
+        },
+        error: function () {
+            console.log("fail")
+        }
+    })
+}
+
+const fillRideActivity = async (rideActivities) => {
+
+    for (const rideActivity of rideActivities) {
+        $('.ride-activities').append(`
+                <div class="row monthRideDetails">
+
+                        <div class="row d-flex justify-content-between">
+                            <div class="monthName col-1 d-flex justify-content-center align-content-center">
+                                <p class="month col text text-black my-2">${new Date(rideActivity).toLocaleString('en-US', { month: 'long' })}</p>
+                            </div>
+                            <div class="monthWrapper col-1 d-flex justify-content-center align-content-center align-self-center">
+                            <span class="dropdown-toggle month-toggle text-secondary"></span>
+                            </div>
+                        </div>
+                        <div class="row dataRow">
+                            <a href="/Ride/Index">Watch monthly details</a>
+                        </div>
+
+                </div>
+
+        `)
+    }
+    setSlider()
+
+}  
 
 async function getRideDetails(month, aggregatedDatarowHtmlElement) {
 
@@ -53,21 +114,20 @@ async function getRideDetails(month, aggregatedDatarowHtmlElement) {
 }
 
 const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
-    console.log("123")
-    aggregatedDatarowHtmlElement.append(
-        `<ul class="list-group">
+        $(`<ul class="list-group">
             <li class="list-group-item">Distance: ${data.distance} </li>
             <li class="list-group-item">Rides: ${data.rides}</li>
             <li class="list-group-item">Wheelie Max V: ${data.wheelieMaxV}</li>
             <li class="list-group-item">Wheelie Distance: ${data.totalWheelieDistance}</li>
             <li class="list-group-item">Wheelies: ${data.wheelies}</li>
-        </ul>`)
+        </ul>`).insertBefore(aggregatedDatarowHtmlElement.children("a"))
     //await sleep(5000);
     console.log(12432)
 
 }
 
-function sleep(ms) {
-    console.log(1243)
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+//function sleep(ms) {
+//    console.log(1243)
+//    return new Promise(resolve => setTimeout(resolve, ms));
+//}
+

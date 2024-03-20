@@ -1,11 +1,8 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyBiking.Entity.Models;
 using MyBiking.Application.Functions.Query.Ride;
-using MyBiking.Application.Dtos;
-using MyBiking.Application.Functions.Command;
-using MyBiking.Application.Functions.Command.Ride;
+using MyBiking.Application.Functions.Command.RideApi;
 namespace MyBiking.MVC.Controllers
 {
     public class RideController : Controller
@@ -20,22 +17,16 @@ namespace MyBiking.MVC.Controllers
             this._mediator = mediator;
         }
 
-        // GET: RideController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? year)
         {
-            //zwrócić listę obiektów RideTimeActivity
-            //
-            RideModelView rideModelView = new RideModelView()
+            var RideActivities = await _mediator.Send(new RideTimeActivityQuery() { Year = year });
+            if (!year.HasValue)
             {
-                RideActivities = await _mediator.Send(new RideTimeActivityQuery())
-            };
-        
+                return View(RideActivities);
+            }
 
-            return View(rideModelView);
-
-        //var results =await _mediator.Send(new RideTimeActivityQuery());
-        //return View(results);
-    }
+            return Ok(RideActivities.RideTimeActivitiesDates);
+        }
 
         // GET: RideController/Details/5
         public async Task<ActionResult> Details(AgregatedRideQuery agregatedRideQuery)
