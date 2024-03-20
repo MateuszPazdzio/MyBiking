@@ -156,14 +156,14 @@ namespace MyBiking.Infrastructure.Repository
         {
             try
             {
-            var e= await _myBikingDbContext.Rides
-                .AsNoTracking()
-                .Include(r => r.WheeleRides).ThenInclude(w=>w.WheeleItems)
-                .Include(r => r.Points)
-                .Where(r => r.StartingDateTime.Month == Month.Months[month])
-                .ToListAsync();
-                return e;
+                var rides = await _myBikingDbContext.Rides
+                    .AsNoTracking()
+                    .Include(r => r.WheeleRides).ThenInclude(w=>w.WheeleItems)
+                    .Include(r => r.Points)
+                    .Where(r => r.StartingDateTime.Month == Month.Months[month])
+                    .ToListAsync();
 
+                    return rides;
             }
             catch (Exception)
             {

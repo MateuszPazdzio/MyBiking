@@ -34,6 +34,7 @@ namespace MyBiking.Application.Functions.Query.Ride
 
                 rideTimeActivity.Years = years;
                 var latestYear = rideTimeActivity.Years.Max();
+
                 rideTimeActivity.RideTimeActivitiesDates = rides.Where(r => r.StartingDateTime.Year == latestYear)
                    .Select(r => r.StartingDateTime).ToList();
 
