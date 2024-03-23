@@ -16,7 +16,16 @@ namespace MyBiking.MVC.Controllers
             this._myBikingRepository = myBikingRepository;
             this._mediator = mediator;
         }
-
+        [Route("Ride/MonthlyRides/{month}")]
+        public async Task<ActionResult> MonthlyRides([FromRoute] string month, [FromQuery] string year)
+        {
+            if (month == null)
+            {
+                return RedirectToAction("index");
+            }
+            var result = _mediator.Send(new RideQuery() { Month = month, Year = year });
+            return View();
+        }
         public async Task<ActionResult> Index(int? year)
         {
             var RideActivities = await _mediator.Send(new RideTimeActivityQuery() { Year = year });

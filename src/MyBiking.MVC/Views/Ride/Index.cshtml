@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="row dataRow">
-                            <a asp-action="" asp-controller="Wheelie">Watch monthly details</a>
+                        <a asp-action="MonthlyRides" asp-route-year ="2010" asp-controller="Ride" asp-route-month="@month.ToString("MMMM", new CultureInfo("en-US"))">Watch monthly details</a>
                         </div>
                 </div>
             }
