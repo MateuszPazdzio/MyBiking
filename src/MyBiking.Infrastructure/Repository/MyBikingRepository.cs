@@ -199,6 +199,16 @@ namespace MyBiking.Infrastructure.Repository
             }
         }
 
+        public async Task<Ride> GetRideById(int id)
+        {
+            return await _myBikingDbContext.Rides
+                .AsNoTracking()
+                .Include(r => r.WheeleRides).ThenInclude(w => w.WheeleItems)
+                .Include(r => r.Points)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+        }
+
         //private User AuthenticateUser(User userMapped)
         //{
         //    var validUser = _myBikingDbContext.Users.Include(user => user.Role).

@@ -52,9 +52,9 @@ namespace MyBiking.MVC.Controllers
             return Ok(response);
         }
 
-        public async Task<ActionResult> RideDetails(DetailsRideQuery agregatedRideQuery)
+        public async Task<ActionResult> RideDetails(DetailsRideQuery detailsRideQuery)
         {
-            var response = await _mediator.Send(agregatedRideQuery);
+            var response = await _mediator.Send(detailsRideQuery);
             return Ok(response);
         }
 

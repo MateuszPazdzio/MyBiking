@@ -10,8 +10,8 @@ const setSlider = async() => {
     $(".dataRow").hide();
     $(".previewBtn").click(async function (event) {
 
-        let aggregatedDatarowHtmlElement = $(this).parent().next()
-        console.log(aggregatedDatarowHtmlElement.children().length)
+        let aggregatedDatarowHtmlElement = $(this).parent().parent().next().find(".dataRow")
+        console.log(aggregatedDatarowHtmlElement.children())
         if ($(this).next("span").hasClass("text-secondary") && aggregatedDatarowHtmlElement.children().length <= 1) {
 
             $(this).children("span").removeClass("text-secondary").addClass("text-danger")
@@ -21,10 +21,10 @@ const setSlider = async() => {
 
 
             var response = await getRideDetails(rideId, aggregatedDatarowHtmlElement);
-            $(this).parent().parent().find(".dataRow").slideToggle()
+            $(this).parent().parent().next().find(".dataRow").slideToggle()
         }
         else {
-            $(this).parent().parent().find(".dataRow").slideToggle()
+            $(this).parent().parent().next().find(".dataRow").slideToggle()
             console.log("xd2")
             $(this).children("span").removeClass("text-danger").addClass("text-secondary")
         }
@@ -41,7 +41,7 @@ async function getRideDetails(rideId, aggregatedDatarowHtmlElement) {
         url: "/Ride/RideDetails",
         type: "post",
         data: {
-            "rideId": rideId,
+            "id": rideId,
         },
         success:async function (data) {
             //console.log(data)

@@ -13,7 +13,7 @@ namespace MyBiking.Application.Functions.Query.Ride
 
         private readonly IMyBikingRepository _myBikingRepository;
 
-        public RideTimeActivityQueryHandler(IMyBikingRepository myBikingRepository)
+        public DetalisQueryHandler(IMyBikingRepository myBikingRepository)
         {
             this._myBikingRepository = myBikingRepository;
         }
@@ -21,6 +21,20 @@ namespace MyBiking.Application.Functions.Query.Ride
         public async Task<DetailsQueryResponse> Handle(DetailsRideQuery request, CancellationToken cancellationToken)
         {
             var result =await _myBikingRepository.GetRideById(request.Id);
+            if(result == null)
+            {
+                throw new ArgumentException($"There is no ride with id {request.Id}");
+            }
+
+            var ride = new DetailsQueryResponse()
+            {
+                Distance = result.Distance,
+                Wheelies = result.WheeleRides.Count(),
+                WheelieMaxV = Enumerable.Max(result.WheeleRides.SelectMany(w => w.WheeleItems.ToList()).ToList(), w => w.Speed),
+                TotalWheelieDistance = Enumerable.Sum(result.WheeleRides.ToList(), w => w.Distance),
+            };
+
+            return ride;
         }
     }
 }
