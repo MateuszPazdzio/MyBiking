@@ -19,20 +19,20 @@
     <div class="ride-activities">
         @if (rideActivities.Count() > 0)
         {
-        
-            @foreach (DateTime month in rideActivities)
+
+            @foreach (DateTime rideActivity in rideActivities)
             {
                 <div class="row monthRideDetails">
                         <div class="row d-flex justify-content-between">
                             <div class="monthName col-1 d-flex justify-content-center align-content-center">
-                                <p class="month col text text-black my-2">@month.ToString("MMMM", new CultureInfo("en-US"))</p>
+                            <p class="month col text text-black my-2">@rideActivity.ToString("MMMM", new CultureInfo("en-US"))</p>
                             </div>
                             <div class="monthWrapper col-1 d-flex justify-content-center align-content-center align-self-center">
-                            <span class="dropdown-toggle month-toggle text-secondary"></span>
+                                <span class="dropdown-toggle month-toggle text-secondary"></span>
                             </div>
                         </div>
                         <div class="row dataRow">
-                        <a asp-action="MonthlyRides" asp-route-year ="2010" asp-controller="Ride" asp-route-month="@month.ToString("MMMM", new CultureInfo("en-US"))">Watch monthly details</a>
+                            <a asp-action="MonthlyRides" asp-route-year="@rideActivity.Year" asp-controller="Ride" asp-route-month="@rideActivity.ToString("MMMM", new CultureInfo("en-US"))">Watch monthly details</a>
                         </div>
                 </div>
             }

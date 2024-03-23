@@ -160,7 +160,8 @@ namespace MyBiking.Infrastructure.Repository
                     .AsNoTracking()
                     .Include(r => r.WheeleRides).ThenInclude(w=>w.WheeleItems)
                     .Include(r => r.Points)
-                    .Where(r => r.StartingDateTime.Month == Month.Months[month])
+                    .Where(r => r.StartingDateTime.Month == Month.Months[month] && 
+                        r.StartingDateTime.Year.ToString()==year)
                     .ToListAsync();
 
                     return rides;

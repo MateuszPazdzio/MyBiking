@@ -1,0 +1,77 @@
+﻿@model MyBiking.Application.ViewModels.MonthlyRideModelView
+
+@{
+    ViewData["Title"] = "MonthlyRides";
+}
+
+<h1>MonthlyRides</h1>
+
+@* <p>
+    <a asp-action="Create">Create New</a>
+</p> *@
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RideDtos[0].BikeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RideDtos[0].StartingDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RideDtos[0].EndingDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RideDtos[0].Distance)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model.RideDtos) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BikeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartingDateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndingDateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Distance)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        <button class="btn btn-primary previewBtn" data-id="@item.Id"  type="button">Preview</button>
+                        <span class="dropdown-toggle month-toggle text-secondary"></span>
+                    </td>
+
+                
+                </tr>
+                <tr>
+                    <td>
+                        <div class="row dataRow">
+                            <a asp-action="Index" asp-controller="Wheelie" data-id="@item.Id">Watch ride details</a>
+                        </div>
+                    </td>
+
+                </tr>
+            }
+    </tbody>
+</table>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js//RideActivity/Ride.js"></script>
+}

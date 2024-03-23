@@ -20,15 +20,20 @@ namespace MyBiking.Application.Mapper
             //CreateMap<RideDto, Ride>()
             //    .ForMember(m => m.ApplicationUser, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser()));
 
-            CreateMap<PointDto, Point>();
-            CreateMap<WheelieRideDto, WheelieRide>();
+            CreateMap<PointDto, Point>()
+                .ReverseMap();
+                
+            CreateMap<WheelieRideDto, WheelieRide>()
+                .ReverseMap();
+
             CreateMap<WheelieItemDto, WheelieItem>()
                 .ForMember(m => m.WheelePoint, cfg => cfg.MapFrom(src => new WheeliePoint()
                 {
                     Address = src.Address,
                     Latitude = src.Latitude,
                     Longitude = src.Longitude
-                }));
+                }))
+                .ReverseMap();
 
             CreateMap<RegisterUserDto, ApplicationUser>();
             //    .ForMember(u => u.NationalityId, cfg => cfg.MapFrom(src => Convert.ToInt32(src.Nationality)))
@@ -39,7 +44,8 @@ namespace MyBiking.Application.Mapper
             CreateMap<RegisterUserDtoCommand, ApplicationUser>();
             CreateMap<LoginUserDtoCommand, ApplicationUser>();
             CreateMap<RideDto, Entity.Models.Ride>()
-                .ForMember(m => m.ApplicationUserId, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser().Id));
+                .ForMember(m => m.ApplicationUserId, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser().Id))
+                .ReverseMap();
 
             CreateMap<RideDtoApiCommand, Entity.Models.Ride>()
                 .ForMember(m => m.ApplicationUserId, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser().Id));

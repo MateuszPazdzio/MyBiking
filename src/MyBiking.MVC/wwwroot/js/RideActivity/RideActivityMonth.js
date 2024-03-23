@@ -67,6 +67,8 @@ const fillRideActivity = async (rideActivities) => {
     for (const rideActivity of rideActivities) {
 
         let month = new Date(rideActivity).toLocaleString('en-US', { month: 'long' })
+        let year = new Date(rideActivity).getFullYear()
+
         console.log(month)
 
         $('.ride-activities').append(`
@@ -81,7 +83,7 @@ const fillRideActivity = async (rideActivities) => {
                             </div>
                         </div>
                         <div class="row dataRow">
-                            <a href="/Ride/MonthlyRides/${month}?year=2010">Watch monthly details</a>
+                            <a href="/Ride/MonthlyRides/${month}?year=${year}">Watch monthly details</a>
                         </div>
 
                 </div>

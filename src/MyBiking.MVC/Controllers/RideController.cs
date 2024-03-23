@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using MyBiking.Entity.Models;
 using MyBiking.Application.Functions.Query.Ride;
 using MyBiking.Application.Functions.Command.RideApi;
+using MyBiking.Application.Dtos;
+using MyBiking.Application.ViewModels;
 namespace MyBiking.MVC.Controllers
 {
     public class RideController : Controller
@@ -23,8 +25,14 @@ namespace MyBiking.MVC.Controllers
             {
                 return RedirectToAction("index");
             }
-            var result = _mediator.Send(new RideQuery() { Month = month, Year = year });
-            return View();
+            var result =await _mediator.Send(new RideQuery() { Month = month, Year = year });
+
+            MonthlyRideModelView listRideViewModel = new MonthlyRideModelView()
+            {
+                RideDtos = result
+            };
+
+            return View(listRideViewModel);
         }
         public async Task<ActionResult> Index(int? year)
         {
@@ -41,6 +49,12 @@ namespace MyBiking.MVC.Controllers
         public async Task<ActionResult> Details(AgregatedRideQuery agregatedRideQuery)
         {
             var response =await _mediator.Send(agregatedRideQuery);
+            return Ok(response);
+        }
+
+        public async Task<ActionResult> RideDetails(DetailsRideQuery agregatedRideQuery)
+        {
+            var response = await _mediator.Send(agregatedRideQuery);
             return Ok(response);
         }
 
