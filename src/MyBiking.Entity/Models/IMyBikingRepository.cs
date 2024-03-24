@@ -19,6 +19,7 @@ namespace MyBiking.Entity.Models
         public Task<Status> CreateRide(Ride ride);
         Task<List<Ride>> GetRidesByMonthAsync(string year,string month);
         Task<List<Ride>> GetRideActivitiesSelectedByYear(int? year);
+        Task<List<WheelieRide>> GetWheelieRidesById(int? rideId);
         Task<Ride> GetRideById(int id);
     }
 }
