@@ -28,7 +28,6 @@ namespace MyBiking.Application.Functions.Query.Ride
 
             var ride = new DetailsQueryResponse()
             {
-                Distance = result.Distance,
                 Wheelies = result.WheeleRides.Count(),
                 WheelieMaxV = Enumerable.Max(result.WheeleRides.SelectMany(w => w.WheeleItems.ToList()).ToList(), w => w.Speed),
                 TotalWheelieDistance = Enumerable.Sum(result.WheeleRides.ToList(), w => w.Distance),
