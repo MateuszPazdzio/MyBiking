@@ -160,7 +160,8 @@ namespace MyBiking.Infrastructure.Repository
                     .AsNoTracking()
                     .Include(r => r.WheeleRides).ThenInclude(w=>w.WheeleItems)
                     .Include(r => r.Points)
-                    .Where(r => r.StartingDateTime.Month == Month.Months[month])
+                    .Where(r => r.StartingDateTime.Month == Month.Months[month] && 
+                        r.StartingDateTime.Year.ToString()==year)
                     .ToListAsync();
 
                     return rides;
@@ -196,6 +197,16 @@ namespace MyBiking.Infrastructure.Repository
                 return null;
                 throw;
             }
+        }
+
+        public async Task<Ride> GetRideById(int id)
+        {
+            return await _myBikingDbContext.Rides
+                .AsNoTracking()
+                .Include(r => r.WheeleRides).ThenInclude(w => w.WheeleItems)
+                .Include(r => r.Points)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
         }
 
         //private User AuthenticateUser(User userMapped)

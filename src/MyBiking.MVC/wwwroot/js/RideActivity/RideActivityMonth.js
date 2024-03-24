@@ -63,20 +63,27 @@ const getRideActivities = async (selectedOption) => {
 
 const fillRideActivity = async (rideActivities) => {
 
+
     for (const rideActivity of rideActivities) {
+
+        let month = new Date(rideActivity).toLocaleString('en-US', { month: 'long' })
+        let year = new Date(rideActivity).getFullYear()
+
+        console.log(month)
+
         $('.ride-activities').append(`
                 <div class="row monthRideDetails">
 
                         <div class="row d-flex justify-content-between">
                             <div class="monthName col-1 d-flex justify-content-center align-content-center">
-                                <p class="month col text text-black my-2">${new Date(rideActivity).toLocaleString('en-US', { month: 'long' })}</p>
+                                <p class="month col text text-black my-2">${month}</p>
                             </div>
                             <div class="monthWrapper col-1 d-flex justify-content-center align-content-center align-self-center">
                             <span class="dropdown-toggle month-toggle text-secondary"></span>
                             </div>
                         </div>
                         <div class="row dataRow">
-                            <a href="/Ride/Index">Watch monthly details</a>
+                            <a href="/Ride/MonthlyRides/${month}?year=${year}">Watch monthly details</a>
                         </div>
 
                 </div>

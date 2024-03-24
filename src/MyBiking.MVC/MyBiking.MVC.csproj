@@ -33,8 +33,4 @@
     <ProjectReference Include="..\MyBiking.Infrastructure\MyBiking.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\js\RideActivity\" />
-  </ItemGroup>
-
 </Project>

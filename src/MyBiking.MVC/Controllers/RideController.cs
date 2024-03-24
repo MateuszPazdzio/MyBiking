@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using MyBiking.Entity.Models;
 using MyBiking.Application.Functions.Query.Ride;
 using MyBiking.Application.Functions.Command.RideApi;
+using MyBiking.Application.Dtos;
+using MyBiking.Application.ViewModels;
 namespace MyBiking.MVC.Controllers
 {
     public class RideController : Controller
@@ -16,7 +18,22 @@ namespace MyBiking.MVC.Controllers
             this._myBikingRepository = myBikingRepository;
             this._mediator = mediator;
         }
+        [Route("Ride/MonthlyRides/{month}")]
+        public async Task<ActionResult> MonthlyRides([FromRoute] string month, [FromQuery] string year)
+        {
+            if (month == null)
+            {
+                return RedirectToAction("index");
+            }
+            var result =await _mediator.Send(new RideQuery() { Month = month, Year = year });
 
+            MonthlyRideModelView listRideViewModel = new MonthlyRideModelView()
+            {
+                RideDtos = result
+            };
+
+            return View(listRideViewModel);
+        }
         public async Task<ActionResult> Index(int? year)
         {
             var RideActivities = await _mediator.Send(new RideTimeActivityQuery() { Year = year });
@@ -32,6 +49,12 @@ namespace MyBiking.MVC.Controllers
         public async Task<ActionResult> Details(AgregatedRideQuery agregatedRideQuery)
         {
             var response =await _mediator.Send(agregatedRideQuery);
+            return Ok(response);
+        }
+
+        public async Task<ActionResult> RideDetails(DetailsRideQuery detailsRideQuery)
+        {
+            var response = await _mediator.Send(detailsRideQuery);
             return Ok(response);
         }
 
