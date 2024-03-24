@@ -59,7 +59,7 @@ const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
             <li class="list-group-item">Wheelie Max V: ${data.wheelieMaxV}</li>
             <li class="list-group-item">Wheelie Distance: ${data.totalWheelieDistance}</li>
             <li class="list-group-item">Wheelies: ${data.wheelies}</li>
-        </ul>`).insertBefore(aggregatedDatarowHtmlElement.children("a"))
+        </ul>`).insertBefore(aggregatedDatarowHtmlElement.children("button"))
     //await sleep(5000);
     console.log(12432)
 

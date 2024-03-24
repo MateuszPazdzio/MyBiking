@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="row dataRow">
-                            <a asp-action="MonthlyRides" asp-route-year="@rideActivity.Year" asp-controller="Ride" asp-route-month="@rideActivity.ToString("MMMM", new CultureInfo("en-US"))">Watch monthly details</a>
+                            <a class="btn btn-primary w-25 mt-2 rideDetailsBtn w-25" asp-action="MonthlyRides" asp-route-year="@rideActivity.Year" asp-controller="Ride" asp-route-month="@rideActivity.ToString("MMMM", new CultureInfo("en-US"))">Watch monthly details</a>
                         </div>
                 </div>
             }
