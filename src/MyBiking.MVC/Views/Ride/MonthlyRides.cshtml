@@ -46,19 +46,17 @@
                         @Html.DisplayFor(modelItem => item.Distance)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        <button class="btn btn-danger deleteBtn" data-id="@item.Id" type="button">Delete</button>
                         <button class="btn btn-primary previewBtn" data-id="@item.Id"  type="button">Preview</button>
-                        <span class="dropdown-toggle month-toggle text-secondary"></span>
+                        @* <span class="dropdown-toggle month-toggle text-secondary"></span> *@
                     </td>
 
                 
                 </tr>
                 <tr>
-                    <td>
+                 <td class="border-bottom-0" colspan="3">
                         <div class="row dataRow">
-                            <a asp-action="Index" asp-controller="Wheelie" data-id="@item.Id">Watch ride details</a>
+                            <button class="btn btn-primary w-25 mt-2" asp-action="Index" asp-controller="Wheelie" data-id="@item.Id">Wheelie details</button>
                         </div>
                     </td>
 

@@ -12,13 +12,9 @@ const setSlider = async() => {
 
         let aggregatedDatarowHtmlElement = $(this).parent().parent().next().find(".dataRow")
         console.log(aggregatedDatarowHtmlElement.children())
-        if ($(this).next("span").hasClass("text-secondary") && aggregatedDatarowHtmlElement.children().length <= 1) {
-
-            $(this).children("span").removeClass("text-secondary").addClass("text-danger")
-            console.log(aggregatedDatarowHtmlElement)
+        if (aggregatedDatarowHtmlElement.children().length <= 1) {
 
             let rideId = $(this).data("id");
-
 
             var response = await getRideDetails(rideId, aggregatedDatarowHtmlElement);
             $(this).parent().parent().next().find(".dataRow").slideToggle()
@@ -26,7 +22,6 @@ const setSlider = async() => {
         else {
             $(this).parent().parent().next().find(".dataRow").slideToggle()
             console.log("xd2")
-            $(this).children("span").removeClass("text-danger").addClass("text-secondary")
         }
 
 
@@ -65,7 +60,7 @@ const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
             <li class="list-group-item">Wheelie Max V: ${data.wheelieMaxV}</li>
             <li class="list-group-item">Wheelie Distance: ${data.totalWheelieDistance}</li>
             <li class="list-group-item">Wheelies: ${data.wheelies}</li>
-        </ul>`).insertBefore(aggregatedDatarowHtmlElement.children("a"))
+        </ul>`).insertBefore(aggregatedDatarowHtmlElement.children("button"))
     //await sleep(5000);
     console.log(12432)
 
