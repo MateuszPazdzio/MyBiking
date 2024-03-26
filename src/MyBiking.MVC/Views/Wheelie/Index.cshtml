@@ -12,17 +12,33 @@
 <table class="table">
     <thead>
         <tr>
-            <th></th>
+            <th>@Html.DisplayNameFor(m=>m.WheelieRideDtos[0].Distance)</th>
+            <th>@Html.DisplayNameFor(m=>m.WheelieRideDtos[0].DurationTime)</th>
         </tr>
     </thead>
     <tbody>
     @foreach (var item in Model.WheelieRideDtos) {
             <tr>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.DisplayFor(modelItem => item.Distance)
                 </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DurationTime)
+                </td>
+
+                <td>
+                    <button class="btn btn-danger deleteBtn" data-id="@item.Id" type="button">Delete</button>
+                    <button class="btn btn-primary previewBtn" data-id="@item.Id" type="button">Preview</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="border-bottom-0" colspan="2">
+                    <div class="row dataRow">
+                        @* <a class="btn btn-primary w-25 mt-2 wheelieDetailsBtn" asp-action="Index" asp-controller="Wheelie" asp-route-id="@item.Id">Wheelie details</a> *@
+                    </div>
+                </td>
+
             </tr>
     }
     </tbody>
