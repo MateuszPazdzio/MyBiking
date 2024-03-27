@@ -16,7 +16,19 @@ namespace MyBiking.MVC.Controllers
         //[ActionName("Ride")]
         public async Task<IActionResult> Index([FromRoute] int? id)
         {
-            var result =await _mediator.Send(new WheelieRideQuery() { RideId = id });
+            var result =await _mediator.Send(new WheelieRidesQuery() { RideId = id });
+
+            var response = new WheelieRideModelView()
+            {
+                WheelieRideDtos = result
+            };
+
+            return View(response);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var result = await _mediator.Send(new WheelieRidesQuery() { RideId = id });
 
             var response = new WheelieRideModelView()
             {

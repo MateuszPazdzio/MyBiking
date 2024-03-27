@@ -11,7 +11,7 @@ using AutoMapper;
 
 namespace MyBiking.Application.Functions.Query.Wheelie
 {
-    public class WheelieQueryHandler : MediatR.IRequestHandler<WheelieRideQuery, List<WheelieRideDto>>
+    public class WheelieQueryHandler : MediatR.IRequestHandler<WheelieRidesQuery, List<WheelieRideDto>>
     {
         private readonly IMyBikingRepository _myBikingRepository;
         private readonly IMapper mapper;
@@ -21,7 +21,7 @@ namespace MyBiking.Application.Functions.Query.Wheelie
             this._myBikingRepository = myBikingRepository;
             this.mapper = mapper;
         }
-        public async Task<List<WheelieRideDto>> Handle(WheelieRideQuery request, CancellationToken cancellationToken)
+        public async Task<List<WheelieRideDto>> Handle(WheelieRidesQuery request, CancellationToken cancellationToken)
         {
             List<WheelieRide> wheelieRides = await _myBikingRepository.GetWheelieRidesById(request.RideId);
             var mappedWheelieRides = mapper.Map<List<WheelieRideDto>>(wheelieRides);

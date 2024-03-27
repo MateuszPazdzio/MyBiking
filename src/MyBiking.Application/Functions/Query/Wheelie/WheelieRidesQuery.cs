@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MyBikingApi.Models.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace MyBiking.Application.Functions.Query.Wheelie
 {
-    internal class WheelieRideQuery : IRequest<WheelieRideResponse>
+    public class WheelieRidesQuery : IRequest<List<WheelieRideDto>>
     {
-        public int WheelieRideId {  get; set; }
+        public int? RideId { get; set; }
     }
 }
