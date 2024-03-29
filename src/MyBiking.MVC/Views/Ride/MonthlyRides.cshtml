@@ -15,9 +15,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+@*             <th>
                 @Html.DisplayNameFor(model => model.RideDtos[0].BikeId)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.RideDtos[0].StartingDateTime)
             </th>
@@ -33,9 +33,9 @@
     <tbody>
             @foreach (var item in Model.RideDtos) {
                 <tr>
-                    <td>
+@*                     <td>
                         @Html.DisplayFor(modelItem => item.BikeId)
-                    </td>
+                    </td> *@
                     <td>
                         @Html.DisplayFor(modelItem => item.StartingDateTime)
                     </td>
