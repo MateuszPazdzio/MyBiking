@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallBack, null);
 
         ride = new Ride();
-        ride.setBikeId("1");
+//        ride.setBikeId("1");
         ride.setStartingDateTime(LocalDateTime.now());
         updateGPS();
     }

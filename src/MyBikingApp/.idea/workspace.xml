@@ -17,13 +17,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5db8dbf2-eb3f-4307-81ba-c1a40488a496" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Application/Dtos/WheelieItemDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Application/Dtos/WheelieItemDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Application/Dtos/WheelieRideDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Application/Dtos/WheelieRideDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Application/Mapper/AutoMapperProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Application/Mapper/AutoMapperProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.MVC/Controllers/RideApiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.MVC/Controllers/RideApiController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/Ride.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/Ride.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +83,7 @@
     "OverrideImplement.combined": "false",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "MyBikingApi",
+    "git-widget-placeholder": "BugFix/WheelieApp",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/matip/source/repos/MyBiking/src/MyBikingApp",
     "project.structure.last.edited": "Problems",
