@@ -14,14 +14,24 @@ namespace MyBiking.Application.Functions.Query.Wheelie
         private readonly IMyBikingRepository _myBikingRepository;
         private readonly IMapper mapper;
 
-        public WheelieQueryHandler(IMyBikingRepository myBikingRepository, IMapper mapper)
+        public WheelieRideQueryHandler(IMyBikingRepository myBikingRepository, IMapper mapper)
         {
             this._myBikingRepository = myBikingRepository;
             this.mapper = mapper;
         }
-        public Task<WheelieRideResponse> Handle(WheelieRideQuery request, CancellationToken cancellationToken)
+        public async Task<WheelieRideResponse> Handle(WheelieRideQuery request, CancellationToken cancellationToken)
         {
-            var result = _myBikingRepository.GetWheelieRideById(request);
+            var result =await _myBikingRepository.GetWheelieRideById(request.WheelieRideId);
+
+            var response = new WheelieRideResponse()
+            {
+                Addrees1 = result.WheeleItems.FirstOrDefault(wi => !String.IsNullOrEmpty(wi.Address)).Address,
+                Addrees2 = result.WheeleItems.FirstOrDefault(wi => !String.IsNullOrEmpty(wi.Address)).Address,
+                RotateX = result.WheeleItems.Max(wi => wi.MaxRotateX).ToString(),
+                VMax = result.WheeleItems.Max(wi => wi.Speed).ToString(),
+            };
+
+            return response;
         }
     }
 }

@@ -11,8 +11,8 @@ const setSlider = async() => {
     $(".previewBtn").click(async function (event) {
 
         let aggregatedDatarowHtmlElement = $(this).parent().parent().next().find(".dataRow")
-        console.log(aggregatedDatarowHtmlElement.children())
-        if (aggregatedDatarowHtmlElement.children().length <= 1) {
+        console.log(aggregatedDatarowHtmlElement.children().length)
+        if (aggregatedDatarowHtmlElement.children().length == 0) {
 
             let wheelieId = $(this).data("id");
 

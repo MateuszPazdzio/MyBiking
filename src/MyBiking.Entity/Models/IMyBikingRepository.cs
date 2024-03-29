@@ -21,5 +21,6 @@ namespace MyBiking.Entity.Models
         Task<List<Ride>> GetRideActivitiesSelectedByYear(int? year);
         Task<List<WheelieRide>> GetWheelieRidesById(int? rideId);
         Task<Ride> GetRideById(int id);
+        Task<WheelieRide> GetWheelieRideById(int wheelieRideId);
     }
 }

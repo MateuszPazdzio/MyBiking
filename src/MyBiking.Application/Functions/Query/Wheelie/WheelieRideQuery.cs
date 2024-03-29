@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyBiking.Application.Functions.Query.Wheelie
 {
-    internal class WheelieRideQuery : IRequest<WheelieRideResponse>
+    public class WheelieRideQuery : IRequest<WheelieRideResponse>
     {
         public int WheelieRideId {  get; set; }
     }

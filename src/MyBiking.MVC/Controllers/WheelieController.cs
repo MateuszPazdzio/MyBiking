@@ -28,14 +28,9 @@ namespace MyBiking.MVC.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var result = await _mediator.Send(new WheelieRidesQuery() { RideId = id });
+            var result = await _mediator.Send(new WheelieRideQuery() { WheelieRideId = id });
 
-            var response = new WheelieRideModelView()
-            {
-                WheelieRideDtos = result
-            };
-
-            return View(response);
+            return Ok(result);
         }
     }
 }

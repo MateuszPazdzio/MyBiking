@@ -219,6 +219,13 @@ namespace MyBiking.Infrastructure.Repository
             return wheeleRides;
         }
 
+        public async Task<WheelieRide> GetWheelieRideById(int wheelieRideId)
+        {
+            return await _myBikingDbContext.WheelieRides
+                .Include(wi=>wi.WheeleItems)
+                .FirstOrDefaultAsync(wi => wi.Id == wheelieRideId);
+        }
+
         //private User AuthenticateUser(User userMapped)
         //{
         //    var validUser = _myBikingDbContext.Users.Include(user => user.Role).
