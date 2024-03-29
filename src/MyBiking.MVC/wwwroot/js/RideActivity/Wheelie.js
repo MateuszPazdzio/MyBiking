@@ -11,12 +11,12 @@ const setSlider = async() => {
     $(".previewBtn").click(async function (event) {
 
         let aggregatedDatarowHtmlElement = $(this).parent().parent().next().find(".dataRow")
-        console.log(aggregatedDatarowHtmlElement.children())
-        if (aggregatedDatarowHtmlElement.children().length <= 1) {
+        console.log(aggregatedDatarowHtmlElement.children().length)
+        if (aggregatedDatarowHtmlElement.children().length == 0) {
 
-            let rideId = $(this).data("id");
+            let wheelieId = $(this).data("id");
 
-            var response = await getRideDetails(rideId, aggregatedDatarowHtmlElement);
+            var response = await getRideDetails(wheelieId, aggregatedDatarowHtmlElement);
             $(this).parent().parent().next().find(".dataRow").slideToggle()
         }
         else {
@@ -29,14 +29,14 @@ const setSlider = async() => {
 }
  
 
-async function getRideDetails(rideId, aggregatedDatarowHtmlElement) {
+async function getRideDetails(wheelieId, aggregatedDatarowHtmlElement) {
 
 
     return await $.ajax({
-        url: "/Ride/RideDetails",
+        url: "/Wheelie/Details",
         type: "post",
         data: {
-            "id": rideId,
+            "id": wheelieId,
         },
         success:async function (data) {
             //console.log(data)
@@ -55,11 +55,13 @@ async function getRideDetails(rideId, aggregatedDatarowHtmlElement) {
 }
 
 const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
-        $(`<ul class="list-group">
-            <li class="list-group-item">Wheelie Max V: ${data.wheelieMaxV}</li>
-            <li class="list-group-item">Wheelie Distance: ${data.totalWheelieDistance}</li>
-            <li class="list-group-item">Wheelies: ${data.wheelies}</li>
-        </ul>`).insertBefore(aggregatedDatarowHtmlElement.children("button"))
+        aggregatedDatarowHtmlElement.append(
+        `<ul class="list-group">
+            <li class="list-group-item">Addrees1: ${data.wheelieMaxV}</li>
+            <li class="list-group-item">Addrees2: ${data.wheelieMaxV}</li>
+            <li class="list-group-item">Max V: ${data.wheelies}</li>
+            <li class="list-group-item">Rotate X: ${data.wheelies}</li>
+        </ul>`)
     //await sleep(5000);
     console.log(12432)
 

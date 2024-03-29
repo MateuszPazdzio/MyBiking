@@ -209,6 +209,23 @@ namespace MyBiking.Infrastructure.Repository
 
         }
 
+        public async Task<List<WheelieRide>> GetWheelieRidesById(int? rideId)
+        {
+            var wheeleRides =await _myBikingDbContext.WheelieRides
+                .Where(w=>w.Id == rideId)
+                .Include(w=>w.WheeleItems)
+                .ToListAsync();
+
+            return wheeleRides;
+        }
+
+        public async Task<WheelieRide> GetWheelieRideById(int wheelieRideId)
+        {
+            return await _myBikingDbContext.WheelieRides
+                .Include(wi=>wi.WheeleItems)
+                .FirstOrDefaultAsync(wi => wi.Id == wheelieRideId);
+        }
+
         //private User AuthenticateUser(User userMapped)
         //{
         //    var validUser = _myBikingDbContext.Users.Include(user => user.Role).

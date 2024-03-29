@@ -5,6 +5,7 @@ namespace MyBikingApi.Models.Dtos
 {
     public class WheelieRideDto
     {
+        public int Id { get; set; }
         public List<WheelieItemDto> WheeleItems { get; set; }
         public string DurationTime { get; set; }
         public DateTime StartingDateTime { get; set; }
