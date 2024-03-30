@@ -226,47 +226,47 @@ namespace MyBiking.Infrastructure.Repository
                 .FirstOrDefaultAsync(wi => wi.Id == wheelieRideId);
         }
 
-        //private User AuthenticateUser(User userMapped)
-        //{
-        //    var validUser = _myBikingDbContext.Users.Include(user => user.Role).
-        //        FirstOrDefault(user => user.Email == userMapped.Email);
+        private User AuthenticateUser(User userMapped)
+        {
+            var validUser = _myBikingDbContext.Users.Include(user => user.Role).
+                FirstOrDefault(user => user.Email == userMapped.Email);
 
-        //    if (validUser == null)
-        //    {
-        //        //throw new WrongCredentialsException("Email does not exists");
-        //    }
+            if (validUser == null)
+            {
+                //throw new WrongCredentialsException("Email does not exists");
+            }
 
-        //    var result = _passwordHasher.VerifyHashedPassword(validUser, validUser.PasswordHashed, userMapped.PasswordHelpers.Password);
-        //    if (PasswordVerificationResult.Failed == result)
-        //    {
-        //        //throw new WrongCredentialsException("Wrong password");
-        //    }
+            var result = _passwordHasher.VerifyHashedPassword(validUser, validUser.PasswordHashed, userMapped.PasswordHelpers.Password);
+            if (PasswordVerificationResult.Failed == result)
+            {
+                //throw new WrongCredentialsException("Wrong password");
+            }
 
-        //    return validUser;
-        //}
+            return validUser;
+        }
 
-        //private List<Claim> GenerateListOfClaims(User validUser)
-        //{
-        //    return new List<Claim>()
-        //    {
-        //        new Claim(ClaimTypes.NameIdentifier,validUser.Id.ToString()),
-        //        new Claim(ClaimTypes.Email,validUser.Email),
-        //        new Claim(ClaimTypes.Name, validUser.FirstName),
-        //        new Claim(ClaimTypes.Role,validUser.Role.Name),
-        //    };
-        //}
-        //private string GenerateToken(List<Claim> claims)
-        //{
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
-        //    var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        //    var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
+        private List<Claim> GenerateListOfClaims(User validUser)
+        {
+            return new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier,validUser.Id.ToString()),
+                new Claim(ClaimTypes.Email,validUser.Email),
+                new Claim(ClaimTypes.Name, validUser.FirstName),
+                new Claim(ClaimTypes.Role,validUser.Role.Name),
+            };
+        }
+        private string GenerateToken(List<Claim> claims)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
 
-        //    var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer, _authenticationSettings.JwtIssuer,
-        //        claims: claims, expires: expires, signingCredentials: cred);
-        //    var tokenHandler = new JwtSecurityTokenHandler();
+            var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer, _authenticationSettings.JwtIssuer,
+                claims: claims, expires: expires, signingCredentials: cred);
+            var tokenHandler = new JwtSecurityTokenHandler();
 
-        //    return tokenHandler.WriteToken(token);
-        //}
+            return tokenHandler.WriteToken(token);
+        }
     }
 
     //internal class RideTimeActivityYearComparer : IComparer<RideTimeActivity>

@@ -47,6 +47,10 @@ namespace MyBiking.Application.Mapper
                 .ForMember(m => m.ApplicationUserId, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser().Id))
                 .ReverseMap();
 
+            CreateMap<RideDtoApi, Entity.Models.Ride>()
+                .ForMember(m => m.ApplicationUserId, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser().Id))
+                .ReverseMap();
+
             CreateMap<RideDtoApiCommand, Entity.Models.Ride>()
                 .ForMember(m => m.ApplicationUserId, cfg => cfg.MapFrom(opt => _userHttpContext.GetUser().Id));
         }
