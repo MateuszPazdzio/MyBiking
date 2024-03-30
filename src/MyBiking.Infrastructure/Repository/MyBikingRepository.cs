@@ -226,36 +226,45 @@ namespace MyBiking.Infrastructure.Repository
                 .FirstOrDefaultAsync(wi => wi.Id == wheelieRideId);
         }
 
-        private User AuthenticateUser(User userMapped)
+        public async Task<Status> LoginApi(ApplicationUser user)
         {
-            var validUser = _myBikingDbContext.Users.Include(user => user.Role).
-                FirstOrDefault(user => user.Email == userMapped.Email);
+            var validUser = await AuthenticateUser(user);
+            var claims = await GenerateListOfClaims(validUser);
+            var token = await GenerateToken(claims);
 
+            return new Status()
+            {
+                StatusCode = 200,
+                Message = token.ToString()
+            };
+        }
+        private async Task<ApplicationUser> AuthenticateUser(ApplicationUser userMapped)
+        {
+            var validUser = await _myBikingDbContext.Users.Include(user => user).
+                FirstOrDefaultAsync(user => user.Email == userMapped.Email);
             if (validUser == null)
             {
                 //throw new WrongCredentialsException("Email does not exists");
             }
-
-            var result = _passwordHasher.VerifyHashedPassword(validUser, validUser.PasswordHashed, userMapped.PasswordHelpers.Password);
+            var result = _passwordHasher.VerifyHashedPassword(validUser, validUser.PasswordHash, userMapped.Password);
             if (PasswordVerificationResult.Failed == result)
             {
                 //throw new WrongCredentialsException("Wrong password");
             }
-
             return validUser;
         }
 
-        private List<Claim> GenerateListOfClaims(User validUser)
+        private async Task<List<Claim>> GenerateListOfClaims(ApplicationUser validUser)
         {
             return new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier,validUser.Id.ToString()),
                 new Claim(ClaimTypes.Email,validUser.Email),
-                new Claim(ClaimTypes.Name, validUser.FirstName),
-                new Claim(ClaimTypes.Role,validUser.Role.Name),
+                new Claim(ClaimTypes.Name, validUser.UserName),
+                new Claim(ClaimTypes.Role, String.Join(',',await _userManager.GetRolesAsync(validUser))),
             };
         }
-        private string GenerateToken(List<Claim> claims)
+        private async Task<string> GenerateToken(List<Claim> claims)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
