@@ -174,7 +174,6 @@ namespace MyBiking.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BikeId = table.Column<int>(type: "int", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StartingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),

@@ -27,9 +27,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//var scope = app.Services.CreateScope();
-//var seeder = scope.ServiceProvider.GetRequiredService<MyBikingDbSeeder>();
-//seeder.Seed();
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<MyBikingDbSeeder>();
+seeder.Seed();
 
 //using(var scopeForNationality = app.Services.CreateScope())
 //{

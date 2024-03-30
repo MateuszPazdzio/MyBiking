@@ -12,7 +12,7 @@ using MyBiking.Infrastructure;
 namespace MyBiking.Infrastructure.Migrations
 {
     [DbContext(typeof(MyBikingDbContext))]
-    [Migration("20240311175402_Init")]
+    [Migration("20240330123631_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -282,9 +282,6 @@ namespace MyBiking.Infrastructure.Migrations
                     b.Property<string>("ApplicationUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("BikeId")
-                        .HasColumnType("int");
 
                     b.Property<double>("Distance")
                         .HasColumnType("float");

@@ -6,7 +6,7 @@ using MyBiking.Application.Functions.Command.RideApi;
 
 namespace MyBiking.MVC.Controllers
 {
-    [ApiController]
+    //[ApiController]
     public class RideApiController:ControllerBase
     {
         private readonly IMediator _mediator;

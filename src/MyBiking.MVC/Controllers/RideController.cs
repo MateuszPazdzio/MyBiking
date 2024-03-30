@@ -19,6 +19,7 @@ namespace MyBiking.MVC.Controllers
             this._mediator = mediator;
         }
         [Route("Ride/MonthlyRides/{month}")]
+        [HttpGet]
         public async Task<ActionResult> MonthlyRides([FromRoute] string month, [FromQuery] string year)
         {
             if (month == null)
