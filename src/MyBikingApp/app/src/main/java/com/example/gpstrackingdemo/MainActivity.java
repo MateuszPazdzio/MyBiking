@@ -48,21 +48,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Button btnStart;
 //            btnStop;
     private MediaPlayer mediaPlayer;
+    //for calculating max x rotation, while doing wheelie
     private List<Float> rotaionXList = new ArrayList<>();
-    TextView tv_lon, tv_altitude,
-//            tv_accuracy,
-            tv_speed,
-//            tv_address2,
-            tv_distance,
-        tv_time,tv_totalWheelieDistance,
-            tv_lastWheeleDistance,tv_lastWheeleTime;
-//    TextView tv_wayPointCounts,tv_updates,tv_sensor;
+    TextView tv_speed, tv_distance, tv_time,tv_totalWheelieDistance, tv_lastWheeleDistance,tv_lastWheeleTime;
 
-//    Button btn_newWaypoint, btn_showWayPointList, btn_showMap, btnTester;
-    Switch sw_locationupdates;
-//    Switch sw_gps;
-
-//    boolean updateOn = false;
     boolean isWheeleMode = false;
     boolean isRideModeOn = false;
 
@@ -79,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private  Ride ride;
     private WheeleRide wheeleRide;
     private double RideDistance;
+    private ArrayList<Double> rotationsValues = new ArrayList<Double>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,35 +138,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
             }
         });
-//        btnStop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                isRideModeOn = false;
-//                tv_lastWheeleDistance.setText(tv_totalWheelieDistance.getText().toString());
-//                tv_lastWheeleTime.setText(tv_time.getText().toString());
-//                stopLocationUpdates();
-//                RideDistance = 0.00;
-//
-//            }
-//        });
+
         updateGPS();
     }
 
     private void stopLocationUpdates() {
-//        tv_updates.setText("Location is NOT tracked");
-//        tv_lat.setText("Not tracking location");
-//        tv_lon.setText("Not tracking location");
-        tv_speed.setText("0.00");
-//        tv_address2.setText("Not tracking location");
-//        tv_accuracy.setText("Not tracking location");
-//        tv_altitude.setText("Not tracking location");
-        tv_distance.setText("0.00");
 
+        tv_speed.setText("0.00");
+        tv_distance.setText("0.00");
         ride.setEndingDateTime(LocalDateTime.now());
         ride.setDistance(RideDistance);
-
         new FetchData(ride).execute();
-
 
         fusedLocationProviderClient.removeLocationUpdates(locationCallBack);
     }
@@ -260,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if(distaceTraveledBetwee2Locations<2.0){
                 distaceTraveledBetwee2Locations = 0.00;
             }
-            RideDistance += distaceTraveledBetwee2Locations;
+            RideDistance += Math.round(distaceTraveledBetwee2Locations/1000);
 
             if(wheeleRide!=null){
                 wheeleRide.AddIWheeleItem(new WheeleItem(point,location.getSpeed(),location.getAltitude(),address,distaceTraveledBetwee2Locations, Collections.max(rotaionXList)));
@@ -273,31 +245,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         updateRideDetails(location);
         rotaionXList.clear();
 
-//        distaceTraveledBetwee2Locations = calcDistance(location.getLatitude(),location.getLongitude());
-//        distaceTraveledBetwee2Locations = String.valueOf(distance);
         if(isWheeleMode){
             tv_totalWheelieDistance.setText(String.valueOf(Double.parseDouble(tv_totalWheelieDistance.getText().toString())+distaceTraveledBetwee2Locations));
         }
         tv_distance.setText(String.valueOf(RideDistance));
-//        if(distaceTraveledBetwee2Locations==0.0){
-//            tv_distance.setText("0.00");
-//
-//        }else {
-//            tv_distance.setText(String.valueOf(RideDistance));
-////            tv_distance.setText(String.valueOf(Double.parseDouble(tv_distance.getText().toString())+distaceTraveledBetwee2Locations));
-//
-//        }
 
-//        tv_lat.setText(String.valueOf(location.getLatitude()));
-//        tv_lon.setText(String.valueOf(location.getLongitude()));
-//        tv_accuracy.setText(String.valueOf(location.getAccuracy()));
-
-//        if(location.hasAltitude()){
-//            tv_altitude.setText(String.valueOf(location.getAltitude()));
-//        }
-//        else{
-//            tv_altitude.setText("Not available");
-//        }
 
         if(location.hasSpeed() && isRideModeOn){
             tv_speed.setText(String.valueOf(location.getSpeed()*3.6f));
@@ -310,7 +262,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Geocoder geocoder = new Geocoder(MainActivity.this);
         try{
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-//            tv_address2.setText(addresses.get(0).getAddressLine(0));
         }
         catch (Exception e){
 //            tv_address2.setText("Unable to get street address");
@@ -337,14 +288,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        float changedValue = sensorEvent.values[0];
-//        text.setText(String.valueOf(changedValue));
+
         if(sensorEvent.sensor.getType()==Sensor.TYPE_GAME_ROTATION_VECTOR && isRideModeOn){
 
             float x = sensorEvent.values[0];//Rotation around x-axis (roll)
-            float y = sensorEvent.values[1];//Rotation around y-axis (pitch)
-            float z = sensorEvent.values[2];//Rotation around z-axis (yaw)
-//            rotateY.setText(String.valueOf(x));
+
             if(x>0.25f && startTime==0.00){
                 rotaionXList.add(x);
                 wheeleRide = new WheeleRide(LocalDateTime.now());
@@ -367,8 +315,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if(isWheeleMode){
                     wheeleRide.setDurationTime(tv_time.getText().toString());
                     wheeleRide.setEndingDateTime(LocalDateTime.now());
-                    wheeleRide.setDistnace(tv_totalWheelieDistance.getText().toString());
-                    if(Double.parseDouble(tv_time.getText().toString())>3.0){
+                    double totalWheelieDistance = Double.parseDouble(tv_totalWheelieDistance.getText().toString());
+
+                    if(Double.parseDouble(tv_time.getText().toString())>5.0 && totalWheelieDistance>0.0){
+                        wheeleRide.setDistance(totalWheelieDistance);
                         ride.AddWheeleRide(wheeleRide);
                     }
                     wheeleRide = null;
@@ -385,6 +335,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
 
         }
+    }
+
+    private double calcRotationValue(double rotationValue) {
+        //calculation only when count of rotation x values is greater than 50 for better factor adjustment
+        int rotationValuesSize = rotationsValues.size();
+        if(rotationValuesSize>=50){
+            double sum = rotationsValues.stream()
+                    .mapToDouble(Double::doubleValue)
+                    .sum();
+            double mean = sum/rotationValuesSize;
+
+            return  mean;
+        }
+        else{
+            rotationsValues.add(rotationValue);
+        }
+        return 025d;
     }
 
     @Override
