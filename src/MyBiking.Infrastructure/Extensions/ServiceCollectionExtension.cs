@@ -37,9 +37,9 @@ namespace MyBiking.Infrastructure.Extensions
 
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = "Bearer";
+                //options.DefaultAuthenticateScheme = "Bearer";
                 options.DefaultChallengeScheme = "Bearer";
-                //options.DefaultScheme = "Bearer";
+                options.DefaultScheme = "Bearer";
             })
             .AddJwtBearer(options =>
             {

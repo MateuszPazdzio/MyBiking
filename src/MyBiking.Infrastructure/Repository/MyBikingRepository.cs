@@ -26,11 +26,11 @@ namespace MyBiking.Infrastructure.Repository
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         public MyBikingRepository(MyBikingDbContext myBikingDbContext, IPasswordHasher<ApplicationUser> passwordHasher,
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AuthenticationSettings authenticationSettings)
         {
             this._myBikingDbContext = myBikingDbContext;
             this._passwordHasher = passwordHasher;
-            //this._authenticationSettings = authenticationSettings;
+            this._authenticationSettings = authenticationSettings;
             this._userManager = userManager;
             this._signInManager = signInManager;
         }
@@ -240,8 +240,8 @@ namespace MyBiking.Infrastructure.Repository
         }
         private async Task<ApplicationUser> AuthenticateUser(ApplicationUser userMapped)
         {
-            var validUser = await _myBikingDbContext.Users.Include(user => user).
-                FirstOrDefaultAsync(user => user.Email == userMapped.Email);
+            var validUser = await _myBikingDbContext.Users
+                .FirstOrDefaultAsync(user => user.UserName == userMapped.UserName);
             if (validUser == null)
             {
                 //throw new WrongCredentialsException("Email does not exists");
