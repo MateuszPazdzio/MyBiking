@@ -9,7 +9,7 @@ public class WheeleRide {
     private String durationTime;
     private LocalDateTime startingDateTime;
     private LocalDateTime endingDateTime;
-    private String distnace;
+    private double distance;
 
     public WheeleRide(LocalDateTime startingDateTime) {
         this.startingDateTime = startingDateTime;
@@ -42,11 +42,11 @@ public class WheeleRide {
         this.endingDateTime = endingDateTime;
     }
 
-    public String getDistnace() {
-        return distnace;
+    public double getDistance() {
+        return distance;
     }
 
-    public void setDistnace(String distnace) {
-        this.distnace = distnace;
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }

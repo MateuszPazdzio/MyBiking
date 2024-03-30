@@ -9,7 +9,7 @@ public class Ride {
     private List<WheeleRide> wheeleRideList = new ArrayList<WheeleRide>();
     private LocalDateTime startingDateTime;
     private LocalDateTime endingDateTime;
-    private String bikeId;
+//    private String bikeId;
     private double distance;
     public void AddPoint(Point point){
         pointList.add(point);
@@ -33,13 +33,13 @@ public class Ride {
         this.endingDateTime = endingDateTime;
     }
 
-    public String getBikeId() {
-        return bikeId;
-    }
-
-    public void setBikeId(String bikeId) {
-        this.bikeId = bikeId;
-    }
+//    public String getBikeId() {
+//        return bikeId;
+//    }
+//
+//    public void setBikeId(String bikeId) {
+//        this.bikeId = bikeId;
+//    }
 
     public void setDistance(double distance) {
         this.distance = distance;
