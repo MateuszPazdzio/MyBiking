@@ -30,11 +30,11 @@ namespace MyBiking.Infrastructure.Repository
             //{
             //_myBikingDbContext.Database.EnsureDeleted();
             ////_myBikingDbContext.Database.EnsureCreated();
-            //var pendingMigrations = _myBikingDbContext.Database.GetPendingMigrations();
-            //if (pendingMigrations != null && pendingMigrations.Any())
-            //{
-            //    _myBikingDbContext.Database.Migrate();
-            //}
+            var pendingMigrations = _myBikingDbContext.Database.GetPendingMigrations();
+            if (pendingMigrations != null && pendingMigrations.Any())
+            {
+                _myBikingDbContext.Database.Migrate();
+            }
             //}
         }
 

@@ -17,20 +17,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5db8dbf2-eb3f-4307-81ba-c1a40488a496" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/20240311175402_Init.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/20240311175402_Init.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/MyBikingDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/MyBikingDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/MyBikingDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Infrastructure/MyBikingDbContext.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingDbSeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingDbSeeder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.MVC/Controllers/RideApiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.MVC/Controllers/RideApiController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.MVC/Controllers/RideController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.MVC/Controllers/RideController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.MVC/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.MVC/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.MVC/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.MVC/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.MVC/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.MVC/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/FetchData.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/FetchData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\matip\.android\avd\Pixel_4a_API_33.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[ce12171cc8d9382105]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -84,7 +92,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Android App.app.executor": "Run",
+    "Android App.app.executor": "Debug",
     "OverrideImplement.combined": "false",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -191,18 +199,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/FetchData.java</url>
-          <line>44</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/FetchData.java</url>
-          <line>46</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/FetchData.java</url>
-          <line>27</line>
-          <option name="timeStamp" value="13" />
+          <line>28</line>
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
