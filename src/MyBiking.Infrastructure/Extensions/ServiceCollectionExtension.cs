@@ -33,31 +33,29 @@ namespace MyBiking.Infrastructure.Extensions
                 .AddDefaultTokenProviders();
 
 
-            //var authenticationSettings = configuration.GetSection("Authentication").Get<AuthenticationSettings>();
+            var authenticationSettings = configuration.GetSection("Authentication").Get<AuthenticationSettings>();
 
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = "Bearer";
-            //    options.DefaultChallengeScheme = "Bearer";
-            //    options.DefaultScheme = "Bearer";
-            //});
-
-            
-            //.AddJwtBearer(options =>
-            //{
-            //    options.RequireHttpsMetadata = false;
-            //    options.SaveToken = true;
-            //    options.TokenValidationParameters = new TokenValidationParameters()
-            //    {
-            //        ValidIssuer = authenticationSettings.JwtIssuer,
-            //        ValidAudience = authenticationSettings.JwtIssuer,
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
-            //    };
-            //});
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "Bearer";
+                options.DefaultChallengeScheme = "Bearer";
+                options.DefaultScheme = "Bearer";
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidIssuer = authenticationSettings.JwtIssuer,
+                    ValidAudience = authenticationSettings.JwtIssuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
+                };
+            });
 
             services.AddScoped<IMyBikingRepository, MyBikingRepository>();
             services.AddScoped<MyBikingDbSeeder>();
-            //services.AddSingleton<AuthenticationSettings>(authenticationSettings);
+            services.AddSingleton<AuthenticationSettings>(authenticationSettings);
 
 
         }
