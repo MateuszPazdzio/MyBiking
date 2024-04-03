@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WheeleRide {
-    private List<WheeleItem> wheeleItemList = new ArrayList<>();
+    private List<WheeleItem> wheeleItems = new ArrayList<>();
     private String durationTime;
     private LocalDateTime startingDateTime;
     private LocalDateTime endingDateTime;
@@ -16,14 +16,14 @@ public class WheeleRide {
     }
 
     public void AddIWheeleItem(WheeleItem wheeleItem){
-        wheeleItemList.add(wheeleItem);
+        wheeleItems.add(wheeleItem);
     }
 
     public List<WheeleItem> getWheeleItemList() {
-        return this.wheeleItemList;
+        return this.wheeleItems;
     }
     public void setWheeleItemList(List<WheeleItem> wheeleItemList) {
-        this.wheeleItemList = wheeleItemList;
+        this.wheeleItems = wheeleItemList;
     }
 
     public String getDurationTime() {

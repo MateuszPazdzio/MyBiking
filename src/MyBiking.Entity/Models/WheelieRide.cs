@@ -1,4 +1,6 @@
-﻿namespace MyBiking.Entity.Models
+﻿using System.Text.Json.Serialization;
+
+namespace MyBiking.Entity.Models
 {
     public class WheelieRide
     {

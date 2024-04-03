@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ride {
-    private List<Point> pointList = new ArrayList<>();
-    private List<WheeleRide> wheeleRideList = new ArrayList<WheeleRide>();
+    private List<Point> points = new ArrayList<>();
+    private List<WheeleRide> wheeleRides = new ArrayList<WheeleRide>();
     private LocalDateTime startingDateTime;
     private LocalDateTime endingDateTime;
 //    private String bikeId;
     private double distance;
     public void AddPoint(Point point){
-        pointList.add(point);
+        points.add(point);
     }
     public void AddWheeleRide(WheeleRide wheeleRide) {
-        wheeleRideList.add(wheeleRide);
+        wheeleRides.add(wheeleRide);
     }
     public LocalDateTime getStartingDateTime() {
         return startingDateTime;

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper.Internal;
 using System.Globalization;
 using MyBiking.Entity.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyBiking.Infrastructure.Repository
 {
@@ -129,7 +130,6 @@ namespace MyBiking.Infrastructure.Repository
         {
             await _signInManager.SignOutAsync();
         }
-
         public async Task<Status> CreateRide(Ride ride)
         {
             try
@@ -147,6 +147,7 @@ namespace MyBiking.Infrastructure.Repository
                 return new Status()
                 {
                     StatusCode = 0,
+                    Message = e.Source
                 };
 
             }
