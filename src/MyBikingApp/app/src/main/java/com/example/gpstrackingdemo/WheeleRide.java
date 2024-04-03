@@ -7,11 +7,11 @@ import java.util.List;
 public class WheeleRide {
     private List<WheeleItem> wheeleItems = new ArrayList<>();
     private String durationTime;
-    private LocalDateTime startingDateTime;
-    private LocalDateTime endingDateTime;
+    private String startingDateTime;
+    private String endingDateTime;
     private double distance;
 
-    public WheeleRide(LocalDateTime startingDateTime) {
+    public WheeleRide(String startingDateTime) {
         this.startingDateTime = startingDateTime;
     }
 
@@ -34,11 +34,11 @@ public class WheeleRide {
         this.durationTime = durationTime;
     }
 
-    public LocalDateTime getEndingDateTime() {
+    public String getEndingDateTime() {
         return endingDateTime;
     }
 
-    public void setEndingDateTime(LocalDateTime endingDateTime) {
+    public void setEndingDateTime(String endingDateTime) {
         this.endingDateTime = endingDateTime;
     }
 

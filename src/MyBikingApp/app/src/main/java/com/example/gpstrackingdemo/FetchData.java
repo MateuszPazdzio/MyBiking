@@ -49,35 +49,11 @@ public class FetchData extends AsyncTask<Void,Void,Void> {
             }
 
             int responseCode = httpURLConnection.getResponseCode();
-            //TYLKO DLA POST
 
-
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            while(line != null){
-                line = bufferedReader.readLine();
-                data = data + line;
-            }
-
-
-            JSONArray JA = new JSONArray(data);
-            for(int i =0 ;i <JA.length(); i++){
-                JSONObject JO = (JSONObject) JA.get(i);
-                singleParsed =  "Name:" + JO.get("name") + "\n"+
-                        "email:" + JO.get("email") + "\n"+
-                        "Error:" + JO.get("error") +  "\n";
-
-                dataParsed = dataParsed + singleParsed +"\n" ;
-
-
-            }
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
 
