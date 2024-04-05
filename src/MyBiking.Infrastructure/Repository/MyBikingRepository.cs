@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper.Internal;
 using System.Globalization;
 using MyBiking.Entity.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyBiking.Infrastructure.Repository
 {
@@ -26,11 +27,11 @@ namespace MyBiking.Infrastructure.Repository
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         public MyBikingRepository(MyBikingDbContext myBikingDbContext, IPasswordHasher<ApplicationUser> passwordHasher,
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AuthenticationSettings authenticationSettings)
         {
             this._myBikingDbContext = myBikingDbContext;
             this._passwordHasher = passwordHasher;
-            //this._authenticationSettings = authenticationSettings;
+            this._authenticationSettings = authenticationSettings;
             this._userManager = userManager;
             this._signInManager = signInManager;
         }
@@ -129,7 +130,6 @@ namespace MyBiking.Infrastructure.Repository
         {
             await _signInManager.SignOutAsync();
         }
-
         public async Task<Status> CreateRide(Ride ride)
         {
             try
@@ -147,6 +147,7 @@ namespace MyBiking.Infrastructure.Repository
                 return new Status()
                 {
                     StatusCode = 0,
+                    Message = e.Source
                 };
 
             }
@@ -226,47 +227,56 @@ namespace MyBiking.Infrastructure.Repository
                 .FirstOrDefaultAsync(wi => wi.Id == wheelieRideId);
         }
 
-        //private User AuthenticateUser(User userMapped)
-        //{
-        //    var validUser = _myBikingDbContext.Users.Include(user => user.Role).
-        //        FirstOrDefault(user => user.Email == userMapped.Email);
+        public async Task<Status> LoginApi(ApplicationUser user)
+        {
+            var validUser = await AuthenticateUser(user);
+            var claims = await GenerateListOfClaims(validUser);
+            var token = await GenerateToken(claims);
 
-        //    if (validUser == null)
-        //    {
-        //        //throw new WrongCredentialsException("Email does not exists");
-        //    }
+            return new Status()
+            {
+                StatusCode = 200,
+                Message = token.ToString()
+            };
+        }
+        private async Task<ApplicationUser> AuthenticateUser(ApplicationUser userMapped)
+        {
+            var validUser = await _myBikingDbContext.Users
+                .FirstOrDefaultAsync(user => user.UserName == userMapped.UserName);
+            if (validUser == null)
+            {
+                //throw new WrongCredentialsException("Email does not exists");
+            }
+            var result = _passwordHasher.VerifyHashedPassword(validUser, validUser.PasswordHash, userMapped.Password);
+            if (PasswordVerificationResult.Failed == result)
+            {
+                //throw new WrongCredentialsException("Wrong password");
+            }
+            return validUser;
+        }
 
-        //    var result = _passwordHasher.VerifyHashedPassword(validUser, validUser.PasswordHashed, userMapped.PasswordHelpers.Password);
-        //    if (PasswordVerificationResult.Failed == result)
-        //    {
-        //        //throw new WrongCredentialsException("Wrong password");
-        //    }
+        private async Task<List<Claim>> GenerateListOfClaims(ApplicationUser validUser)
+        {
+            return new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier,validUser.Id.ToString()),
+                new Claim(ClaimTypes.Email,validUser.Email),
+                new Claim(ClaimTypes.Name, validUser.UserName),
+                new Claim(ClaimTypes.Role, String.Join(',',await _userManager.GetRolesAsync(validUser))),
+            };
+        }
+        private async Task<string> GenerateToken(List<Claim> claims)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
 
-        //    return validUser;
-        //}
+            var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer, _authenticationSettings.JwtIssuer,
+                claims: claims, expires: expires, signingCredentials: cred);
+            var tokenHandler = new JwtSecurityTokenHandler();
 
-        //private List<Claim> GenerateListOfClaims(User validUser)
-        //{
-        //    return new List<Claim>()
-        //    {
-        //        new Claim(ClaimTypes.NameIdentifier,validUser.Id.ToString()),
-        //        new Claim(ClaimTypes.Email,validUser.Email),
-        //        new Claim(ClaimTypes.Name, validUser.FirstName),
-        //        new Claim(ClaimTypes.Role,validUser.Role.Name),
-        //    };
-        //}
-        //private string GenerateToken(List<Claim> claims)
-        //{
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
-        //    var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        //    var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
-
-        //    var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer, _authenticationSettings.JwtIssuer,
-        //        claims: claims, expires: expires, signingCredentials: cred);
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-
-        //    return tokenHandler.WriteToken(token);
-        //}
+            return tokenHandler.WriteToken(token);
+        }
     }
 
     //internal class RideTimeActivityYearComparer : IComparer<RideTimeActivity>

@@ -99,10 +99,5 @@ namespace MyBiking.Infrastructure
             //    .IsRequired(true);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder.UseSqlServer(@"Server=(localdb)\\MSSQLLocalDB;Database=MyBiking;Trusted_Connection=True;TrustServerCertificate=True;");
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-15VL6MS\SQLEXPRESS;Database=MyBiking;Trusted_Connection=True;TrustServerCertificate=True;");
-        }
     }
 }

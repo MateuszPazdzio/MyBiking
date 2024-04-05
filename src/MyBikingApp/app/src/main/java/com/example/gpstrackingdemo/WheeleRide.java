@@ -5,25 +5,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WheeleRide {
-    private List<WheeleItem> wheeleItemList = new ArrayList<>();
+    private List<WheeleItem> wheeleItems = new ArrayList<>();
     private String durationTime;
-    private LocalDateTime startingDateTime;
-    private LocalDateTime endingDateTime;
+    private String startingDateTime;
+    private String endingDateTime;
     private double distance;
 
-    public WheeleRide(LocalDateTime startingDateTime) {
+    public WheeleRide(String startingDateTime) {
         this.startingDateTime = startingDateTime;
     }
 
     public void AddIWheeleItem(WheeleItem wheeleItem){
-        wheeleItemList.add(wheeleItem);
+        wheeleItems.add(wheeleItem);
     }
 
     public List<WheeleItem> getWheeleItemList() {
-        return this.wheeleItemList;
+        return this.wheeleItems;
     }
     public void setWheeleItemList(List<WheeleItem> wheeleItemList) {
-        this.wheeleItemList = wheeleItemList;
+        this.wheeleItems = wheeleItemList;
     }
 
     public String getDurationTime() {
@@ -34,11 +34,11 @@ public class WheeleRide {
         this.durationTime = durationTime;
     }
 
-    public LocalDateTime getEndingDateTime() {
+    public String getEndingDateTime() {
         return endingDateTime;
     }
 
-    public void setEndingDateTime(LocalDateTime endingDateTime) {
+    public void setEndingDateTime(String endingDateTime) {
         this.endingDateTime = endingDateTime;
     }
 

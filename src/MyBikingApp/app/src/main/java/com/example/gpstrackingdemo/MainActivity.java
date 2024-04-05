@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         tv_speed.setText("0.00");
         tv_distance.setText("0.00");
-        ride.setEndingDateTime(LocalDateTime.now());
+        ride.setEndingDateTime(LocalDateTime.now().toString());
         ride.setDistance(RideDistance);
         new FetchData(ride).execute();
 
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         ride = new Ride();
 //        ride.setBikeId("1");
-        ride.setStartingDateTime(LocalDateTime.now());
+        ride.setStartingDateTime(LocalDateTime.now().toString());
         updateGPS();
     }
 
@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             if(x>0.25f && startTime==0.00){
                 rotaionXList.add(x);
-                wheeleRide = new WheeleRide(LocalDateTime.now());
+                wheeleRide = new WheeleRide(LocalDateTime.now().toString());
                 if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
                     mediaPlayer.start(); // Start playing the sound
                 }
@@ -314,10 +314,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             else{
                 if(isWheeleMode){
                     wheeleRide.setDurationTime(tv_time.getText().toString());
-                    wheeleRide.setEndingDateTime(LocalDateTime.now());
+                    wheeleRide.setEndingDateTime(LocalDateTime.now().toString());
                     double totalWheelieDistance = Double.parseDouble(tv_totalWheelieDistance.getText().toString());
 
-                    if(Double.parseDouble(tv_time.getText().toString())>5.0 && totalWheelieDistance>0.0){
+                    if(Double.parseDouble(tv_time.getText().toString())>5.0 && totalWheelieDistance>=0.0){
                         wheeleRide.setDistance(totalWheelieDistance);
                         ride.AddWheeleRide(wheeleRide);
                     }

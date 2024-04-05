@@ -1,9 +1,11 @@
 ﻿using MyBikingApi.Models.Dtos;
+using System.Text.Json.Serialization;
 
 namespace MyBiking.Application.Dtos
 {
     public class RideDto
     {
+        [JsonIgnore]
         public int Id { get; set; }
         //public int BikeId { get; set; }
         public List<PointDto> Points { get; set; }

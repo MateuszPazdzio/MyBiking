@@ -21,13 +21,15 @@ namespace MyBiking.Infrastructure.Repository
 
         public void Seed()
         {
-            if(this._myBikingDbContext.Nationalities.Count()==0)
-            {
-                SeedNationalities();
-            }
+            //if(this._myBikingDbContext.Nationalities.Count()==0)
+            //{
+            //    SeedNationalities();
+            //}
             //SeedRoles();
             //if (_myBikingDbContext.Database.CanConnect())
             //{
+            //_myBikingDbContext.Database.EnsureDeleted();
+            ////_myBikingDbContext.Database.EnsureCreated();
             var pendingMigrations = _myBikingDbContext.Database.GetPendingMigrations();
             if (pendingMigrations != null && pendingMigrations.Any())
             {

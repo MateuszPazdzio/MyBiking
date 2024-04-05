@@ -281,9 +281,6 @@ namespace MyBiking.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("BikeId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Distance")
                         .HasColumnType("float");
 
