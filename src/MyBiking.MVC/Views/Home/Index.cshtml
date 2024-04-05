@@ -4,12 +4,14 @@
 ﻿@{
     string username = User.Identity.Name;
 }
-<div>
 
-    <p>@User.Identity.Name</p>
-</div>
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row flex-row col-12">
+        <div class="createBtnWrapper col-6 d-flex justify-content-end">
+            <button id="createBtn" class="cool-button hidden btn btn-success">Create</button>
+        </div>
+        <div class="previewBtnWrapper col-6">
+            <button id="previewBtn" class="cool-button hidden btn btn-primary">Preview</button>
+        </div>
+    </div>
 </div>
