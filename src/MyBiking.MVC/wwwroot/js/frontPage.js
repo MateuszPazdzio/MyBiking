@@ -1,14 +1,11 @@
 $(document).ready(function () {
-    console.log("xd")
+
     $("#createBtn").animate({
         opacity: 1,
-    }, 500, function () {
-    });
+    }, 500);
 
     $("#previewBtn").animate({
         opacity: 1,
-    }, 500, function () {
-        // Animation complete.
-    });
+    }, 500);
 
 });
