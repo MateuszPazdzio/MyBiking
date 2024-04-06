@@ -35,19 +35,28 @@ namespace MyBiking.Application.Functions.Query.Ride
                 rideTimeActivity.Years = years;
                 var latestYear = rideTimeActivity.Years.Max();
 
-                rideTimeActivity.RideTimeActivitiesDates = rides.Where(r => r.StartingDateTime.Year == latestYear)
-                   .Select(r => r.StartingDateTime).ToList();
+                rideTimeActivity.RideTimeActivitiesDates = GetDistinctRideActivitiesByMonth(rides, latestYear);
 
                 return rideTimeActivity;
             }
 
-            rideTimeActivity.RideTimeActivitiesDates = rides.Where(r => r.StartingDateTime.Year == request.Year)
+            rideTimeActivity.RideTimeActivitiesDates = GetDistinctRideActivitiesByMonth(rides, request.Year);
+
+            return rideTimeActivity;
+        }
+
+        private List<DateTime> GetDistinctRideActivitiesByMonth(List<Entity.Models.Ride> rides, int? latestYear)
+        {
+            if (!latestYear.HasValue)
+            {
+                return new List<DateTime>();
+            }
+
+            return rides.Where(r => r.StartingDateTime.Year == latestYear)
                    .Select(r => r.StartingDateTime)
                    .DistinctBy(r => r.ToString("MMMM"))
                    .OrderBy(r => r, new RideTimeActivityDatesComparer())
                    .ToList();
-
-            return rideTimeActivity;
         }
     }
 

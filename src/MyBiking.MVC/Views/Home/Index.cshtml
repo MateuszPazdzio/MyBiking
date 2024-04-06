@@ -4,12 +4,22 @@
 ﻿@{
     string username = User.Identity.Name;
 }
-<div>
 
-    <p>@User.Identity.Name</p>
+<div class="container containerFrontPage d-flex h-100">
+    <div class="row flex-row col-12 align-items-center">
+        <div class="createBtnWrapper col-6 d-flex justify-content-end">
+            <a id="createBtn" asp-action="Create" asp-controller="Ride" class="frontPageBtn hidden">Create</a>
+        </div>
+        <div class="previewBtnWrapper col-6">
+            <a asp-action="Rides" asp-controller="Ride" id="previewBtn" class="frontPageBtn hidden">Preview</a>
+        </div>
+    </div>
 </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js//frontPage.js"></script>
+}

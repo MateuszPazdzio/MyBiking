@@ -13,23 +13,26 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <form asp-controller="Auth" asp-action="logout" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right d-flex w-100">
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-controller="Ride" asp-action="Index">My Rides</a>
             </li>
-@*             <li class="nav-item">
-                <a class="nav-link text-dark" asp-controller="Auth" asp-action="logout" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-            </li> *@
             <li class="nav-item">
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link text-decoration-none text-black">Logout</button>
             </li>
+
         </ul>
     </form>
+
+    <li class="nav-item mr-0 col d-flex justify-content-end">
+        <button type="submit" class="btn btn-link navbar-btn navbar-link text-decoration-none text-black">@UserManager.GetUserName(User)</button>
+    </li>
+
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li class="nav-link text-dark"><a asp-controller="Auth" asp-action="register">Register</a></li>
-        <li class="nav-link text-dark"><a asp-controller="Auth" asp-action="login">Login</a></li>
+        <li class="nav-link text-dark"><a class="text-decoration-none text-black" asp-controller="Auth" asp-action="register">Register</a></li>
+        <li class="nav-link text-dark"><a class="text-decoration-none text-black" asp-controller="Auth" asp-action="login">Login</a></li>
     </ul>
 }
