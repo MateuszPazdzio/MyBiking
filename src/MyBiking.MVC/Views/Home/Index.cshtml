@@ -5,13 +5,21 @@
     string username = User.Identity.Name;
 }
 
-<div class="container">
-    <div class="row flex-row col-12">
+<div class="container containerFrontPage d-flex h-100">
+    <div class="row flex-row col-12 align-items-center">
         <div class="createBtnWrapper col-6 d-flex justify-content-end">
-            <button id="createBtn" class="cool-button hidden btn btn-success">Create</button>
+            <button id="createBtn" class="frontPageBtn hidden">Create</button>
         </div>
         <div class="previewBtnWrapper col-6">
-            <button id="previewBtn" class="cool-button hidden btn btn-primary">Preview</button>
+            <button id="previewBtn" class="frontPageBtn hidden">Preview</button>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js//frontPage.js"></script>
+}
