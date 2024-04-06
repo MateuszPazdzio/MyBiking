@@ -8,10 +8,10 @@
 <div class="container containerFrontPage d-flex h-100">
     <div class="row flex-row col-12 align-items-center">
         <div class="createBtnWrapper col-6 d-flex justify-content-end">
-            <button id="createBtn" class="frontPageBtn hidden">Create</button>
+            <a id="createBtn" asp-action="Create" asp-controller="Ride" class="frontPageBtn hidden">Create</a>
         </div>
         <div class="previewBtnWrapper col-6">
-            <button id="previewBtn" class="frontPageBtn hidden">Preview</button>
+            <a asp-action="Rides" asp-controller="Ride" id="previewBtn" class="frontPageBtn hidden">Preview</a>
         </div>
     </div>
 </div>
