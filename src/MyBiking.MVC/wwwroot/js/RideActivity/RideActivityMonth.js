@@ -72,17 +72,17 @@ const fillRideActivity = async (rideActivities) => {
         console.log(month)
 
         $('.ride-activities').append(`
-                <div class="row monthRideDetails">
+                <div class="row monthRideDetails ">
 
                         <div class="row d-flex justify-content-between">
-                            <div class="monthName col-1 d-flex justify-content-center align-content-center">
+                            <div class="monthName col-1  d-flex justify-content-center align-content-center">
                                 <p class="month col text text-black my-2">${month}</p>
                             </div>
                             <div class="monthWrapper col-1 d-flex justify-content-center align-content-center align-self-center">
                             <span class="dropdown-toggle month-toggle text-secondary"></span>
                             </div>
                         </div>
-                        <div class="row dataRow">
+                        <div class="row dataRow dataRow">
                             <a href="/Ride/MonthlyRides/${month}?year=${year}">Watch monthly details</a>
                         </div>
 
@@ -121,12 +121,12 @@ async function getRideDetails(month, aggregatedDatarowHtmlElement) {
 }
 
 const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
-        $(`<ul class="list-group">
-            <li class="list-group-item">Distance: ${data.distance} </li>
-            <li class="list-group-item">Rides: ${data.rides}</li>
-            <li class="list-group-item">Wheelie Max V: ${data.wheelieMaxV}</li>
-            <li class="list-group-item">Wheelie Distance: ${data.totalWheelieDistance}</li>
-            <li class="list-group-item">Wheelies: ${data.wheelies}</li>
+    $(`<ul class="list-group details">
+            <li class="list-group-item">Rides: <span class="detail-value">${data.rides}</span></li>
+            <li class="list-group-item">Wheelies: <span class="detail-value">${data.wheelies}</span></li>
+            <li class="list-group-item">Distance: <span class="detail-value">${data.distance} m.</span></li>
+            <li class="list-group-item">Wheelie Max V: <span class="detail-value">${data.wheelieMaxV} km/h</span></li>
+            <li class="list-group-item">Wheelie Distance: <span class="detail-value">${data.totalWheelieDistance} m.</span></li>
         </ul>`).insertBefore(aggregatedDatarowHtmlElement.children("a"))
     //await sleep(5000);
     console.log(12432)

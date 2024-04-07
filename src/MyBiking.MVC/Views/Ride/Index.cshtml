@@ -6,33 +6,38 @@
 }
 
 <div class="container mt-5">
-    <div class=" monthSelector d-flex justify-content-end">
-
-        <div class="form-group col-1">
-            <label class="control-label"></label>
-            <select class="form-select" id="Year"
-                    asp-items="@(new SelectList(Model.Years.Select(r=>r)))">
-            </select>
+    <div class=" monthSelector d-flex">
+        <div class="col-6 d-flex justify-content-start">
+            <div class="form-group col-sm-6 col-lg-3">
+                <select class="form-select" id="Year"
+                        asp-items="@(new SelectList(Model.Years.Select(r=>r)))">
+                </select>
+            </div>
         </div>
+        <div class="col-6 d-flex justify-content-end">
+            <a class="btn btn-success" asp-action="Create" asp-controller="Ride">Create</a>
+        </div>
+
+
     </div>
 
-    <div class="ride-activities">
+    <div class="ride-activities mt-5">
         @if (rideActivities.Count() > 0)
         {
 
             @foreach (DateTime rideActivity in rideActivities)
             {
-                <div class="row monthRideDetails">
-                        <div class="row d-flex justify-content-between">
-                            <div class="monthName col-1 d-flex justify-content-center align-content-center">
-                                <p class="month col text text-black my-2">@rideActivity.ToString("MMMM", new CultureInfo("en-US"))</p>
+                <div class="row monthRideDetails rowItem">
+                        <div class="row d-flex justify-content-between col-12">
+                            <div class="monthName col-6 d-flex justify-content-center align-content-center">
+                                <p class="month col text text-black my-2"><b>@rideActivity.ToString("MMMM", new CultureInfo("en-US"))</b></p>
                             </div>
-                            <div class="monthWrapper col-1 d-flex justify-content-center align-content-center align-self-center">
+                            <div class="monthWrapper col-6 d-flex justify-content-end align-content-center align-self-center">
                                 <span class="dropdown-toggle month-toggle text-secondary"></span>
                             </div>
                         </div>
                         <div class="row dataRow">
-                            <a class="btn btn-primary w-25 mt-2 rideDetailsBtn w-25" asp-action="MonthlyRides" asp-route-year="@rideActivity.Year" asp-controller="Ride" asp-route-month="@rideActivity.ToString("MMMM", new CultureInfo("en-US"))">Watch monthly details</a>
+                            <a class="m-auto btn btn-primary w-50 mt-2 rideDetailsBtn" asp-action="MonthlyRides" asp-route-year="@rideActivity.Year" asp-controller="Ride" asp-route-month="@rideActivity.ToString("MMMM", new CultureInfo("en-US"))">Watch monthly details</a>
                         </div>
                 </div>
             }
@@ -40,10 +45,6 @@
         </div>
 </div>
 
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 
 @section Scripts {
     @{

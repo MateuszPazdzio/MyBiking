@@ -1,0 +1,38 @@
+﻿body {
+}
+.rowItem {
+    margin-bottom:5px;
+    margin-top:5px;
+    padding: 12px 24px;
+    font-size: 26px;
+    /*font-weight: bold;*/
+    color: #000;
+    text-decoration: none;
+    border: none;
+    border-radius: 30px;
+    background-color:ghostwhite;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-family: 'Segoe UI'
+}
+
+
+.rowItem:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    color: inherit;
+}
+
+.details {
+    font-size: 15px;
+    font-weight: 500;
+    
+}
+
+.details span{
+    font-weight:400
+}
+
+.list-group-item {
+    background-color: inherit;
+}
