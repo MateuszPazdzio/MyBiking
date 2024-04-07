@@ -1,10 +1,11 @@
 ﻿@model MyBiking.Application.ViewModels.MonthlyRideModelView
 
 @{
-    ViewData["Title"] = "MonthlyRides";
+    // var year = Context.Request.Query["year"];
+    // var month = ViewContext.RouteData.Values["month"];
 }
 
-<h1>MonthlyRides</h1>
+<h1>Rides in @Model.Month @Model.Year</h1>
 
 @* <p>
     <a asp-action="Create">Create New</a>
@@ -58,7 +59,6 @@
                             <a class="btn btn-primary w-25 mt-2 wheelieDetailsBtn" asp-action="Index" asp-controller="Wheelie" asp-route-id="@item.Id">Wheelie details</a>
                         </div>
                     </td>
-
                 </tr>
             }
     </tbody>

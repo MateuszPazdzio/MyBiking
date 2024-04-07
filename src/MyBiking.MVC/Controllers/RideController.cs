@@ -33,6 +33,17 @@ namespace MyBiking.MVC.Controllers
                 RideDtos = result
             };
 
+            if(listRideViewModel.Year==String.Empty)
+            {
+                throw new Exception("Year does not exists");
+            }
+
+            if(listRideViewModel.Month == String.Empty)
+            {
+                throw new Exception("Month does not exists");
+            }
+
+
             return View(listRideViewModel);
         }
         public async Task<ActionResult> Index(int? year)
