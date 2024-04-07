@@ -33,30 +33,29 @@
     </thead>
     <tbody>
             @foreach (var item in Model.RideDtos) {
-                <tr>
-@*                     <td>
+                <tr class="col-12">
+@*                  <td>
                         @Html.DisplayFor(modelItem => item.BikeId)
                     </td> *@
-                    <td>
+                    <td class="col-lg-3 col-4">
                         @Html.DisplayFor(modelItem => item.StartingDateTime)
                     </td>
-                    <td>
+                    <td class="col-lg-3 col-4">
                         @Html.DisplayFor(modelItem => item.EndingDateTime)
                     </td>
-                    <td>
+                    <td class="col-lg-4 col-2">
                         @Html.DisplayFor(modelItem => item.Distance)
                     </td>
-                    <td>
+                    <td class="col-2">
                         <button class="btn btn-danger deleteBtn" data-id="@item.Id" type="button">Delete</button>
-                        <button class="btn btn-primary previewBtn" data-id="@item.Id"  type="button">Preview</button>
+                        <button class="btn btn-primary previewBtn" data-id="@item.Id"  type="button">Show</button>
                     </td>
 
-                
                 </tr>
-                <tr>
-                 <td class="border-bottom-0" colspan="3">
+                <tr class="col-12">
+                    <td class="border-bottom-0" colspan="4">
                         <div class="row dataRow">
-                            <a class="btn btn-primary w-25 mt-2 wheelieDetailsBtn" asp-action="Index" asp-controller="Wheelie" asp-route-id="@item.Id">Wheelie details</a>
+                            <a class="btn btn-primary w-25 m-auto mt-3 wheelieDetailsBtn" asp-action="Index" asp-controller="Wheelie" asp-route-id="@item.Id">Wheelie details</a>
                         </div>
                     </td>
                 </tr>

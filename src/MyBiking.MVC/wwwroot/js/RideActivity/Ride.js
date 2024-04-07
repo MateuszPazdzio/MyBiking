@@ -13,14 +13,21 @@ const setSlider = async() => {
         let aggregatedDatarowHtmlElement = $(this).parent().parent().next().find(".dataRow")
         console.log(aggregatedDatarowHtmlElement.children())
         if (aggregatedDatarowHtmlElement.children().length <= 1) {
-
+            $(this).text("Hide")
             let rideId = $(this).data("id");
 
             var response = await getRideDetails(rideId, aggregatedDatarowHtmlElement);
             $(this).parent().parent().next().find(".dataRow").slideToggle()
         }
         else {
+            console.log("x")
             $(this).parent().parent().next().find(".dataRow").slideToggle()
+            if ($(this).text() == "Show") {
+                $(this).text("Hide")
+            } else {
+                $(this).text("Show")
+            }
+            
             console.log("xd2")
         }
 
