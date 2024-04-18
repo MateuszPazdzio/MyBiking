@@ -14,14 +14,8 @@
     opacity: 0;
     font-family:'Segoe UI'
 }
-#createBtn {
-
+#createBtn, #previewBtn {
     background-color: blanchedalmond;
-}
-
-#previewBtn {
-
-    /*background-color:fuchsia;*/
 }
 
   #createBtn:hover, #previewBtn:hover {
