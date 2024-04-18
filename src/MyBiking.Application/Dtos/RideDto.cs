@@ -19,5 +19,7 @@ namespace MyBiking.Application.Dtos
 
         public DateTime EndingDateTime { get; set; }
         public double Distance { get; set; }
+        [Display(Name ="Public")]
+        public bool IsPublic { get; set; }
     }
 }

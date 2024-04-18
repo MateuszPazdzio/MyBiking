@@ -13,6 +13,7 @@ namespace MyBiking.Entity.Models
         public DateTime StartingDateTime { get; set; }
         public DateTime EndingDateTime { get; set; }
         public double Distance { get; set; }
+        public bool IsPublic { get; set; }
         
 
     }

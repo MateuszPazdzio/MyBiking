@@ -64,6 +64,10 @@ namespace MyBiking.Infrastructure
                 .IsRequired(true);
 
             modelBuilder.Entity<Ride>()
+                .Property(p => p.IsPublic)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<Ride>()
                 .HasMany(r => r.Points)
                 .WithOne(p => p.Ride)
                 .HasForeignKey(p => p.RideId)
