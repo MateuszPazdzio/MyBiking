@@ -1,4 +1,6 @@
-﻿namespace MyBiking.Entity.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MyBiking.Entity.Models
 {
     public class Ride
     {

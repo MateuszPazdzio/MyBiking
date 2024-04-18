@@ -1,4 +1,5 @@
 ﻿using MyBikingApi.Models.Dtos;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace MyBiking.Application.Dtos
@@ -11,7 +12,11 @@ namespace MyBiking.Application.Dtos
         public List<PointDto> Points { get; set; }
         //public int UserId { get; set; }
         public List<WheelieRideDto> WheeleRides { get; set; }
+        [Display(Name = "Start")]
+
         public DateTime StartingDateTime { get; set; }
+        [Display(Name = "End")]
+
         public DateTime EndingDateTime { get; set; }
         public double Distance { get; set; }
     }
