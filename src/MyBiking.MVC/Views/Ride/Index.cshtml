@@ -26,7 +26,11 @@
     }
     else
     {
-        <h2 class="d-flex justify-content-center text text-secondary h3">There are currently 0 rides</h2>
+        <h3 class="d-flex justify-content-center text text-secondary h3">There are currently 0 rides</h3>
+        <hr />
+        <div class="createBtnWrapper col-12 d-flex justify-content-center">
+            <a id="createBtn" asp-action="Create" asp-controller="Ride" class="frontPageBtn hidden">Create</a>
+        </div>
     }
     <div class="ride-activities mt-5">
         @if (rideActivities.Count() > 0)
@@ -59,4 +63,5 @@
     }
 
     <script src="~/js//RideActivity/RideActivityMonth.js"></script>
+    <script src="~/js//frontPage.js"></script>
 }
