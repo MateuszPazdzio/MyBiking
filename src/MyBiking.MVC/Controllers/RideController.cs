@@ -73,6 +73,10 @@ namespace MyBiking.MVC.Controllers
         // GET: RideController/Create
         public ActionResult Create()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login","Auth");
+            }
             return View();
         }
 
