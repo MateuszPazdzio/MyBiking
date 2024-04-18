@@ -125,7 +125,7 @@ const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
             <li class="list-group-item">Rides: <span class="detail-value">${data.rides}</span></li>
             <li class="list-group-item">Wheelies: <span class="detail-value">${data.wheelies}</span></li>
             <li class="list-group-item">Distance: <span class="detail-value">${data.distance} m.</span></li>
-            <li class="list-group-item">Wheelie Max V: <span class="detail-value">${data.wheelieMaxV} km/h</span></li>
+            <li class="list-group-item">Wheelie Max V: <span class="detail-value">${data.wheelieMaxV ?? "--"} km/h</span></li>
             <li class="list-group-item">Wheelie Distance: <span class="detail-value">${data.totalWheelieDistance} m.</span></li>
         </ul>`).insertBefore(aggregatedDatarowHtmlElement.children("a"))
     //await sleep(5000);
