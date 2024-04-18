@@ -287,6 +287,11 @@ namespace MyBiking.Infrastructure.Migrations
                     b.Property<DateTime>("EndingDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsPublic")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<DateTime>("StartingDateTime")
                         .HasColumnType("datetime2");
 

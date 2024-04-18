@@ -12,7 +12,7 @@ using MyBiking.Infrastructure;
 namespace MyBiking.Infrastructure.Migrations
 {
     [DbContext(typeof(MyBikingDbContext))]
-    [Migration("20240330123631_Init")]
+    [Migration("20240418140809_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -288,6 +288,11 @@ namespace MyBiking.Infrastructure.Migrations
 
                     b.Property<DateTime>("EndingDateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsPublic")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("StartingDateTime")
                         .HasColumnType("datetime2");
