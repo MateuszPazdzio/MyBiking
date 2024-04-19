@@ -18,6 +18,8 @@ const setSlider = async() => {
     $(".monthWrapper").click(async function (event) {
 
         let aggregatedDatarowHtmlElement = $(this).parent().next()
+
+        console.log(aggregatedDatarowHtmlElement)
         console.log(aggregatedDatarowHtmlElement.children().length)
         if ($(this).children("span").hasClass("text-secondary") && aggregatedDatarowHtmlElement.children().length <= 1) {
 

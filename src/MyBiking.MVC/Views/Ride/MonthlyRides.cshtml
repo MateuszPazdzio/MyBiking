@@ -52,7 +52,9 @@
                                 <input type="hidden" name="id" value="@item.Id" />
                                 <button class="btn btn-danger deleteBtn" type="submit">Delete</button>
                             </form>
-                            <button class="btn btn-primary previewBtn" data-id="@item.Id" type="button">Show</button>
+                            @if(item.WheeleRides.Count()>0){
+                                <button class="btn btn-primary previewBtn" data-id="@item.Id" type="button">Show</button>
+                            }
                         </div>
                     </td>
 
