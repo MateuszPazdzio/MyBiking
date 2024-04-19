@@ -230,9 +230,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //
             distaceTraveledBetwee2Locations = calcDistance(point.getLatitude(),point.getLongitude());
             if(distaceTraveledBetwee2Locations<2.0){
-                distaceTraveledBetwee2Locations = 0.00;
+                distaceTraveledBetwee2Locations = 0.00d;
             }
-            RideDistance += Math.round(distaceTraveledBetwee2Locations/1000);
+            RideDistance += (distaceTraveledBetwee2Locations/1000);
 
             if(wheeleRide!=null){
                 wheeleRide.AddIWheeleItem(new WheeleItem(point,location.getSpeed(),location.getAltitude(),address,distaceTraveledBetwee2Locations, Collections.max(rotaionXList)));
