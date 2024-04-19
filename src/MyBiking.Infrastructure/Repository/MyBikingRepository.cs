@@ -277,6 +277,28 @@ namespace MyBiking.Infrastructure.Repository
 
             return tokenHandler.WriteToken(token);
         }
+
+        public async Task<Status> DeleteRide(int id)
+        {
+            var rideToRemove =await _myBikingDbContext.Rides.FirstOrDefaultAsync(r => r.Id == id);
+            if (rideToRemove!=null)
+            {
+                 _myBikingDbContext.Rides.Remove(rideToRemove);
+                _myBikingDbContext.SaveChanges();
+
+                return new Status()
+                {
+                    Message = "Ride deleted successfully",
+                    StatusCode = 204
+                };
+            }
+            return new Status()
+            {
+                Message = "Ride has been not deleted successfully",
+                StatusCode = 400
+            };
+
+        }
     }
 
     //internal class RideTimeActivityYearComparer : IComparer<RideTimeActivity>

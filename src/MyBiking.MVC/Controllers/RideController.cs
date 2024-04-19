@@ -5,6 +5,7 @@ using MyBiking.Application.Functions.Query.Ride;
 using MyBiking.Application.Functions.Command.RideApi;
 using MyBiking.Application.Dtos;
 using MyBiking.Application.ViewModels;
+using MyBiking.Application.Functions.Command.Ride;
 namespace MyBiking.MVC.Controllers
 {
     public class RideController : Controller
@@ -35,7 +36,8 @@ namespace MyBiking.MVC.Controllers
 
             if(listRideViewModel.Year==String.Empty)
             {
-                throw new Exception("Year does not exists");
+                return RedirectToAction("index");
+                //throw new Exception("Year does not exists");
             }
 
             if(listRideViewModel.Month == String.Empty)
@@ -115,24 +117,25 @@ namespace MyBiking.MVC.Controllers
             }
         }
 
-        // GET: RideController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
         // POST: RideController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int? Id)
         {
-            try
+
+            if (!Id.HasValue)
             {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+
+            Status result = await _mediator.Send(new DeleteRideCommand() { Id = Id.Value });
+            string returnUrl = Request.Headers["Referer"].ToString();
+            if (result.StatusCode != 204)
             {
-                return View();
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return Redirect(returnUrl);
             }
         }
     }

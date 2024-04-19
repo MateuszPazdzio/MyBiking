@@ -47,8 +47,13 @@
                         @Html.DisplayFor(modelItem => item.Distance)
                     </td>
                     <td class="col-2">
-                        <button class="btn btn-danger deleteBtn" data-id="@item.Id" type="button">Delete</button>
-                        <button class="btn btn-primary previewBtn" data-id="@item.Id"  type="button">Show</button>
+                        <div class="d-flex">
+                            <form class="mx-1" asp-action="Delete" asp-controller="Ride" method="post">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button class="btn btn-danger deleteBtn" type="submit">Delete</button>
+                            </form>
+                            <button class="btn btn-primary previewBtn" data-id="@item.Id" type="button">Show</button>
+                        </div>
                     </td>
 
                 </tr>
