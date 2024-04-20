@@ -9,7 +9,7 @@ public class Ride {
     private List<WheeleRide> wheeleRides = new ArrayList<WheeleRide>();
     private String startingDateTime;
     private String endingDateTime;
-//    private String bikeId;
+    public final boolean isPublic = true;
     private double distance;
     public void AddPoint(Point point){
         points.add(point);

@@ -77,25 +77,25 @@ public class ApiService {
     public Response AddRide(Ride ride){
         HttpURLConnection httpURLConnection = null;
         try {
+
             URL url = new URL("https://mybiking.azurewebsites.net/api/ride");
             httpURLConnection = (HttpURLConnection) url.openConnection();
-
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setRequestProperty("Authorization","Bearer "+token);
+            httpURLConnection.setRequestProperty("Content-Type", "application/json");
+
             Gson gson = new Gson();
             String jsonInputString = gson.toJson(ride);
 
-            httpURLConnection.setRequestProperty("Content-Type", "application/json");
-
             try (OutputStream os = httpURLConnection.getOutputStream()) {
-                // Replace with your JSON payload
                 byte[] input = jsonInputString.getBytes("utf-8");
                 os.write(input, 0, input.length);
             }
 
             int responseCode = httpURLConnection.getResponseCode();
+
             if(responseCode== HttpURLConnection.HTTP_OK){
                 token  = getHttpResponse(httpURLConnection);
                 return Result.Ok();

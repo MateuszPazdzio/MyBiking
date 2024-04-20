@@ -22,12 +22,13 @@ public class FetchData extends AsyncTask<Void,Void,Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        // poprawić BADREQUEST////////////////////////////////////////////////////////////////////////////////////////////////
+
         if(apiService.Login(new LoginData("",""))==Result.BadReuqest()){
             return null;
         }
 
-        if(apiService.GetToken()!=null || !apiService.GetToken().isEmpty()){
+        String token = apiService.GetToken();
+        if(token!=null || !token.isEmpty()){
              if(apiService.AddRide(ride)==Result.BadReuqest()){
                  return null;
              }
@@ -40,6 +41,5 @@ public class FetchData extends AsyncTask<Void,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-
     }
 }
