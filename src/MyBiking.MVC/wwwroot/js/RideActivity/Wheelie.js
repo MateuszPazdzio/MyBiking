@@ -61,10 +61,10 @@ async function getRideDetails(wheelieId, aggregatedDatarowHtmlElement) {
 const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
         aggregatedDatarowHtmlElement.append(
         `<ul class="list-group details">
-            <li class="list-group-item">Addrees1: <span class="detail-value">${data.wheelieMaxV}</span></li>
-            <li class="list-group-item">Addrees2: <span class="detail-value">${data.wheelieMaxV}</span></li>
-            <li class="list-group-item">Max V: <span class="detail-value">${data.wheelies}</span></li>
-            <li class="list-group-item">Rotate X: <span class="detail-value">${data.wheelies}</span></li>
+            <li class="list-group-item">Addrees1: <span class="detail-value">${data.addrees1}</span></li>
+            <li class="list-group-item">Addrees2: <span class="detail-value">${data.addrees2}</span></li>
+            <li class="list-group-item">Max V: <span class="detail-value">${data.vMax}</span></li>
+            <li class="list-group-item">Rotate X: <span class="detail-value">${data.rotateX}</span></li>
         </ul>`)
     //await sleep(5000);
     console.log(12432)
