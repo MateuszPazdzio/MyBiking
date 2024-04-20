@@ -1,16 +1,19 @@
 ﻿@model MyBiking.Application.Functions.Query.Ride.PublicRidesQueryResponse
 
-<h1>Public rides</h1>
+<div class=" monthSelector d-flex">
+    <div class="col-6 d-flex justify-content-start">
+        <h1>Public rides</h1>
+    </div>
+    <div class="col-6 d-flex justify-content-end align-self-center">
+        <div>
+            <a class="btn btn-success" asp-action="Create" asp-controller="Ride">Create</a>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            @*             <th>
-            @Html.DisplayNameFor(model => model.RideDtos[0].BikeId)
-            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Rides[0].StartingDateTime)
             </th>
@@ -30,9 +33,6 @@
         @foreach (var item in Model.Rides)
         {
             <tr class="col-12">
-                @*                  <td>
-            @Html.DisplayFor(modelItem => item.BikeId)
-            </td> *@
                 <td class="col-lg-3 col-4">
                     @Html.DisplayFor(modelItem => item.StartingDateTime)
                 </td>
@@ -60,7 +60,7 @@
 
             </tr>
             <tr class="col-12">
-                <td class="border-bottom-0" colspan="4">
+                <td class="border-bottom-0" colspan="5">
                     <div class="row dataRow">
                         <a class="btn btn-primary w-25 m-auto mt-3 wheelieDetailsBtn" asp-action="Index" asp-controller="Wheelie" asp-route-id="@item.Id">Wheelie details</a>
                     </div>

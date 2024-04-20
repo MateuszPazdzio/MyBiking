@@ -1,8 +1,10 @@
 ﻿@using MyBikingApi.Models.Dtos
+@using System.Security.Claims
 @model MyBiking.Application.ViewModels.WheelieRideModelView
 
 @{
     ViewData["Title"] = "Index";
+    var c = User.Claims;
 }
 
 <div class="d-flex justify-content-center">
@@ -35,7 +37,12 @@
                         <div class="d-flex justify-content-end">
                             <form class="mx-1" asp-action="Delete" asp-controller="Wheelie" method="post">
                                 <input type="hidden" name="id" value="@item.Id" />
-                                <button class="btn btn-danger deleteBtn" type="submit">Delete</button>
+                                @if (User.Identity.IsAuthenticated && 
+                                    item.Ride.ApplicationUser?.Id == User.Claims.FirstOrDefault(c=>c.Type==ClaimTypes.NameIdentifier)?.Value)
+                                {
+                                    <button class="btn btn-danger deleteBtn" type="submit">Delete</button>
+
+                                }
                                 <button class="btn btn-primary previewBtn" data-id="@item.Id" type="button">Show</button>
                             </form>
 

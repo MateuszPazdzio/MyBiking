@@ -214,6 +214,7 @@ namespace MyBiking.Infrastructure.Repository
         {
             var wheeleRides =await _myBikingDbContext.WheelieRides
                 .Where(w=>w.RideId == rideId)
+                .Include(w => w.Ride).ThenInclude(r => r.ApplicationUser)
                 .Include(w=>w.WheeleItems)
                 .ToListAsync();
 
