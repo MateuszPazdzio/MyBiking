@@ -177,7 +177,8 @@ namespace MyBiking.Infrastructure.Migrations
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StartingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Distance = table.Column<double>(type: "float", nullable: false)
+                    Distance = table.Column<double>(type: "float", nullable: false),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {

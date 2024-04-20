@@ -20,18 +20,27 @@ namespace MyBiking.Application.Functions.Query.Ride
         public async Task<MonthlyAgregatedRideResponse> Handle(AgregatedRideQuery request, CancellationToken cancellationToken)
         {
             List<Entity.Models.Ride> rides = await _myBikingRepository.GetRidesByMonthAsync(request.Year,request.Month);
-            var x= new MonthlyAgregatedRideResponse()
+            var monthlyAgregatedRideResponse= new MonthlyAgregatedRideResponse()
             {
                 Distance = rides.Sum(r => r.Distance),
-                //jezeli da się to zliczyć w aplikacji to zrobic to tą drogą, jak nie to policzyc po Pointach
-
-                Wheelies = rides.Sum(r => r.WheeleRides.Count),
-                WheelieMaxV = Enumerable.Max(rides.SelectMany(r => r.WheeleRides.SelectMany(w => w.WheeleItems.ToList())).ToList(), w => w.Speed),
+                Wheelies = rides.Sum(r => r.WheeleRides?.Count),
+                WheelieMaxV = CalculateWheelieVMax(rides),
                 Rides = rides.Count(),
                 TotalWheelieDistance = Enumerable.Sum(rides.SelectMany(r => r.WheeleRides).ToList(), w => w.Distance),
             };
-            return x;
-            //monthlyAgregatedRideResponse
+
+            return monthlyAgregatedRideResponse;
+        }
+        private double? CalculateWheelieVMax(List<Entity.Models.Ride> rides)
+        {
+            var wheelieItems = rides.SelectMany(r => r.WheeleRides?.SelectMany(w => w.WheeleItems?.ToList())).ToList();
+            var wheelieItemsAddedByApi = wheelieItems.Where(wi=>wi.Speed!=null).ToList();
+            if(wheelieItemsAddedByApi.Any())
+            {
+                return Enumerable.Max(wheelieItemsAddedByApi,w=>w.Speed);
+            }
+            return null;
+            
         }
     }
 }

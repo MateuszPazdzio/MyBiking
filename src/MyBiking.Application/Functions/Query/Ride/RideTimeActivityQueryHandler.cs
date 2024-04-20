@@ -31,7 +31,11 @@ namespace MyBiking.Application.Functions.Query.Ride
                     .Select(rd=>rd.StartingDateTime.Year)
                     .OrderByDescending(rd=>rd)
                     .ToList();
-
+                if(years.Count() == 0)
+                {
+                    rideTimeActivity.RideTimeActivitiesDates = GetDistinctRideActivitiesByMonth(rides, null);
+                    return rideTimeActivity;
+                }
                 rideTimeActivity.Years = years;
                 var latestYear = rideTimeActivity.Years.Max();
 

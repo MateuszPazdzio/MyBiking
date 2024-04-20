@@ -10,17 +10,26 @@ const setSlider = async() => {
     $(".dataRow").hide();
     $(".previewBtn").click(async function (event) {
 
-        let aggregatedDatarowHtmlElement = $(this).parent().parent().next().find(".dataRow")
+        let aggregatedDatarowHtmlElement = $(this).parent().parent().parent().next().find(".dataRow")
         console.log(aggregatedDatarowHtmlElement.children())
-        if (aggregatedDatarowHtmlElement.children().length <= 1) {
+        console.log("y")
 
+        if (aggregatedDatarowHtmlElement.children().length <= 1) {
+            $(this).text("Hide")
             let rideId = $(this).data("id");
 
             var response = await getRideDetails(rideId, aggregatedDatarowHtmlElement);
-            $(this).parent().parent().next().find(".dataRow").slideToggle()
+            $(this).parent().parent().parent().next().find(".dataRow").slideToggle()
         }
         else {
-            $(this).parent().parent().next().find(".dataRow").slideToggle()
+            console.log("x")
+            $(this).parent().parent().parent().next().find(".dataRow").slideToggle()
+            if ($(this).text() == "Show") {
+                $(this).text("Hide")
+            } else {
+                $(this).text("Show")
+            }
+            
             console.log("xd2")
         }
 
@@ -55,10 +64,10 @@ async function getRideDetails(rideId, aggregatedDatarowHtmlElement) {
 }
 
 const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
-        $(`<ul class="list-group">
-            <li class="list-group-item">Wheelie Max V: ${data.wheelieMaxV}</li>
-            <li class="list-group-item">Wheelie Distance: ${data.totalWheelieDistance}</li>
-            <li class="list-group-item">Wheelies: ${data.wheelies}</li>
+        $(`<ul class="list-group details">
+            <li class="list-group-item">Wheelie Max V: <span class="detail-value">${data.wheelieMaxV}</span></li>
+            <li class="list-group-item">Wheelie Distance: <span class="detail-value">${data.totalWheelieDistance}</span></li>
+            <li class="list-group-item">Wheelies: <span class="detail-value">${data.wheelies}</span></li>
         </ul>`).insertBefore(aggregatedDatarowHtmlElement.children("a"))
     //await sleep(5000);
     console.log(12432)
