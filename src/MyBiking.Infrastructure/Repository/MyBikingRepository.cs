@@ -213,7 +213,7 @@ namespace MyBiking.Infrastructure.Repository
         public async Task<List<WheelieRide>> GetWheelieRidesById(int? rideId)
         {
             var wheeleRides =await _myBikingDbContext.WheelieRides
-                .Where(w=>w.Id == rideId)
+                .Where(w=>w.RideId == rideId)
                 .Include(w=>w.WheeleItems)
                 .ToListAsync();
 
