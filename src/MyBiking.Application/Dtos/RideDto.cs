@@ -1,4 +1,5 @@
-﻿using MyBikingApi.Models.Dtos;
+﻿using MyBiking.Entity.Models;
+using MyBikingApi.Models.Dtos;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -10,7 +11,9 @@ namespace MyBiking.Application.Dtos
         public int Id { get; set; }
         //public int BikeId { get; set; }
         public List<PointDto>? Points { get; set; }
-        //public int UserId { get; set; }
+        //public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+
         public List<WheelieRideDto>? WheeleRides { get; set; }
         [Display(Name = "Start")]
 

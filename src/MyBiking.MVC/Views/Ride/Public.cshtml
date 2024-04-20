@@ -1,0 +1,78 @@
+﻿@model MyBiking.Application.Functions.Query.Ride.PublicRidesQueryResponse
+
+<h1>Public rides</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            @*             <th>
+            @Html.DisplayNameFor(model => model.RideDtos[0].BikeId)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.Rides[0].StartingDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rides[0].EndingDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rides[0].Distance)
+            </th>
+            <th>
+                Username
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Rides)
+        {
+            <tr class="col-12">
+                @*                  <td>
+            @Html.DisplayFor(modelItem => item.BikeId)
+            </td> *@
+                <td class="col-lg-3 col-4">
+                    @Html.DisplayFor(modelItem => item.StartingDateTime)
+                </td>
+                <td class="col-lg-3 col-4">
+                    @Html.DisplayFor(modelItem => item.EndingDateTime)
+                </td>
+                <td class="col-lg-4 col-2">
+                    @Html.DisplayFor(modelItem => item.Distance)
+                </td>
+                <td class="col-lg-4 col-2">
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
+                </td>
+                <td class="col-2">
+                    <div class="d-flex">
+                        <form class="mx-1" asp-action="Delete" asp-controller="Ride" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            @* <button class="btn btn-danger deleteBtn" type="submit">Details</button> *@
+                        </form>
+                        @if (item.WheeleRides.Count() > 0)
+                        {
+                            <button class="btn btn-primary previewBtn" data-id="@item.Id" type="button">Show</button>
+                        }
+                    </div>
+                </td>
+
+            </tr>
+            <tr class="col-12">
+                <td class="border-bottom-0" colspan="4">
+                    <div class="row dataRow">
+                        <a class="btn btn-primary w-25 m-auto mt-3 wheelieDetailsBtn" asp-action="Index" asp-controller="Wheelie" asp-route-id="@item.Id">Wheelie details</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js//RideActivity/Ride.js"></script>
+}

@@ -320,6 +320,17 @@ namespace MyBiking.Infrastructure.Repository
                 StatusCode = 400
             };
         }
+
+        public async Task<List<Ride>> GetPublicRides()
+        {
+            return await _myBikingDbContext.Rides
+                .AsNoTracking()
+                .Where(p=>p.IsPublic)
+                .Include(r=>r.ApplicationUser)
+                .Include(r => r.WheeleRides).ThenInclude(w => w.WheeleItems)
+                .Include(r => r.Points)
+                .ToListAsync();
+        }
     }
 
     //internal class RideTimeActivityYearComparer : IComparer<RideTimeActivity>

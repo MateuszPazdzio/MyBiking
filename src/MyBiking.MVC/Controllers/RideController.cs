@@ -58,7 +58,13 @@ namespace MyBiking.MVC.Controllers
 
             return Ok(RideActivities.RideTimeActivitiesDates);
         }
-
+        [HttpGet]
+        [Route("Ride/Public")]
+        public async Task<ActionResult> ShowPublicRides()
+        {
+            var response =await _mediator.Send(new PublicRidesQuery());
+            return View("Public",response);
+        }
         // GET: RideController/Details/5
         public async Task<ActionResult> Details(AgregatedRideQuery agregatedRideQuery)
         {
@@ -94,27 +100,6 @@ namespace MyBiking.MVC.Controllers
             //}
            var status = await _mediator.Send(rideDtoCommand);
             return RedirectToAction("Index", "Ride");
-        }
-
-        // GET: RideController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: RideController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         // POST: RideController/Delete/5

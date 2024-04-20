@@ -25,8 +25,8 @@ namespace MyBiking.Application.Functions.Query.Wheelie
 
             var response = new WheelieRideResponse()
             {
-                Addrees1 = result.WheeleItems.FirstOrDefault(wi => !String.IsNullOrEmpty(wi.Address)).Address,
-                Addrees2 = result.WheeleItems.FirstOrDefault(wi => !String.IsNullOrEmpty(wi.Address)).Address,
+                Addrees = result.WheeleItems.FirstOrDefault(wi => !String.IsNullOrEmpty(wi.Address)).Address,
+                Altitude = Enumerable.Max(result.WheeleItems.Select(w=>w.Altitude).ToList()).ToString(),
                 RotateX = result.WheeleItems.Max(wi => wi.MaxRotateX).ToString(),
                 VMax = result.WheeleItems.Max(wi => wi.Speed).ToString(),
             };

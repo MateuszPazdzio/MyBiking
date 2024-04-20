@@ -25,5 +25,6 @@ namespace MyBiking.Entity.Models
         Task<Status> LoginApi(ApplicationUser user);
         Task<Status> DeleteWheelie(int id);
         Task<Status> DeleteRide(int id);
+        Task<List<Ride>> GetPublicRides();
     }
 }

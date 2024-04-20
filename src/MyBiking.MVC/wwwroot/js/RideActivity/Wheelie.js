@@ -15,7 +15,7 @@ const setSlider = async() => {
         if (aggregatedDatarowHtmlElement.children().length == 0) {
             $(this).text("Hide")
             let wheelieId = $(this).data("id");
-
+            console.log("dane")
             var response = await getRideDetails(wheelieId, aggregatedDatarowHtmlElement);
             $(this).parent().parent().parent().parent().next().find(".dataRow").slideToggle()
         }
@@ -61,8 +61,8 @@ async function getRideDetails(wheelieId, aggregatedDatarowHtmlElement) {
 const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
         aggregatedDatarowHtmlElement.append(
         `<ul class="list-group details">
-            <li class="list-group-item">Addrees1: <span class="detail-value">${data.addrees1}</span></li>
-            <li class="list-group-item">Addrees2: <span class="detail-value">${data.addrees2}</span></li>
+            <li class="list-group-item">Addrees: <span class="detail-value">${data.addrees}</span></li>
+            <li class="list-group-item">Altitude: <span class="detail-value">${data.altitude}</span></li>
             <li class="list-group-item">Max V: <span class="detail-value">${data.vMax}</span></li>
             <li class="list-group-item">Rotate X: <span class="detail-value">${data.rotateX}</span></li>
         </ul>`)
