@@ -26,16 +26,16 @@ namespace MyBiking.Infrastructure.Repository
             //    SeedNationalities();
             //}
             //SeedRoles();
-            //if (_myBikingDbContext.Database.CanConnect())
-            //{
-            //_myBikingDbContext.Database.EnsureDeleted();
-            ////_myBikingDbContext.Database.EnsureCreated();
-            var pendingMigrations = _myBikingDbContext.Database.GetPendingMigrations();
-            if (pendingMigrations != null && pendingMigrations.Any())
+            if (_myBikingDbContext.Database.CanConnect())
             {
-                _myBikingDbContext.Database.Migrate();
+                _myBikingDbContext.Database.EnsureDeleted();
+                _myBikingDbContext.Database.EnsureCreated();
+                var pendingMigrations = _myBikingDbContext.Database.GetPendingMigrations();
+                if (pendingMigrations != null && pendingMigrations.Any())
+                {
+                    _myBikingDbContext.Database.Migrate();
+                }
             }
-            //}
         }
 
         private void SeedNationalities()

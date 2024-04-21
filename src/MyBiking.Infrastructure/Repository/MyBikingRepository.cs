@@ -23,15 +23,18 @@ namespace MyBiking.Infrastructure.Repository
         private readonly MyBikingDbContext _myBikingDbContext;
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
         private readonly AuthenticationSettings _authenticationSettings;
+        private readonly IUserHttpContext _userHttpContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         public MyBikingRepository(MyBikingDbContext myBikingDbContext, IPasswordHasher<ApplicationUser> passwordHasher,
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AuthenticationSettings authenticationSettings)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AuthenticationSettings authenticationSettings,
+            IUserHttpContext userHttpContext)
         {
             this._myBikingDbContext = myBikingDbContext;
             this._passwordHasher = passwordHasher;
             this._authenticationSettings = authenticationSettings;
+            this._userHttpContext = userHttpContext;
             this._userManager = userManager;
             this._signInManager = signInManager;
         }
@@ -155,6 +158,7 @@ namespace MyBiking.Infrastructure.Repository
 
         public async Task<List<Ride>> GetRidesByMonthAsync(string year,string month)
         {
+            var userID = _userHttpContext.GetUser()?.Id;
             try
             {
                 var rides = await _myBikingDbContext.Rides
@@ -162,7 +166,8 @@ namespace MyBiking.Infrastructure.Repository
                     .Include(r => r.WheeleRides).ThenInclude(w=>w.WheeleItems)
                     .Include(r => r.Points)
                     .Where(r => r.StartingDateTime.Month == Month.Months[month] && 
-                        r.StartingDateTime.Year.ToString()==year)
+                        r.StartingDateTime.Year.ToString()==year &&
+                        r.ApplicationUserId == userID)
                     .ToListAsync();
 
                     return rides;
@@ -178,16 +183,20 @@ namespace MyBiking.Infrastructure.Repository
 
         public Task<List<Ride>> GetRideActivitiesSelectedByYear(int? year)
         {
-            if(!year.HasValue)
+            var userID = _userHttpContext.GetUser()?.Id;
+            if (!year.HasValue)
             {
-                return _myBikingDbContext.Rides.OrderBy(r=>r.StartingDateTime).ToListAsync();
+                return _myBikingDbContext.Rides.
+                    Where(r=> userID  == r.ApplicationUserId).
+                    OrderBy(r=>r.StartingDateTime).ToListAsync();
             }
 
             try
             {
                 var a = _myBikingDbContext.Rides
                     .AsNoTracking()
-                    .Where(r => r.StartingDateTime.Year == year)
+                    .Where(r => r.StartingDateTime.Year == year
+                    )
                     .ToListAsync();
                 return a;
 
@@ -212,11 +221,23 @@ namespace MyBiking.Infrastructure.Repository
 
         public async Task<List<WheelieRide>> GetWheelieRidesById(int? rideId)
         {
+            var userID = _userHttpContext.GetUser()?.Id;
+
             var wheeleRides =await _myBikingDbContext.WheelieRides
-                .Where(w=>w.RideId == rideId)
+                .Where(w=>w.RideId == rideId &&
+                    w.Ride.IsPublic || w.Ride.ApplicationUserId == userID)
                 .Include(w => w.Ride).ThenInclude(r => r.ApplicationUser)
                 .Include(w=>w.WheeleItems)
                 .ToListAsync();
+            if(wheeleRides.Count() > 0)
+            {
+                return wheeleRides;
+            }
+            //verify if ride is public and created by currently logged user (if logged)
+            if (wheeleRides.Count() == 0 && !await _myBikingDbContext.Rides.AnyAsync(r => r.Id == rideId && r.ApplicationUserId == userID))
+            {
+                return null;
+            }
 
             return wheeleRides;
         }

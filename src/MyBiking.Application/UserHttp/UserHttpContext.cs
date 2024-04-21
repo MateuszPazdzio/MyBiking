@@ -20,12 +20,21 @@ namespace MyBiking.Application.Models
             {
                 throw new System.Exception("User does not exists");
             }
-            CurrentUser currentUser = new CurrentUser()
+            CurrentUser currentUser;
+            try
             {
-                UserName = user.FindFirst(c => c.Type == ClaimTypes.Name).Value,
-                Id = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value,
-                ////Email = user.FindFirst(c => c.Type == ClaimTypes.Email).Value,
-            };
+                currentUser = new CurrentUser()
+                {
+                    UserName = user.FindFirst(c => c.Type == ClaimTypes.Name).Value,
+                    Id = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value,
+                    ////Email = user.FindFirst(c => c.Type == ClaimTypes.Email).Value,
+                };
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
             return currentUser;
         }
     }
