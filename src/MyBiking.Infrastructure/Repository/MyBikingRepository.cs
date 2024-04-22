@@ -351,24 +351,9 @@ namespace MyBiking.Infrastructure.Repository
                 .Include(r=>r.ApplicationUser)
                 .Include(r => r.WheeleRides).ThenInclude(w => w.WheeleItems)
                 .Include(r => r.Points)
+                .OrderByDescending(r => r.Creation_Date)
                 .ToListAsync();
         }
     }
 
-    //internal class RideTimeActivityYearComparer : IComparer<RideTimeActivity>
-    //{
-
-    //    public int Compare(RideTimeActivity? x, RideTimeActivity? y)
-    //    {
-    //        return x.Year.CompareTo(y.Year);
-    //    }
-    //}
-
-    //internal class RideTimeActivityDatesComparer : IComparer<DateTime>
-    //{
-    //    public int Compare(DateTime x, DateTime y)
-    //    {
-    //        return x.CompareTo(y);
-    //    }
-    //}
 }

@@ -90,15 +90,16 @@ namespace MyBiking.MVC.Controllers
 
         // POST: RideController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(RideDtoApiCommand rideDtoCommand)
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Create(RideDtoApiCommand rideDtoCommand)
+        public async Task<ActionResult> Create(RideDtoCommand rideDtoCommand)
         {
             //usunąć user id
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(rideDtoCommand);
-            //}
-           var status = await _mediator.Send(rideDtoCommand);
+            if (!ModelState.IsValid)
+            {
+                return View(rideDtoCommand);
+            }
+            var status = await _mediator.Send(rideDtoCommand);
             return RedirectToAction("Index", "Ride");
         }
 

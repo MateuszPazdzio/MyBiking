@@ -24,6 +24,7 @@ namespace MyBiking.Application.Functions.Command.RideApi
 
         public async Task<Status> Handle(RideDtoApiCommand request, CancellationToken cancellationToken)
         {
+            request.Creation_Date = DateTime.Now;
             var ride = _mapper.Map<Entity.Models.Ride>(request);
             Status status =await _myBikingRepository.CreateRide(ride);
             return status;

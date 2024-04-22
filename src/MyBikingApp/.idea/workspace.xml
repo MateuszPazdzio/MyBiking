@@ -17,19 +17,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5db8dbf2-eb3f-4307-81ba-c1a40488a496" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingDbSeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingDbSeeder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/FetchData.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/FetchData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.Application/Dtos/RideDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Application/Dtos/RideDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.Application/Functions/Command/Ride/RideDtoCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Application/Functions/Command/Ride/RideDtoCommandHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.Entity/Models/Ride.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Entity/Models/Ride.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/20240418140809_Init.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/20240418140809_Init.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/MyBikingDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/MyBikingDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.MVC/Controllers/RideController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.MVC/Controllers/RideController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.MVC/Views/Ride/Create.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.MVC/Views/Ride/Create.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[ce12171cc8d9382105]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\matip\.android\avd\Pixel_4a_API_33.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -81,21 +84,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Android App.app.executor": "Debug",
-    "OverrideImplement.combined": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Feature/WheelieView",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/matip/source/repos/MyBiking/src/MyBikingApp",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.53333336",
-    "settings.editor.selected.configurable": "preferences.sourceCode.XML"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Android App.app.executor&quot;: &quot;Debug&quot;,
+    &quot;OverrideImplement.combined&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Feature/WheelieView&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/matip/source/repos/MyBiking/src/MyBikingApp&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.53333336&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.XML&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="android.template.1652692036">
       <recent name="com.example.gpstrackingdemo" />
