@@ -1,4 +1,4 @@
-﻿namespace MyBiking.Application.Functions.Query.Wheelie
+﻿namespace MyBiking.Application.ViewModels
 {
     internal class WheelieRideViewModel
     {

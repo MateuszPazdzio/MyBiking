@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using MyBiking.Application.ViewModels;
 using MyBiking.Entity.Models;
 using System;
 using System.Collections.Generic;

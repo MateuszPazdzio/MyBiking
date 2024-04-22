@@ -1,4 +1,4 @@
-﻿namespace MyBiking.Application.Functions.Query.Ride
+﻿namespace MyBiking.Application.ViewModels
 {
     internal class DetailsQueryViewModel
     {
