@@ -178,7 +178,8 @@ namespace MyBiking.Infrastructure.Migrations
                     StartingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Distance = table.Column<double>(type: "float", nullable: false),
-                    IsPublic = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Creation_Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -28,26 +28,26 @@ namespace MyBiking.Infrastructure.Repository
             //SeedRoles();
             //if (_myBikingDbContext.Database.CanConnect())
             //{
-            //_myBikingDbContext.Database.EnsureDeleted();
-            ////_myBikingDbContext.Database.EnsureCreated();
-            var pendingMigrations = _myBikingDbContext.Database.GetPendingMigrations();
-            if (pendingMigrations != null && pendingMigrations.Any())
-            {
-                _myBikingDbContext.Database.Migrate();
-            }
+            //    _myBikingDbContext.Database.EnsureDeleted();
+            //    //_myBikingDbContext.Database.EnsureCreated();
+            //    var pendingMigrations = _myBikingDbContext.Database.GetPendingMigrations();
+            //    if (pendingMigrations != null && pendingMigrations.Any())
+            //    {
+            //        _myBikingDbContext.Database.Migrate();
+            //    }
             //}
         }
 
-        private void SeedNationalities()
-        {
-            var faker = new Faker<Nationality>()
-                .RuleFor(n => n.NationalityName, f => f.Address.Country())
-                .Generate(150);
+        //private void SeedNationalities()
+        //{
+        //    var faker = new Faker<Nationality>()
+        //        .RuleFor(n => n.NationalityName, f => f.Address.Country())
+        //        .Generate(150);
 
-            faker = faker.OrderBy(p => p.NationalityName).ToList();
-            _myBikingDbContext.Nationalities.AddRange(faker);
-            _myBikingDbContext.SaveChanges();
-        }
+        //    faker = faker.OrderBy(p => p.NationalityName).ToList();
+        //    _myBikingDbContext.Nationalities.AddRange(faker);
+        //    _myBikingDbContext.SaveChanges();
+        //}
 
         //private void SeedRoles()
         //{

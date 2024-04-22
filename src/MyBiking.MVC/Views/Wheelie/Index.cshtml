@@ -1,48 +1,77 @@
-﻿@model MyBiking.Application.ViewModels.WheelieRideModelView
+﻿@using MyBikingApi.Models.Dtos
+@using System.Security.Claims
+@model MyBiking.Application.ViewModels.WheelieRideModelView
 
 @{
     ViewData["Title"] = "Index";
+    var c = User.Claims;
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-center mt-4">
+    <h1>Wheelies</h1>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(m=>m.WheelieRideDtos[0].Distance)</th>
-            <th>@Html.DisplayNameFor(m=>m.WheelieRideDtos[0].DurationTime)</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model.WheelieRideDtos) {
+@if (Model.WheelieRideDtos.Count() > 0)
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Distance)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.DurationTime)
-                </td>
-
-                <td>
-                    <button class="btn btn-danger deleteBtn" data-id="@item.Id" type="button">Delete</button>
-                    <button class="btn btn-primary previewBtn" data-id="@item.Id" type="button">Preview</button>
-                </td>
+                <th>@Html.DisplayNameFor(m => m.WheelieRideDtos[0].Distance)</th>
+                <th colspan="2">@Html.DisplayNameFor(m => m.WheelieRideDtos[0].DurationTime)</th>
             </tr>
-            <tr>
-                <td class="border-bottom-0" colspan="2">
-                    <div class="row dataRow">
-                        @* <a class="btn btn-primary w-25 mt-2 wheelieDetailsBtn" asp-action="Index" asp-controller="Wheelie" asp-route-id="@item.Id">Wheelie details</a> *@
-                    </div>
-                </td>
+        </thead>
+        <tbody>
 
-            </tr>
-    }
-    </tbody>
-</table>
+            @foreach (WheelieRideDto item in Model.WheelieRideDtos)
+            {
+                <tr>
+                    <td class="col-3">
+                        @Html.DisplayFor(modelItem => item.Distance)
+                    </td>
+
+                    <td class="col-3">
+                        @Html.DisplayFor(modelItem => item.DurationTime)
+                    </td>
+
+                    <td class="col-6">
+                        <div class="d-flex justify-content-end">
+                            <form class="mx-1" asp-action="Delete" asp-controller="Wheelie" method="post">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                @if (User.Identity.IsAuthenticated && 
+                                    item.Ride.ApplicationUser?.Id == User.Claims.FirstOrDefault(c=>c.Type==ClaimTypes.NameIdentifier)?.Value)
+                                {
+                                    <button class="btn btn-danger deleteBtn" type="submit">Delete</button>
+
+                                }
+                                <button class="btn btn-primary previewBtn" data-id="@item.Id" type="button">Show</button>
+                            </form>
+
+                        </div>
+                    </td>
+                </tr>
+                <tr class="col-12">
+                    <td class="border-bottom-0" colspan="4">
+                        <div class="row dataRow">
+                            @* <a class="btn btn-primary w-25 mt-2 wheelieDetailsBtn" asp-action="Index" asp-controller="Wheelie" asp-route-id="@item.Id">Wheelie details</a> *@
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3 class="mt-5 d-flex text-center justify-content- text text-secondary h3">There are currently 0 wheelies registered for this specific ride. You can only register your wheelies
+        in mobile app.
+    </h3>
+    <hr />
+    <div class="mt-4 createBtnWrapper col-12 d-flex justify-content-center">
+        <a id="createBtn" asp-action="Create" asp-controller="Ride" class="frontPageBtn">Create</a>
+    </div>
+}
+
 
 
 @section Scripts {
@@ -51,4 +80,5 @@
     }
 
     <script src="~/js//RideActivity/Wheelie.js"></script>
+    <script src="~/js//frontPage.js"></script>
 }

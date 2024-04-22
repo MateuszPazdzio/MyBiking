@@ -3,11 +3,14 @@ using MyBiking.Application.Extensions;
 using MyBiking.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using static System.Formats.Asn1.AsnWriter;
+using MyBiking.Entity.Models;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
@@ -16,6 +19,21 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+var supportedCultures = new[]
+{
+        new CultureInfo("en-US"),
+        new CultureInfo("es"),
+    };
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-US"),
+    // Formatting numbers, dates, etc.
+    SupportedCultures = supportedCultures,
+    // Localized UI strings.
+    SupportedUICultures = supportedCultures
+});
+
 app.UseSwagger();
 app.UseSwaggerUI();
 // Configure the HTTP request pipeline.

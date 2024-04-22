@@ -29,11 +29,22 @@ namespace MyBiking.Application.Functions.Query.Ride
             var ride = new DetailsQueryResponse()
             {
                 Wheelies = result.WheeleRides.Count(),
-                WheelieMaxV = Enumerable.Max(result.WheeleRides.SelectMany(w => w.WheeleItems.ToList()).ToList(), w => w.Speed),
+                WheelieMaxV = CalculateMaxwheelieV(result),
+                //WheelieMaxV = Enumerable.Max(result.WheeleRides.SelectMany(w => w.WheeleItems?.ToList()).ToList(), w => w.Speed),
                 TotalWheelieDistance = Enumerable.Sum(result.WheeleRides.ToList(), w => w.Distance),
             };
 
             return ride;
+        }
+
+        private double CalculateMaxwheelieV(Entity.Models.Ride ride)
+        {
+            var ridesContainingWheelieRidesList = ride.WheeleRides.SelectMany(w => w.WheeleItems);
+            if (ridesContainingWheelieRidesList.Any(wi => wi.Speed != null))
+            {
+                return Enumerable.Max(ridesContainingWheelieRidesList, w => w.Speed);
+            }
+            return 0d;
         }
     }
 }

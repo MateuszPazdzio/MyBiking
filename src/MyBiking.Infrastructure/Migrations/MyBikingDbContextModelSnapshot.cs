@@ -281,6 +281,9 @@ namespace MyBiking.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("Creation_Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<double>("Distance")
                         .HasColumnType("float");
 

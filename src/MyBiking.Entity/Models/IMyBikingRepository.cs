@@ -23,6 +23,8 @@ namespace MyBiking.Entity.Models
         Task<Ride> GetRideById(int id);
         Task<WheelieRide> GetWheelieRideById(int wheelieRideId);
         Task<Status> LoginApi(ApplicationUser user);
+        Task<Status> DeleteWheelie(int id);
         Task<Status> DeleteRide(int id);
+        Task<List<Ride>> GetPublicRides();
     }
 }

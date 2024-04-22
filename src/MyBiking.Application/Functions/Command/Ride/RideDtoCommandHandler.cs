@@ -25,7 +25,8 @@ namespace MyBiking.Application.Functions.Command.Ride
 
         public async Task<Status> Handle(RideDtoCommand request, CancellationToken cancellationToken)
         {
-            var ride = _mapper.Map<MyBiking.Entity.Models.Ride>(request);
+            var ride = _mapper.Map<Entity.Models.Ride>(request);
+            ride.Creation_Date = DateTime.Now;
             Status status =await _myBikingRepository.CreateRide(ride);
             return status;
         }

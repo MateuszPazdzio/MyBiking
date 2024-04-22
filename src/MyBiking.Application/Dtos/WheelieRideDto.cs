@@ -12,7 +12,7 @@ namespace MyBikingApi.Models.Dtos
         public DateTime StartingDateTime { get; set; }
         public DateTime EndingDateTime { get; set; }
         public double Distance { get; set; }
-        //[JsonIgnore]
-        //public RideDto Ride { get; set; }
+        [JsonIgnore]
+        public RideDto Ride { get; set; }
     }
 }

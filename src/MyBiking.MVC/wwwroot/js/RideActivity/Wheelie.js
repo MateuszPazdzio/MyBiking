@@ -10,18 +10,22 @@ const setSlider = async() => {
     $(".dataRow").hide();
     $(".previewBtn").click(async function (event) {
 
-        let aggregatedDatarowHtmlElement = $(this).parent().parent().next().find(".dataRow")
+        let aggregatedDatarowHtmlElement = $(this).parent().parent().parent().parent().next().find(".dataRow")
         console.log(aggregatedDatarowHtmlElement.children().length)
         if (aggregatedDatarowHtmlElement.children().length == 0) {
-
+            $(this).text("Hide")
             let wheelieId = $(this).data("id");
-
+            console.log("dane")
             var response = await getRideDetails(wheelieId, aggregatedDatarowHtmlElement);
-            $(this).parent().parent().next().find(".dataRow").slideToggle()
+            $(this).parent().parent().parent().parent().next().find(".dataRow").slideToggle()
         }
         else {
-            $(this).parent().parent().next().find(".dataRow").slideToggle()
-            console.log("xd2")
+            $(this).parent().parent().parent().parent().next().find(".dataRow").slideToggle()
+            if ($(this).text() == "Show") {
+                $(this).text("Hide")
+            } else {
+                $(this).text("Show")
+            }
         }
 
 
@@ -56,11 +60,11 @@ async function getRideDetails(wheelieId, aggregatedDatarowHtmlElement) {
 
 const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
         aggregatedDatarowHtmlElement.append(
-        `<ul class="list-group">
-            <li class="list-group-item">Addrees1: ${data.wheelieMaxV}</li>
-            <li class="list-group-item">Addrees2: ${data.wheelieMaxV}</li>
-            <li class="list-group-item">Max V: ${data.wheelies}</li>
-            <li class="list-group-item">Rotate X: ${data.wheelies}</li>
+        `<ul class="list-group details">
+            <li class="list-group-item">Addrees: <span class="detail-value">${data.addrees}</span></li>
+            <li class="list-group-item">Altitude: <span class="detail-value">${data.altitude}</span></li>
+            <li class="list-group-item">Max V: <span class="detail-value">${data.vMax}</span></li>
+            <li class="list-group-item">Rotate X: <span class="detail-value">${data.rotateX}</span></li>
         </ul>`)
     //await sleep(5000);
     console.log(12432)

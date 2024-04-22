@@ -24,6 +24,10 @@ namespace MyBiking.Application.Functions.Query.Wheelie
         public async Task<List<WheelieRideDto>> Handle(WheelieRidesQuery request, CancellationToken cancellationToken)
         {
             List<WheelieRide> wheelieRides = await _myBikingRepository.GetWheelieRidesById(request.RideId);
+            if(wheelieRides == null)
+            {
+                return null;
+            }
             var mappedWheelieRides = mapper.Map<List<WheelieRideDto>>(wheelieRides);
             return mappedWheelieRides;
         }
