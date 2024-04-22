@@ -20,7 +20,7 @@ public class ApiService {
 
         HttpURLConnection httpURLConnection = null;
         try {
-            URL url = new URL("https://mybiking.azurewebsites.net/api/auth/login");
+            URL url = new URL("");
             httpURLConnection = (HttpURLConnection) url.openConnection();
 
             httpURLConnection.setRequestMethod("POST");
@@ -78,7 +78,7 @@ public class ApiService {
         HttpURLConnection httpURLConnection = null;
         try {
 
-            URL url = new URL("https://mybiking.azurewebsites.net/api/ride");
+            URL url = new URL("");
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoInput(true);

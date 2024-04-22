@@ -38,16 +38,16 @@ namespace MyBiking.Infrastructure.Repository
             //}
         }
 
-        private void SeedNationalities()
-        {
-            var faker = new Faker<Nationality>()
-                .RuleFor(n => n.NationalityName, f => f.Address.Country())
-                .Generate(150);
+        //private void SeedNationalities()
+        //{
+        //    var faker = new Faker<Nationality>()
+        //        .RuleFor(n => n.NationalityName, f => f.Address.Country())
+        //        .Generate(150);
 
-            faker = faker.OrderBy(p => p.NationalityName).ToList();
-            _myBikingDbContext.Nationalities.AddRange(faker);
-            _myBikingDbContext.SaveChanges();
-        }
+        //    faker = faker.OrderBy(p => p.NationalityName).ToList();
+        //    _myBikingDbContext.Nationalities.AddRange(faker);
+        //    _myBikingDbContext.SaveChanges();
+        //}
 
         //private void SeedRoles()
         //{

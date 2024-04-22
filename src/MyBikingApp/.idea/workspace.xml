@@ -17,15 +17,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5db8dbf2-eb3f-4307-81ba-c1a40488a496" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Application/Dtos/RideDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Application/Dtos/RideDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Application/Functions/Command/Ride/RideDtoCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Application/Functions/Command/Ride/RideDtoCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Entity/Models/Ride.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Entity/Models/Ride.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/20240418140809_Init.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/20240418140809_Init.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/MyBikingDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Infrastructure/Migrations/MyBikingDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.MVC/Controllers/RideController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.MVC/Controllers/RideController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyBiking.MVC/Views/Ride/Create.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.MVC/Views/Ride/Create.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingDbSeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MyBiking.Infrastructure/Repository/MyBikingDbSeeder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/ApiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/FetchData.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/gpstrackingdemo/FetchData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
