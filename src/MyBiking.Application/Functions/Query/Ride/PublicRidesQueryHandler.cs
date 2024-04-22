@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MyBiking.Application.Functions.Query.Ride
 {
-    internal class PublicRidesQueryHandler : IRequestHandler<PublicRidesQuery, PublicRidesQueryResponse>
+    internal class PublicRidesQueryHandler : IRequestHandler<PublicRidesQuery, PublicRidesQueryViewModel>
     {
         private readonly IMyBikingRepository _myBikingRepository;
         private readonly IMapper _mapper;
@@ -20,12 +20,12 @@ namespace MyBiking.Application.Functions.Query.Ride
             this._myBikingRepository = myBikingRepository;
             this._mapper = mapper;
         }
-        public async Task<PublicRidesQueryResponse> Handle(PublicRidesQuery request, CancellationToken cancellationToken)
+        public async Task<PublicRidesQueryViewModel> Handle(PublicRidesQuery request, CancellationToken cancellationToken)
         {
             var publicRides =await _myBikingRepository.GetPublicRides();
             var mappedPublicRides = _mapper.Map<List<RideDto>>(publicRides);
 
-            var response = new PublicRidesQueryResponse()
+            var response = new PublicRidesQueryViewModel()
             {
                 Rides = mappedPublicRides,
             };

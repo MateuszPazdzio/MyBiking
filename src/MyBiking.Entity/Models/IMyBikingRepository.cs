@@ -15,16 +15,16 @@ namespace MyBiking.Entity.Models
         public Task<bool> GetUserByEmail(string email);
         public Task<Status> CreateUser(ApplicationUser user);
         public Task<Status> LoginUser(ApplicationUser user);
-        Task LogoutAsync();
+        public Task LogoutAsync();
         public Task<Status> CreateRide(Ride ride);
-        Task<List<Ride>> GetRidesByMonthAsync(string year,string month);
-        Task<List<Ride>> GetRideActivitiesSelectedByYear(int? year);
-        Task<List<WheelieRide>> GetWheelieRidesById(int? rideId);
-        Task<Ride> GetRideById(int id);
-        Task<WheelieRide> GetWheelieRideById(int wheelieRideId);
-        Task<Status> LoginApi(ApplicationUser user);
-        Task<Status> DeleteWheelie(int id);
-        Task<Status> DeleteRide(int id);
-        Task<List<Ride>> GetPublicRides();
+        public Task<List<Ride>> GetRidesByMonthAsync(string year,string month);
+        public Task<List<Ride>> GetRideActivitiesSelectedByYear(int? year);
+        public Task<List<WheelieRide>> GetWheelieRidesById(int? rideId);
+        public Task<Ride> GetRideById(int id);
+        public Task<WheelieRide> GetWheelieRideById(int wheelieRideId);
+        public Task<Status> LoginApi(ApplicationUser user);
+        public Task<Status> DeleteWheelie(int id);
+        public Task<Status> DeleteRide(int id);
+        public Task<List<Ride>> GetPublicRides();
     }
 }

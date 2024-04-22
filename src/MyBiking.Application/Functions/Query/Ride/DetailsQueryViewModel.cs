@@ -1,6 +1,6 @@
 ﻿namespace MyBiking.Application.Functions.Query.Ride
 {
-    internal class DetailsQueryResponse
+    internal class DetailsQueryViewModel
     {
         public double WheelieMaxV { get; set; }
         public double TotalWheelieDistance { get; set; }

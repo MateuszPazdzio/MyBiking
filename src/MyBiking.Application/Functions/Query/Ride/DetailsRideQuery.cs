@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyBiking.Application.Functions.Query.Ride
 {
-    public class DetailsRideQuery : IRequest<DetailsQueryResponse>
+    public class DetailsRideQuery : IRequest<DetailsQueryViewModel>
     {
         public int Id { get; set; } 
     }

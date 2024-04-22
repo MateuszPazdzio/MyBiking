@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyBiking.Application.Functions.Query.Ride
 {
-    public class PublicRidesQueryResponse
+    public class PublicRidesQueryViewModel
     {
         public List<RideDto> Rides { get; set; }
     }

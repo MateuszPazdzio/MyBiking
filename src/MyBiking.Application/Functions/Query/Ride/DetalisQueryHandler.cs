@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyBiking.Application.Functions.Query.Ride
 {
-    internal class DetalisQueryHandler : IRequestHandler<DetailsRideQuery, DetailsQueryResponse>
+    internal class DetalisQueryHandler : IRequestHandler<DetailsRideQuery, DetailsQueryViewModel>
     {
 
         private readonly IMyBikingRepository _myBikingRepository;
@@ -18,7 +18,7 @@ namespace MyBiking.Application.Functions.Query.Ride
             this._myBikingRepository = myBikingRepository;
         }
 
-        public async Task<DetailsQueryResponse> Handle(DetailsRideQuery request, CancellationToken cancellationToken)
+        public async Task<DetailsQueryViewModel> Handle(DetailsRideQuery request, CancellationToken cancellationToken)
         {
             var result =await _myBikingRepository.GetRideById(request.Id);
             if(result == null)
@@ -26,7 +26,7 @@ namespace MyBiking.Application.Functions.Query.Ride
                 throw new ArgumentException($"There is no ride with id {request.Id}");
             }
 
-            var ride = new DetailsQueryResponse()
+            var ride = new DetailsQueryViewModel()
             {
                 Wheelies = result.WheeleRides.Count(),
                 WheelieMaxV = CalculateMaxwheelieV(result),
