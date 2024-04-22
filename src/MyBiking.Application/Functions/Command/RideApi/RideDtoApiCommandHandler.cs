@@ -4,9 +4,6 @@ using MyBiking.Entity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MyBiking.Entity.Models;
 using MyBiking.Application.Dtos;
 
 namespace MyBiking.Application.Functions.Command.RideApi

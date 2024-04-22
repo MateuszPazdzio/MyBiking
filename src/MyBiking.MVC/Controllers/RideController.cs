@@ -90,7 +90,7 @@ namespace MyBiking.MVC.Controllers
 
         // POST: RideController/Create
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         //public async Task<ActionResult> Create(RideDtoApiCommand rideDtoCommand)
         public async Task<ActionResult> Create(RideDtoCommand rideDtoCommand)
         {

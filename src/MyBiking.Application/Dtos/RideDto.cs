@@ -22,7 +22,7 @@ namespace MyBiking.Application.Dtos
 
         public DateTime EndingDateTime { get; set; }
         [Display(Name = "Distance (m)")]
-        public decimal Distance { get; set; }
+        public double Distance { get; set; }
         [Display(Name ="Public")]
         public bool IsPublic { get; set; }
         public DateTime Creation_Date{ get; set; }

@@ -13,6 +13,8 @@ using MyBiking.Application.Functions.Command.User;
 using System.Reflection;
 using AutoMapper;
 using MyBiking.Application.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 
 namespace MyBiking.Application.Extensions
@@ -21,6 +23,8 @@ namespace MyBiking.Application.Extensions
     {
         public static void AddApplication(this IServiceCollection services)
         {
+            services.AddControllersWithViews();
+
             services.AddMediatR(cfg=>cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
             //services.AddAutoMapper(typeof(RideDtoProfile), typeof(AuthUserDtoProfile));
             services.AddAutoMapper(typeof(AutoMapperProfile));
@@ -47,5 +51,6 @@ namespace MyBiking.Application.Extensions
 
             services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
         }
+
     }
 }
