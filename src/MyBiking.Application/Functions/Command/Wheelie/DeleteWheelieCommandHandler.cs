@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using MyBiking.Application.Dtos;
-using MyBiking.Entity.Models;
+using MyBiking.Entity.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +11,10 @@ namespace MyBiking.Application.Functions.Command.Wheelie
 {
     internal class DeleteWheelieCommandHandler : IRequestHandler<DeleteWheelieCommand, Status>
     {
-        private readonly IMyBikingRepository _myBikingRepository;
+        //private readonly IMyBikingRepository _myBikingRepository;
+        private readonly IWheelieRideRepository _myBikingRepository;
 
-        public DeleteWheelieCommandHandler(IMyBikingRepository myBikingRepository)
+        public DeleteWheelieCommandHandler(IWheelieRideRepository myBikingRepository)
         {
             this._myBikingRepository = myBikingRepository;
         }

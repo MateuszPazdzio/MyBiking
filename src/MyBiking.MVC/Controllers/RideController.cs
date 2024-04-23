@@ -1,19 +1,20 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MyBiking.Entity.Models;
 using MyBiking.Application.Functions.Query.Ride;
 using MyBiking.Application.Functions.Command.RideApi;
 using MyBiking.Application.Dtos;
 using MyBiking.Application.ViewModels;
 using MyBiking.Application.Functions.Command.Ride;
+using MyBiking.Entity.IRepository;
 namespace MyBiking.MVC.Controllers
 {
     public class RideController : Controller
     {
-        private readonly IMyBikingRepository _myBikingRepository;
+        //private readonly IMyBikingRepository _myBikingRepository;
+        private readonly IRideRepository _myBikingRepository;
         private readonly IMediator _mediator;
 
-        public RideController(IMyBikingRepository myBikingRepository, IMediator mediator)
+        public RideController(IRideRepository myBikingRepository, IMediator mediator)
         {
             
             this._myBikingRepository = myBikingRepository;
@@ -94,6 +95,10 @@ namespace MyBiking.MVC.Controllers
         //public async Task<ActionResult> Create(RideDtoApiCommand rideDtoCommand)
         public async Task<ActionResult> Create(RideDtoCommand rideDtoCommand)
         {
+            if(rideDtoCommand == null)
+            {
+                return BadRequest();
+            }
             try
             {
                 if (!ModelState.IsValid)

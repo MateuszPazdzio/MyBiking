@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using MyBiking.Application.ViewModels;
-using MyBiking.Entity.Models;
+using MyBiking.Entity.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,10 @@ namespace MyBiking.Application.Functions.Query.Ride
     internal class DetalisQueryHandler : IRequestHandler<DetailsRideQuery, DetailsQueryViewModel>
     {
 
-        private readonly IMyBikingRepository _myBikingRepository;
+        //private readonly IMyBikingRepository _myBikingRepository;
+        private readonly IRideRepository _myBikingRepository;
 
-        public DetalisQueryHandler(IMyBikingRepository myBikingRepository)
+        public DetalisQueryHandler(IRideRepository myBikingRepository)
         {
             this._myBikingRepository = myBikingRepository;
         }

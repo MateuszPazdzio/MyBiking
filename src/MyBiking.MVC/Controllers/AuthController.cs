@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyBiking.Application.Dtos;
 using MyBiking.Application.Functions.Command.User;
+using MyBiking.Entity.IRepository;
 using MyBiking.Entity.Models;
 using MyBiking.Infrastructure.Repository;
 using System.Security.Claims;
@@ -16,11 +17,12 @@ namespace MyBiking.MVC.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
-        private readonly IMyBikingRepository _myBikingRepository;
+        //private readonly IMyBikingRepository _myBikingRepository;
+        private readonly IUserRepository _myBikingRepository;
         private readonly IMediator _mediator;
 
-        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager , IMapper mapper, 
-            IMyBikingRepository myBikingRepository, IMediator mediator)
+        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager , IMapper mapper,
+            IUserRepository myBikingRepository, IMediator mediator)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
@@ -41,19 +43,34 @@ namespace MyBiking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginUserDtoCommand loginUserDtoCommand)
         {
-            if (!ModelState.IsValid)
+            if(loginUserDtoCommand == null)
             {
-                return View();
+                return BadRequest();
             }
-
-            var result =await _mediator.Send(loginUserDtoCommand) as Status;
-            if(result.StatusCode == 1)
+            try
             {
-                return RedirectToAction("Index", "Home");
-            }
+                if (!ModelState.IsValid)
+                {
+                    return View();
+                }
 
-            TempData["msg"] = result.Message;
-            return View();
+                var result = await _mediator.Send(loginUserDtoCommand) as Status;
+                if (result.StatusCode == 1)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                TempData["msg"] = result.Message;
+
+                return View(loginUserDtoCommand);
+            }
+            catch (Exception)
+            {
+                return View(loginUserDtoCommand);
+                throw;
+            }
+            
+            
         }
 
         [HttpGet]
@@ -72,36 +89,26 @@ namespace MyBiking.MVC.Controllers
             {
                 return BadRequest();
             }
-            if(!ModelState.IsValid)
+            try
             {
-                //registerUserDto.Nationalities = await _myBikingRepository.GetNationalities();
-                //return View(registerUserDto);               
-                //registerUserDto.Nationalities = await _myBikingRepository.GetNationalities();
+                if (!ModelState.IsValid)
+                {
+                    return View(registerUserDtoCommand);
+                }
+
+                var result = await _mediator.Send(registerUserDtoCommand) as Status;
+
+                if (result.StatusCode == 1)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+            }
+            catch (Exception)
+            {
                 return View(registerUserDtoCommand);
             }
+            
 
-            var result = await _mediator.Send(registerUserDtoCommand) as Status;
-
-            if (result.StatusCode == 1)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-            //if (result.Succeeded)
-            //{
-            //    if(User.Identity.IsAuthenticated)
-            //    {
-            //        await Console.Out.WriteLineAsync("");
-            //    }
-            //    return RedirectToAction("Index","Home");
-            //}
-
-            //foreach (var error in result.Errors)
-            //{
-            //    ModelState.AddModelError("", error.Description);
-            //}
-            //return Ok(result);
-            //var nationalities = await _myBikingRepository.GetNationalities();
-            //ViewData["Nationalities"] = nationalities;
             return View(registerUserDtoCommand);
         }
         [Authorize]

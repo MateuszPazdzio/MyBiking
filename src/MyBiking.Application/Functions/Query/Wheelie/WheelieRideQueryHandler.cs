@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using MyBiking.Application.ViewModels;
+using MyBiking.Entity.IRepository;
 using MyBiking.Entity.Models;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,11 @@ namespace MyBiking.Application.Functions.Query.Wheelie
 {
     internal class WheelieRideQueryHandler : IRequestHandler<WheelieRideQuery, WheelieRideViewModel>
     {
-        private readonly IMyBikingRepository _myBikingRepository;
+        //private readonly IMyBikingRepository _myBikingRepository;
+        private readonly IWheelieRideRepository _myBikingRepository;
         private readonly IMapper mapper;
 
-        public WheelieRideQueryHandler(IMyBikingRepository myBikingRepository, IMapper mapper)
+        public WheelieRideQueryHandler(IWheelieRideRepository myBikingRepository, IMapper mapper)
         {
             this._myBikingRepository = myBikingRepository;
             this.mapper = mapper;

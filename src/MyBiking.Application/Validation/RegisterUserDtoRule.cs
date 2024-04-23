@@ -1,15 +1,16 @@
 ﻿using FluentValidation;
 using MyBiking.Application.Dtos;
-using MyBiking.Entity.Models;
+using MyBiking.Entity.IRepository;
 using System.Linq;
 
 namespace MyBiking.Application.Validation
 {
     public class RegisterUserDtoRule : AbstractValidator<RegisterUserDto>
     {
-        private readonly IMyBikingRepository _context;
+        //private readonly IMyBikingRepository _context;
+        private readonly IUserRepository _context;
 
-        public RegisterUserDtoRule(IMyBikingRepository context)
+        public RegisterUserDtoRule(IUserRepository context)
         {
             this._context = context;
 
