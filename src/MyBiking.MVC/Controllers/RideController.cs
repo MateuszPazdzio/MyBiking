@@ -94,13 +94,20 @@ namespace MyBiking.MVC.Controllers
         //public async Task<ActionResult> Create(RideDtoApiCommand rideDtoCommand)
         public async Task<ActionResult> Create(RideDtoCommand rideDtoCommand)
         {
-            //usunąć user id
-            if (!ModelState.IsValid)
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(rideDtoCommand);
+                }
+                var status = await _mediator.Send(rideDtoCommand);
+                return RedirectToAction("Index", "Ride");
+            }
+            catch (Exception)
             {
                 return View(rideDtoCommand);
             }
-            var status = await _mediator.Send(rideDtoCommand);
-            return RedirectToAction("Index", "Ride");
+
         }
 
         // POST: RideController/Delete/5
