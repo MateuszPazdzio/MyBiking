@@ -27,7 +27,7 @@ namespace MyBiking.Application.Functions.Query.Ride
             var result =await _myBikingRepository.GetRidesByMonthAsync(request.Year,request.Month);
             if(result == null)
             {
-                throw new ArgumentException("Theres is not such ride, that occured in a month of specific year");
+                return new List<RideDto>();
             }
 
             List<RideDto> rideDtos = _mapper.Map<List<RideDto>>(result);

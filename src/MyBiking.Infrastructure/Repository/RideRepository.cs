@@ -2,6 +2,7 @@
 using MyBiking.Application.Dtos;
 using MyBiking.Application.Models;
 using MyBiking.Entity.Constants;
+using MyBiking.Entity.Enums;
 using MyBiking.Entity.IRepository;
 using MyBiking.Entity.Models;
 using System;
@@ -25,46 +26,50 @@ namespace MyBiking.Infrastructure.Repository
 
         public async Task<Status> CreateRide(Ride ride)
         {
+            Status status = new Status();
+            if (ride == null)
+            {
+                status.Code = Code.HTTP400;
+                return status;
+            }
             try
             {
-                //ride.ApplicationUserId = "e13e6aad-17a8-4e6e-a496-52725db3be7f";
                 _context.Rides.Add(ride);
                 _context.SaveChanges();
-                return new Status()
-                {
-                    StatusCode = 1,
-                };
+                status.Code = Code.HTTP201;
+                return status;
             }
             catch (Exception e)
             {
-                return new Status()
-                {
-                    StatusCode = 0,
-                    Message = e.Source
-                };
-
+                status.Code = Code.HTTP201;
+                return status;
             }
         }
 
         public async Task<Status> DeleteRide(int id)
         {
+            Status status = new Status();
+            if (id == null)
+            {
+                status.Code = Code.HTTP400;
+                return status;
+            }
+
             var rideToRemove = await _context.Rides.FirstOrDefaultAsync(r => r.Id == id);
             if (rideToRemove != null)
             {
                 _context.Rides.Remove(rideToRemove);
                 _context.SaveChanges();
 
-                return new Status()
-                {
-                    Message = "Ride deleted successfully",
-                    StatusCode = 204
-                };
+                status.Message = "Ride deleted successfully";
+                status.Code = Code.HTTP204;
+                return status;
             }
-            return new Status()
-            {
-                Message = "Ride has been not deleted successfully",
-                StatusCode = 400
-            };
+
+            status.Message = "Ride has been not deleted successfully";
+            status.Code = Code.HTTP500;
+            return status;
+
         }
 
         public async Task<List<Ride>> GetPublicRides()
@@ -102,7 +107,6 @@ namespace MyBiking.Infrastructure.Repository
             catch (Exception)
             {
                 return null;
-                throw;
             }
         }
 
@@ -133,10 +137,9 @@ namespace MyBiking.Infrastructure.Repository
             }
             catch (Exception)
             {
-                await Console.Out.WriteLineAsync();
-                throw;
+                return null;
+
             }
-            return null;
         }
     }
 }

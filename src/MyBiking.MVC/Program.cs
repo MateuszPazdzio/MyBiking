@@ -22,15 +22,13 @@ var app = builder.Build();
 var supportedCultures = new[]
 {
         new CultureInfo("en-US"),
-        new CultureInfo("es"),
+        //new CultureInfo("pl-PL"),
     };
 
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
     DefaultRequestCulture = new RequestCulture("en-US"),
-    // Formatting numbers, dates, etc.
     SupportedCultures = supportedCultures,
-    // Localized UI strings.
     SupportedUICultures = supportedCultures
 });
 

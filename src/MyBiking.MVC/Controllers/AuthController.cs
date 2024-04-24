@@ -76,10 +76,6 @@ namespace MyBiking.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Register()
         {
-            //RegisterUserDto registerModelView = new RegisterUserDto();
-            //registerModelView.Nationalities = await _myBikingRepository.GetNationalities();
-
-            //return View(registerModelView);
             return View();
         }
         [HttpPost]
@@ -96,20 +92,20 @@ namespace MyBiking.MVC.Controllers
                     return View(registerUserDtoCommand);
                 }
 
-                var result = await _mediator.Send(registerUserDtoCommand) as Status;
+                var result = await _mediator.Send(registerUserDtoCommand);
 
-                if (result.StatusCode == 1)
+                if (result.Code == Entity.Enums.Code.HTTP201)
                 {
                     return RedirectToAction("Login", "Auth");
                 }
+
+                return View(registerUserDtoCommand);
+
             }
             catch (Exception)
             {
                 return View(registerUserDtoCommand);
             }
-            
-
-            return View(registerUserDtoCommand);
         }
         [Authorize]
         public async Task<IActionResult> Logout()

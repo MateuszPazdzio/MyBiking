@@ -39,20 +39,19 @@ namespace MyBiking.Infrastructure.Repository
             var userExists = await _userManager.FindByNameAsync(user.UserName);
             if (userExists != null)
             {
-                status.StatusCode = 0;
+                status.Code = Entity.Enums.Code.HTTP400;
                 status.Message = "User already exist";
                 return status;
             }
             var result = await _userManager.CreateAsync(user, user.Password);
             if (!result.Succeeded)
             {
-                status.StatusCode = 0;
+                status.Code= Entity.Enums.Code.HTTP400;
                 status.Message = "User creation failed";
                 return status;
             }
 
             await _userManager.AddToRoleAsync(user, "Member");
-
 
             status.StatusCode = 1;
             status.Message = "You have registered successfully";
@@ -84,7 +83,7 @@ namespace MyBiking.Infrastructure.Repository
 
             if (user == null)
             {
-                status.StatusCode = 0;
+                status.Code = Entity.Enums.Code.HTTP400;
                 status.Message = "Invalid username";
                 return status;
             }
@@ -92,7 +91,7 @@ namespace MyBiking.Infrastructure.Repository
             if (!await _userManager.CheckPasswordAsync(userFound, user.Password))
             //if (!await _userManager.CheckPasswordAsync(userFound, user.Password))
             {
-                status.StatusCode = 0;
+                status.Code = Entity.Enums.Code.HTTP500;
                 status.Message = "Invalid Password";
                 return status;
             }
@@ -115,12 +114,12 @@ namespace MyBiking.Infrastructure.Repository
             }
             else if (signInResult.IsLockedOut)
             {
-                status.StatusCode = 0;
+                status.Code = Entity.Enums.Code.HTTP500;
                 status.Message = "User is locked out";
             }
             else
             {
-                status.StatusCode = 0;
+                status.Code = Entity.Enums.Code.HTTP400;
                 status.Message = "Error on logging in";
             }
 
@@ -147,7 +146,6 @@ namespace MyBiking.Infrastructure.Repository
             }
             return validUser;
         }
-
         private async Task<List<Claim>> GenerateListOfClaims(ApplicationUser validUser)
         {
             return new List<Claim>()
