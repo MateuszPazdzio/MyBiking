@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 using MediatR;
 using MyBiking.Entity.Models;
 using AutoMapper;
+using MyBiking.Entity.IRepository;
 
 namespace MyBiking.Application.Functions.Query.Wheelie
 {
     public class WheelieQueryHandler : MediatR.IRequestHandler<WheelieRidesQuery, List<WheelieRideDto>>
     {
-        private readonly IMyBikingRepository _myBikingRepository;
+        //private readonly IMyBikingRepository _myBikingRepository;
+        private readonly IWheelieRideRepository _myBikingRepository;
         private readonly IMapper mapper;
 
-        public WheelieQueryHandler(IMyBikingRepository myBikingRepository, IMapper mapper)
+        public WheelieQueryHandler(IWheelieRideRepository myBikingRepository, IMapper mapper)
         {
             this._myBikingRepository = myBikingRepository;
             this.mapper = mapper;

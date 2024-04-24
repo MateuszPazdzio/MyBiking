@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using MyBiking.Application.Dtos;
+using MyBiking.Entity.IRepository;
 using MyBiking.Entity.Models;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,10 @@ namespace MyBiking.Application.Functions.Command.User
     internal class LoginUserDtoCommandHandler : IRequestHandler<LoginUserDtoCommand, Status>
     {
         private IMapper _mapper;
-        private IMyBikingRepository _myBikingRepository;
+        //private IMyBikingRepository _myBikingRepository;
+        private IUserRepository _myBikingRepository;
 
-        public LoginUserDtoCommandHandler(IMapper mapper, IMyBikingRepository myBikingRepository)
+        public LoginUserDtoCommandHandler(IMapper mapper, IUserRepository myBikingRepository)
         {
             _mapper = mapper;
             _myBikingRepository = myBikingRepository;

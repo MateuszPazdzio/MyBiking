@@ -1,39 +1,36 @@
 ﻿using AutoMapper;
 using MediatR;
+using MyBiking.Application.ViewModels;
+using MyBiking.Entity.IRepository;
 using MyBiking.Entity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using MyBiking.Entity.Enums;
 
 namespace MyBiking.Application.Functions.Query.Wheelie
 {
-    internal class WheelieRideQueryHandler : IRequestHandler<WheelieRideQuery, WheelieRideResponse>
+    internal class WheelieRideQueryHandler : IRequestHandler<WheelieRideQuery, WheelieRideViewModel>
     {
-        private readonly IMyBikingRepository _myBikingRepository;
+        //private readonly IMyBikingRepository _myBikingRepository;
+        private readonly IWheelieRideRepository _myBikingRepository;
         private readonly IMapper mapper;
 
-        public WheelieRideQueryHandler(IMyBikingRepository myBikingRepository, IMapper mapper)
+        public WheelieRideQueryHandler(IWheelieRideRepository myBikingRepository, IMapper mapper)
         {
             this._myBikingRepository = myBikingRepository;
             this.mapper = mapper;
         }
-        public async Task<WheelieRideResponse> Handle(WheelieRideQuery request, CancellationToken cancellationToken)
+        public async Task<WheelieRideViewModel> Handle(WheelieRideQuery request, CancellationToken cancellationToken)
         {
             var result =await _myBikingRepository.GetWheelieRideById(request.WheelieRideId);
 
-            var response = new WheelieRideResponse()
+            var response = new WheelieRideViewModel()
             {
-                //Addrees = result.WheeleItems?.FirstOrDefault(wi => !String.IsNullOrEmpty(wi.Address)).Address,
                 Addrees = CalculateWheelieRideParameter(result, Entity.Enums.WheelieRide.Addrees),
-                //Altitude = Enumerable.Max(result.WheeleItems?.Select(w=>w.Altitude).ToList()).ToString(),
                 Altitude = CalculateWheelieRideParameter(result, Entity.Enums.WheelieRide.Altitude),
-                //RotateX = result.WheeleItems?.Max(wi => wi.MaxRotateX).ToString(),
                 RotateX = CalculateWheelieRideParameter(result, Entity.Enums.WheelieRide.RotateX),
-                //VMax = result.WheeleItems?.Max(wi => wi.Speed).ToString(),
                 VMax = CalculateWheelieRideParameter(result, Entity.Enums.WheelieRide.VMax),
             };
 
@@ -56,7 +53,7 @@ namespace MyBiking.Application.Functions.Query.Wheelie
                 return "";
             }
 
-            if (wheelieRide.WheeleItems.Any(wi=>wheelieItemParams[paramType].Invoke(wi)!=null))
+            if (wheelieRide.WheeleItems.Any(wi => wheelieItemParams[paramType].Invoke(wi) != null))
             {
                 if (paramType == Entity.Enums.WheelieRide.Addrees)
                 {

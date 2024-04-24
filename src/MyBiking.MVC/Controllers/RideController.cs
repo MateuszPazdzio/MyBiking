@@ -1,19 +1,21 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MyBiking.Entity.Models;
 using MyBiking.Application.Functions.Query.Ride;
 using MyBiking.Application.Functions.Command.RideApi;
 using MyBiking.Application.Dtos;
 using MyBiking.Application.ViewModels;
 using MyBiking.Application.Functions.Command.Ride;
+using MyBiking.Entity.IRepository;
+using Microsoft.AspNetCore.Http;
 namespace MyBiking.MVC.Controllers
 {
     public class RideController : Controller
     {
-        private readonly IMyBikingRepository _myBikingRepository;
+        //private readonly IMyBikingRepository _myBikingRepository;
+        private readonly IRideRepository _myBikingRepository;
         private readonly IMediator _mediator;
 
-        public RideController(IMyBikingRepository myBikingRepository, IMediator mediator)
+        public RideController(IRideRepository myBikingRepository, IMediator mediator)
         {
             
             this._myBikingRepository = myBikingRepository;
@@ -37,7 +39,6 @@ namespace MyBiking.MVC.Controllers
             if(listRideViewModel.Year==String.Empty)
             {
                 return RedirectToAction("index");
-                //throw new Exception("Year does not exists");
             }
 
             if(listRideViewModel.Month == String.Empty)
@@ -65,7 +66,7 @@ namespace MyBiking.MVC.Controllers
             var response =await _mediator.Send(new PublicRidesQuery());
             return View("Public",response);
         }
-        // GET: RideController/Details/5
+
         public async Task<ActionResult> Details(AgregatedRideQuery agregatedRideQuery)
         {
             var response =await _mediator.Send(agregatedRideQuery);
@@ -78,7 +79,6 @@ namespace MyBiking.MVC.Controllers
             return Ok(response);
         }
 
-        // GET: RideController/Create
         public ActionResult Create()
         {
             if (!User.Identity.IsAuthenticated)
@@ -88,19 +88,34 @@ namespace MyBiking.MVC.Controllers
             return View();
         }
 
-        // POST: RideController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Create(RideDtoApiCommand rideDtoCommand)
         public async Task<ActionResult> Create(RideDtoCommand rideDtoCommand)
         {
-            //usunąć user id
-            if (!ModelState.IsValid)
+            if(rideDtoCommand == null)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(rideDtoCommand);
+                }
+                var status = await _mediator.Send(rideDtoCommand);
+
+                if(status.Code == Entity.Enums.Code.HTTP500)
+                {
+                    return StatusCode(500, "Internal Server Error");
+                }
+
+                return RedirectToAction("Index", "Ride");
+            }
+            catch (Exception)
             {
                 return View(rideDtoCommand);
             }
-            var status = await _mediator.Send(rideDtoCommand);
-            return RedirectToAction("Index", "Ride");
+
         }
 
         // POST: RideController/Delete/5

@@ -1,6 +1,6 @@
-﻿namespace MyBiking.Application.Functions.Query.Wheelie
+﻿namespace MyBiking.Application.ViewModels
 {
-    internal class WheelieRideResponse
+    internal class WheelieRideViewModel
     {
         public string Addrees { get; set; }
         //public string Addrees2 { get; set; }

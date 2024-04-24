@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBiking.Application.Functions.Query.Ride
+namespace MyBiking.Application.ViewModels
 {
-    public class PublicRidesQueryResponse
+    public class PublicRidesQueryViewModel
     {
         public List<RideDto> Rides { get; set; }
     }
