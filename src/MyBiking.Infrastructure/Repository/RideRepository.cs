@@ -78,21 +78,28 @@ namespace MyBiking.Infrastructure.Repository
 
         public Task<List<Ride>> GetRideActivitiesSelectedByYear(int? year)
         {
-            var userID = _userHttpContext.GetUser()?.Id;
-            if (!year.HasValue)
-            {
-                return _context.Rides.
-                    Where(r => userID == r.ApplicationUserId).
-                    OrderBy(r => r.StartingDateTime).ToListAsync();
-            }
+            var userId = _userHttpContext.GetUser()?.Id;
 
             try
             {
-                var a = _context.Rides
+                if (userId == null)
+                {
+                    throw new Exception("User is not logged in");
+                }
+
+                if (!year.HasValue)
+                {
+                    return _context.Rides.
+                        Where(r => userId == r.ApplicationUserId).
+                        OrderByDescending(r => r.Creation_Date).ToListAsync();
+                }
+
+                var rides = _context.Rides
                     .AsNoTracking()
                     .Where(r => r.StartingDateTime.Year == year)
                     .ToListAsync();
-                return a;
+
+                return rides;
 
 
             }
