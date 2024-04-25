@@ -21,6 +21,8 @@ namespace MyBiking.Infrastructure.Tests.Repository
         private Mock<MyBikingDbContext> _mockMyBikingDbContext;
         private List<Ride> _fakeRides;
         private IRideRepository _rideRepository;
+
+        #region setup
         [SetUp]
         public void SetUp()
         {
@@ -191,6 +193,9 @@ namespace MyBiking.Infrastructure.Tests.Repository
             );
         }
 
+        #endregion
+
+        #region CreateRide
         [Test()]
         public async Task CreateRide_RideIsNull_ReturnsHttp400()
         {
@@ -198,7 +203,7 @@ namespace MyBiking.Infrastructure.Tests.Repository
             Ride ride = null;
 
             //act
-            var status =await _rideRepository.CreateRide(ride);
+            var status = await _rideRepository.CreateRide(ride);
 
             //assert
             Assert.That(status.Code == Entity.Enums.Code.HTTP400);
@@ -226,8 +231,9 @@ namespace MyBiking.Infrastructure.Tests.Repository
             Assert.That(status.Code == Entity.Enums.Code.HTTP201);
             Assert.That(savedRideCount, Is.EqualTo(3));
         }
+        #endregion
 
-
+        #region DeleteRide
         [Test()]
         public async Task DeleteRide_DeletingExsistingRide_ReturnsHttp204()
         {
@@ -267,6 +273,9 @@ namespace MyBiking.Infrastructure.Tests.Repository
             Assert.That(savedRideCount, Is.EqualTo(0));
             Assert.That(_fakeRides.Count, Is.EqualTo(2));
         }
+        #endregion
+
+        #region GetRideActivitiesSelectedByYear
 
         [Test()]
         public async Task GetRideActivitiesSelectedByYear_YearIsNotSpecifiedAndUserIsLoggedIn_ReturnsRides()
@@ -284,14 +293,14 @@ namespace MyBiking.Infrastructure.Tests.Repository
             int? year = null;
 
             //act
-            var result =await _rideRepository.GetRideActivitiesSelectedByYear(year);
+            var result = await _rideRepository.GetRideActivitiesSelectedByYear(year);
 
             //assert
             Assert.That(result.Count, Is.EqualTo(2));
             //checks if rides have been sorted desc
             Assert.That(result[1].Id, Is.EqualTo(_fakeRides[0].Id));
         }
-        
+
         [Test()]
         public async Task GetRideActivitiesSelectedByYear_UserIsNotLoggedIn_ThrowsException()
         {
@@ -299,18 +308,15 @@ namespace MyBiking.Infrastructure.Tests.Repository
             CurrentUser user = null;
             var userLoggedIn = _mockUserHttpContext.Setup(u => u.GetUser())
                 .Returns(user);
-            //string fakeId = Guid.NewGuid().ToString();
 
-            //_fakeRides[0].ApplicationUserId = fakeId;
-            //_fakeRides[1].ApplicationUserId = fakeId;
             int? year = null;
 
             //assert
-            Assert.That(async () => await _rideRepository.GetRideActivitiesSelectedByYear(year),Throws.Exception);
+            Assert.That(async () => await _rideRepository.GetRideActivitiesSelectedByYear(year), Throws.Exception);
         }
 
         [Test()]
-        public async Task GetRideActivitiesSelectedByYear_UserIsLoggedInAndYearIsSpecified_ThrowsException()
+        public async Task GetRideActivitiesSelectedByYear_UserIsLoggedInAndYearIsSpecified_ReturnsRides()
         {
             //arrange
             var user = new CurrentUser()
@@ -330,5 +336,37 @@ namespace MyBiking.Infrastructure.Tests.Repository
             //assert
             Assert.That(result.Count, Is.EqualTo(2));
         }
+        #endregion
+
+        #region GetRidesByMonthAsync
+
+        [Test()]
+        public async Task GetRidesByMonthAsync_UserIsLoggedIn_ReturnsRides()
+        {
+            //arrange
+            CurrentUser user = null;
+            var userLoggedIn = _mockUserHttpContext.Setup(u => u.GetUser())
+                .Returns(user);
+            string year = "2024";
+            string month = "January";
+
+            //assert
+            Assert.That(async () => await _rideRepository.GetRidesByMonthAsync(year, month), Is.Null);
+        }
+
+        [TestCase("2024",null)]
+        [TestCase(null, "January")]
+        [TestCase("2024","January")]
+        public async Task GetRidesByMonthAsync_InvalidMonth_ReturnsNull(string year, string month)
+        {
+            //arrange
+            CurrentUser user = null;
+            var userLoggedIn = _mockUserHttpContext.Setup(u => u.GetUser())
+                .Returns(user);
+
+            //assert
+            Assert.That(async () => await _rideRepository.GetRidesByMonthAsync(year, month), Is.Null);
+        }
+        #endregion
     }
 }

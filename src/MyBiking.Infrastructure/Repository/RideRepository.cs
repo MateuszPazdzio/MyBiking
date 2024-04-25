@@ -120,16 +120,24 @@ namespace MyBiking.Infrastructure.Repository
 
         public async Task<List<Ride>> GetRidesByMonthAsync(string year, string month)
         {
-            var userID = _userHttpContext.GetUser()?.Id;
+            var userId = _userHttpContext.GetUser()?.Id;
             try
             {
+                if (userId == null ||
+                    year == null || 
+                    month==null || 
+                    !Month.Months.ContainsKey(month))
+                {
+                    throw new Exception("Error occured, while validating request to database");
+                }
+
                 var rides = await _context.Rides
                     .AsNoTracking()
                     .Include(r => r.WheeleRides).ThenInclude(w => w.WheeleItems)
                     .Include(r => r.Points)
                     .Where(r => r.StartingDateTime.Month == Month.Months[month] &&
                         r.StartingDateTime.Year.ToString() == year &&
-                        r.ApplicationUserId == userID)
+                        r.ApplicationUserId == userId)
                     .ToListAsync();
 
                 return rides;
