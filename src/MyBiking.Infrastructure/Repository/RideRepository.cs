@@ -21,7 +21,6 @@ namespace MyBiking.Infrastructure.Repository
         {
             _context = context;
             this._userHttpContext = userHttpContext;
-            _userHttpContext = userHttpContext;
         }
 
         public async Task<Status> CreateRide(Ride ride)
@@ -32,28 +31,21 @@ namespace MyBiking.Infrastructure.Repository
                 status.Code = Code.HTTP400;
                 return status;
             }
-            try
-            {
-                _context.Rides.Add(ride);
-                _context.SaveChanges();
-                status.Code = Code.HTTP201;
-                return status;
-            }
-            catch (Exception e)
-            {
-                status.Code = Code.HTTP201;
-                return status;
-            }
+
+            _context.Rides.Add(ride);
+            _context.SaveChanges();
+            status.Code = Code.HTTP201;
+            return status;
         }
 
         public async Task<Status> DeleteRide(int id)
         {
             Status status = new Status();
-            if (id == null)
-            {
-                status.Code = Code.HTTP400;
-                return status;
-            }
+            //if (id == null)
+            //{
+            //    status.Code = Code.HTTP400;
+            //    return status;
+            //}
 
             var rideToRemove = await _context.Rides.FirstOrDefaultAsync(r => r.Id == id);
             if (rideToRemove != null)
