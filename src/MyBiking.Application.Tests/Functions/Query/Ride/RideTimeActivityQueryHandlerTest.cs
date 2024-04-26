@@ -1,50 +1,43 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Moq;
-using Moq.EntityFrameworkCore;
-using MyBiking.Application.Dtos;
+﻿using Moq;
+using MyBiking.Application.Functions.Query.Ride;
+using MyBiking.Application.Interfaces;
+using MyBiking.Application.Ride;
 using MyBiking.Entity.IRepository;
 using MyBiking.Entity.Models;
-using MyBiking.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBiking.Infrastructure.Tests.Repository
+namespace MyBiking.Application.Tests.Functions.Query.Ride
 {
-    [TestFixture()]
-    internal class RideRepositoryTest
+    [TestFixture]
+    public class RideTimeActivityQueryHandlerTest
     {
-        private Mock<IUserHttpContext> _mockUserHttpContext;
-        private Mock<MyBikingDbContext> _mockMyBikingDbContext;
-        private List<Ride> _fakeRides;
-        private IRideRepository _rideRepository;
+        private Mock<IRideRepository> _mockRideRepository;
+        private Mock<IDistictRideActivitiesSupplier> _mockDistinctRideActivitySupplier;
+        private List<Entity.Models.Ride> _fakeRides;
 
-        #region setup
         [SetUp]
         public void SetUp()
         {
+            _mockRideRepository = new Mock<IRideRepository>();
+            _mockDistinctRideActivitySupplier = new Mock<IDistictRideActivitiesSupplier>();
             SetRides();
-            _mockUserHttpContext = new Mock<IUserHttpContext>();
-            _mockMyBikingDbContext = new Mock<MyBikingDbContext>();
-            _mockMyBikingDbContext.Setup(d => d.Rides).ReturnsDbSet(_fakeRides);
-            _rideRepository = new RideRepository(_mockMyBikingDbContext.Object,
-                _mockUserHttpContext.Object);
         }
         private void SetRides()
         {
-            _fakeRides = new List<Ride>();
-            _fakeRides.AddRange(new List<Ride>(){
-                new Ride
+            _fakeRides = new List<Entity.Models.Ride>();
+            _fakeRides.AddRange(new List<Entity.Models.Ride>(){
+                new Entity.Models.Ride
                     {
                     Id = 1,
                     Creation_Date = DateTime.Now.AddDays(-1),
                     Distance = 10,
                     IsPublic = true,
-                    StartingDateTime = DateTime.Now.AddHours(1),
-                    EndingDateTime = DateTime.Now.AddHours(2),
+                    StartingDateTime = DateTime.Now.AddYears(-1),
+                    EndingDateTime = DateTime.Now,
                     ApplicationUser = null,
                     WheeleRides = new List<WheelieRide>
                     {
@@ -113,7 +106,7 @@ namespace MyBiking.Infrastructure.Tests.Repository
                     }
 
                 },
-                new Ride
+                new Entity.Models.Ride
                     {
                     Id = 2,
                     Creation_Date = DateTime.Now,
@@ -192,181 +185,127 @@ namespace MyBiking.Infrastructure.Tests.Repository
              }
             );
         }
-
-        #endregion
-
-        #region CreateRide
         [Test()]
-        public async Task CreateRide_RideIsNull_ReturnsHttp400()
+        public async Task Handle_RideActivityIsNull_ReturnsNull()
         {
             //arrange
-            Ride ride = null;
+            var rideActivity = new RideTimeActivityQuery()
+            {
+                Year = null
+            };
+            var handler = new RideTimeActivityQueryHandler(_mockRideRepository.Object, _mockDistinctRideActivitySupplier.Object);
+
+            var response = _mockRideRepository.Setup(m => m.GetRideActivitiesSelectedByYear(It.IsAny<int?>()))
+                .ReturnsAsync(() => null);
 
             //act
-            var status = await _rideRepository.CreateRide(ride);
+            var result = await handler.Handle(rideActivity, CancellationToken.None);
 
             //assert
-            Assert.That(status.Code == Entity.Enums.Code.HTTP400);
+            Assert.That(result, Is.Null);
         }
+
         [Test()]
-        public async Task CreateRide_CreatesRide_ReturnsHttp201()
+        public async Task Handle_RideTimeActivityQueryIsNull_ReturnsNull()
         {
             //arrange
+            RideTimeActivityQuery rideActivity = null;
+            var handler = new RideTimeActivityQueryHandler(_mockRideRepository.Object, _mockDistinctRideActivitySupplier.Object);
 
-            _mockMyBikingDbContext.Setup(m => m.Rides.Add(It.IsAny<Ride>()))
-                .Callback<Ride>((c) => _fakeRides.Add(c));
+            //act
+            var result = await handler.Handle(rideActivity, CancellationToken.None);
 
-            _mockMyBikingDbContext.Setup(m => m.SaveChanges())
-                .Returns(() =>
+            //assert
+            Assert.That(result, Is.Null);
+        }
+
+        [Test()]
+        public async Task Handle_YearIsSpecified_RetrunsRideTimeActivity()
+        {
+            //arrange
+            var rideActivityQuery = new RideTimeActivityQuery()
+            {
+                Year = 2024
+            };
+
+            var handler = new RideTimeActivityQueryHandler(_mockRideRepository.Object, _mockDistinctRideActivitySupplier.Object);
+
+            var supplier = _mockDistinctRideActivitySupplier.Setup(m => m.GetDistinctRideActivitiesByMonth(It.IsAny<List<Entity.Models.Ride>>(), It.IsAny<int?>()))
+                .Returns(() => new List<DateTime>()
                 {
-                    return _fakeRides.Count;
+                    DateTime.Now,
+                    DateTime.Now
                 });
 
-            Ride ride = new Ride();
-            //act
-            var status = await _rideRepository.CreateRide(ride);
-            var savedRideCount = _mockMyBikingDbContext.Object.SaveChanges();
-
-            //assert
-            Assert.That(status.Code == Entity.Enums.Code.HTTP201);
-            Assert.That(savedRideCount, Is.EqualTo(3));
-        }
-        #endregion
-
-        #region DeleteRide
-        [Test()]
-        public async Task DeleteRide_DeletingExsistingRide_ReturnsHttp204()
-        {
-            //arrange
-
-            _mockMyBikingDbContext.Setup(m => m.Rides.Remove(It.IsAny<Ride>()))
-                .Callback<Ride>((c) => _fakeRides.Remove(c));
-
-            int rideId = 1;
+            var rideActivities = _mockRideRepository.Setup(m => m.GetRideActivitiesSelectedByYear(It.IsAny<int?>()))
+               .ReturnsAsync(() => _fakeRides);
 
             //act
-            var status = await _rideRepository.DeleteRide(rideId);
-            var savedRideCount = _mockMyBikingDbContext.Object.SaveChanges();
+            var result = await handler.Handle(rideActivityQuery, CancellationToken.None);
 
             //assert
-            Assert.That(status.Code == Entity.Enums.Code.HTTP204);
-            Assert.That(savedRideCount, Is.EqualTo(0));
+            Assert.That(result.RideTimeActivitiesDates.Count() == 2);
         }
 
         [Test()]
-        public async Task DeleteRide_RideDoesNotExists_ReturnsHttp400()
+        public async Task Handle_FindsYearsOfRideActivities_RetrunsLatestRideTimeActivity()
         {
             //arrange
-
-            _mockMyBikingDbContext.Setup(m => m.Rides.Remove(It.IsAny<Ride>()))
-                .Callback<Ride>((c) => _fakeRides.Remove(c));
-
-
-            int rideId = 5;
-
-            //act
-            var status = await _rideRepository.DeleteRide(rideId);
-            var savedRideCount = _mockMyBikingDbContext.Object.SaveChanges();
-
-            //assert
-            Assert.That(status.Code == Entity.Enums.Code.HTTP500);
-            Assert.That(savedRideCount, Is.EqualTo(0));
-            Assert.That(_fakeRides.Count, Is.EqualTo(2));
-        }
-        #endregion
-
-        #region GetRideActivitiesSelectedByYear
-
-        [Test()]
-        public async Task GetRideActivitiesSelectedByYear_YearIsNotSpecifiedAndUserIsLoggedIn_ReturnsRides()
-        {
-            //arrange
-            var user = new CurrentUser()
+            var rideActivityQuery = new RideTimeActivityQuery()
             {
-                Id = Guid.NewGuid().ToString(),
+                Year = null
             };
-            var userLoggedIn = _mockUserHttpContext.Setup(u => u.GetUser())
-                .Returns(user);
 
-            _fakeRides[0].ApplicationUserId = user.Id;
-            _fakeRides[1].ApplicationUserId = user.Id;
-            int? year = null;
+            var handler = new RideTimeActivityQueryHandler(_mockRideRepository.Object, _mockDistinctRideActivitySupplier.Object);
 
+            var supplier = _mockDistinctRideActivitySupplier.Setup(m => m.GetDistinctRideActivitiesByMonth(It.IsAny<List<Entity.Models.Ride>>(), It.IsAny<int?>()))
+                .Returns(() => new List<DateTime>()
+                {
+                    DateTime.Now,
+                    DateTime.Now
+                });
+
+            var rideActivities = _mockRideRepository.Setup(m => m.GetRideActivitiesSelectedByYear(It.IsAny<int?>()))
+               .ReturnsAsync(() => _fakeRides);
+
+            var lastYear = _fakeRides.DistinctBy(r => r.StartingDateTime.Year)
+                    .Select(rd => rd.StartingDateTime.Year)
+                    .OrderByDescending(rd => rd)
+                    .ToList()
+                    .Max();
             //act
-            var result = await _rideRepository.GetRideActivitiesSelectedByYear(year);
+            var result = await handler.Handle(rideActivityQuery, CancellationToken.None);
 
             //assert
-            Assert.That(result.Count, Is.EqualTo(2));
-            //checks if rides have been sorted desc
-            Assert.That(result[1].Id, Is.EqualTo(_fakeRides[0].Id));
+            Assert.That(result.RideTimeActivitiesDates[0].Year == lastYear);
         }
-
         [Test()]
-        public async Task GetRideActivitiesSelectedByYear_UserIsNotLoggedIn_ReturnsNull()
+        public async Task Handle_DoesNotFindsAnyYearsOfRideActivities_RetrunsLatestRideTimeActivityWithEmptyDates()
         {
             //arrange
-            CurrentUser user = null;
-            var userLoggedIn = _mockUserHttpContext.Setup(u => u.GetUser())
-                .Returns(user);
-            //act
-            int? year = null;
-            var result = await _rideRepository.GetRideActivitiesSelectedByYear(year);
-            //assert
-            Assert.That(result,Is.Null);
-        }
-
-        [Test()]
-        public async Task GetRideActivitiesSelectedByYear_UserIsLoggedInAndYearIsSpecified_ReturnsRides()
-        {
-            //arrange
-            var user = new CurrentUser()
+            var rideActivityQuery = new RideTimeActivityQuery()
             {
-                Id = Guid.NewGuid().ToString(),
+                Year = null
             };
-            var userLoggedIn = _mockUserHttpContext.Setup(u => u.GetUser())
-                .Returns(user);
 
-            _fakeRides[0].ApplicationUserId = user.Id;
-            _fakeRides[1].ApplicationUserId = user.Id;
-            int? year = 2024;
+            var handler = new RideTimeActivityQueryHandler(_mockRideRepository.Object, _mockDistinctRideActivitySupplier.Object);
 
+            var supplier = _mockDistinctRideActivitySupplier.Setup(m => m.GetDistinctRideActivitiesByMonth(It.IsAny<List<Entity.Models.Ride>>(), It.IsAny<int?>()))
+                .Returns(() => new List<DateTime>());
+
+            var rideActivities = _mockRideRepository.Setup(m => m.GetRideActivitiesSelectedByYear(It.IsAny<int?>()))
+               .ReturnsAsync(() => new List<Entity.Models.Ride>());
+
+            var lastYear = _fakeRides.DistinctBy(r => r.StartingDateTime.Year)
+                    .Select(rd => rd.StartingDateTime.Year)
+                    .OrderByDescending(rd => rd)
+                    .ToList()
+                    .Max();
             //act
-            var result = await _rideRepository.GetRideActivitiesSelectedByYear(year);
+            var result = await handler.Handle(rideActivityQuery, CancellationToken.None);
 
             //assert
-            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.RideTimeActivitiesDates.Count == 0);
         }
-        #endregion
-
-        #region GetRidesByMonthAsync
-
-        [Test()]
-        public async Task GetRidesByMonthAsync_UserIsLoggedIn_ReturnsRides()
-        {
-            //arrange
-            CurrentUser user = null;
-            var userLoggedIn = _mockUserHttpContext.Setup(u => u.GetUser())
-                .Returns(user);
-            string year = "2024";
-            string month = "January";
-
-            //assert
-            Assert.That(async () => await _rideRepository.GetRidesByMonthAsync(year, month), Is.Null);
-        }
-
-        [TestCase("2024",null)]
-        [TestCase(null, "January")]
-        [TestCase("2024","January")]
-        public async Task GetRidesByMonthAsync_InvalidMonth_ReturnsNull(string year, string month)
-        {
-            //arrange
-            CurrentUser user = null;
-            var userLoggedIn = _mockUserHttpContext.Setup(u => u.GetUser())
-                .Returns(user);
-
-            //assert
-            Assert.That(async () => await _rideRepository.GetRidesByMonthAsync(year, month), Is.Null);
-        }
-        #endregion
     }
 }

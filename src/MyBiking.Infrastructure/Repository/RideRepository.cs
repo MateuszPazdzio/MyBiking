@@ -105,7 +105,7 @@ namespace MyBiking.Infrastructure.Repository
             }
             catch (Exception)
             {
-                return null;
+                return Task.FromResult<List<Ride>>(null);
             }
         }
 

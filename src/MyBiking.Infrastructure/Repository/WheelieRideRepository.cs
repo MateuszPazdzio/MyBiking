@@ -3,7 +3,6 @@ using MyBiking.Application.Dtos;
 using MyBiking.Application.Models;
 using MyBiking.Entity.Enums;
 using MyBiking.Entity.IRepository;
-using MyBiking.Entity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

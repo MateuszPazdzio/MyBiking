@@ -51,13 +51,17 @@ namespace MyBiking.MVC.Controllers
         }
         public async Task<ActionResult> Index(int? year)
         {
-            var RideActivities = await _mediator.Send(new RideTimeActivityQuery() { Year = year });
+            var rideActivities = await _mediator.Send(new RideTimeActivityQuery() { Year = year });
+            if (rideActivities == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
             if (!year.HasValue)
             {
-                return View(RideActivities);
+                return View(rideActivities);
             }
 
-            return Ok(RideActivities.RideTimeActivitiesDates);
+            return Ok(rideActivities.RideTimeActivitiesDates);
         }
         [HttpGet]
         [Route("Ride/Public")]

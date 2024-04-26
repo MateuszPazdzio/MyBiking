@@ -5,6 +5,7 @@ using MyBiking.Application.Functions.Command.Ride;
 using MyBiking.Application.Functions.Command.RideApi;
 using MyBiking.Application.Functions.Command.User;
 using MyBiking.Application.Functions.Command.User.Api;
+using MyBiking.Entity.IRepository;
 using MyBiking.Entity.Models;
 using MyBikingApi.Models.Dtos;
 
