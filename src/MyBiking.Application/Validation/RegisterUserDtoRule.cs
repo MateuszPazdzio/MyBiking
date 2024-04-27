@@ -1,11 +1,12 @@
 ﻿using FluentValidation;
 using MyBiking.Application.Dtos;
+using MyBiking.Application.Functions.Command.User;
 using MyBiking.Entity.IRepository;
 using System.Linq;
 
 namespace MyBiking.Application.Validation
 {
-    public class RegisterUserDtoRule : AbstractValidator<RegisterUserDto>
+    public class RegisterUserDtoRule : AbstractValidator<RegisterUserDtoCommand>
     {
         private readonly IUserRepository _context;
 
@@ -37,7 +38,13 @@ namespace MyBiking.Application.Validation
             RuleFor(u => u.UserName)
                 .Matches(@"[a-zA-Z\d']{3,20}")
                 .WithMessage("UserName must be less than 20 characters and greater than 3 characters. Use only letters or digits.")
-                .NotEmpty();
+                .Custom((value, context) =>
+                {
+                    if (_context.GetUserByUserName(value).Result)
+                    {
+                        context.AddFailure("User with this email already exists");
+                    }
+                }).NotEmpty();
 
             RuleFor(u => u.DateOfBirth)
                 .Must(val=>(DateTime.Today.AddYears(-18)>=val))

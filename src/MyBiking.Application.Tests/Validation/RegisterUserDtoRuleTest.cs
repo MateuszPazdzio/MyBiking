@@ -1,6 +1,7 @@
 ﻿using FluentValidation.TestHelper;
 using Moq;
 using MyBiking.Application.Dtos;
+using MyBiking.Application.Functions.Command.User;
 using MyBiking.Application.Validation;
 using MyBiking.Entity.IRepository;
 using System;
@@ -27,7 +28,7 @@ namespace MyBiking.Application.Tests.Validation
         public void Validate_Email_InvalidFormat_FailsValidation()
         {
             // arrange
-            var registerUserDto = new RegisterUserDto { Email = "invalidemail" };
+            var registerUserDto = new RegisterUserDtoCommand { Email = "invalidemail" };
 
             // act
             var result = _validator.TestValidate(registerUserDto);
@@ -43,7 +44,7 @@ namespace MyBiking.Application.Tests.Validation
             // arrange
             var existingEmail = "existing@example.com";
             _userRepositoryMock.Setup(repo => repo.GetUserByEmail(existingEmail)).ReturnsAsync(true);
-            var registerUserDto = new RegisterUserDto { Email = existingEmail };
+            var registerUserDto = new RegisterUserDtoCommand { Email = existingEmail };
 
             // act
             var result = _validator.TestValidate(registerUserDto);
@@ -58,7 +59,7 @@ namespace MyBiking.Application.Tests.Validation
         public void Validate_Passwords_DoNotMatch_FailsValidation()
         {
             // arrange
-            var registerUserDto = new RegisterUserDto { Password = "password1", PasswordVerification = "password2" };
+            var registerUserDto = new RegisterUserDtoCommand { Password = "password1", PasswordVerification = "password2" };
 
             // act
             var result = _validator.TestValidate(registerUserDto);
