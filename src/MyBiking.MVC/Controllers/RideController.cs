@@ -36,14 +36,9 @@ namespace MyBiking.MVC.Controllers
                 RideDtos = result
             };
 
-            if(listRideViewModel.Year==String.Empty)
+            if(listRideViewModel.Year==String.Empty || listRideViewModel.Month == String.Empty)
             {
                 return RedirectToAction("index");
-            }
-
-            if(listRideViewModel.Month == String.Empty)
-            {
-                throw new Exception("Month does not exists");
             }
 
 
