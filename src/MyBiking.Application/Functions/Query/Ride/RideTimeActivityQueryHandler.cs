@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MyBiking.Application.Interfaces;
 using MyBiking.Application.Ride;
 using MyBiking.Entity.IRepository;
 using System;
@@ -9,67 +10,60 @@ using System.Threading.Tasks;
 
 namespace MyBiking.Application.Functions.Query.Ride
 {
-    internal class RideTimeActivityQueryHandler : IRequestHandler<RideTimeActivityQuery, RideTimeActivity>
+    public class RideTimeActivityQueryHandler : IRequestHandler<RideTimeActivityQuery, RideTimeActivity>
     {
-        //private readonly IMyBikingRepository _myBikingRepository;
         private readonly IRideRepository _myBikingRepository;
+        private readonly IDistictRideActivitiesSupplier _distictRideActivitiesSupplier;
 
-        public RideTimeActivityQueryHandler(IRideRepository myBikingRepository)
+        public RideTimeActivityQueryHandler(IRideRepository myBikingRepository,
+            IDistictRideActivitiesSupplier distictRideActivitiesSupplier)
         {
             this._myBikingRepository = myBikingRepository;
+            this._distictRideActivitiesSupplier = distictRideActivitiesSupplier;
         }
 
-        public async Task<RideTimeActivity> Handle(RideTimeActivityQuery request, CancellationToken cancellationToken)
+        public async Task<RideTimeActivity>? Handle(RideTimeActivityQuery request, CancellationToken cancellationToken)
         {
-            List<Entity.Models.Ride> rides = await _myBikingRepository.GetRideActivitiesSelectedByYear(request.Year);
+            if (request == null)
+            {
+                return null;
+            }
+            var rideActivities = await _myBikingRepository.GetRideActivitiesSelectedByYear(request.Year);
+
+            if (rideActivities == null)
+            {
+                return null;
+            }
+
             List<RideTimeActivity> rideTimeActivities = new List<RideTimeActivity>();
 
             RideTimeActivity rideTimeActivity = new RideTimeActivity();
 
             if(!request.Year.HasValue)
             {
-                var years = rides.DistinctBy(r=>r.StartingDateTime.Year)
+                var years = rideActivities.DistinctBy(r=>r.StartingDateTime.Year)
                     .Select(rd=>rd.StartingDateTime.Year)
                     .OrderByDescending(rd=>rd)
                     .ToList();
                 if(years.Count() == 0)
                 {
-                    rideTimeActivity.RideTimeActivitiesDates = GetDistinctRideActivitiesByMonth(rides, null);
+                    rideTimeActivity.RideTimeActivitiesDates =
+                        _distictRideActivitiesSupplier.GetDistinctRideActivitiesByMonth(rideActivities, null);
                     return rideTimeActivity;
                 }
                 rideTimeActivity.Years = years;
                 var latestYear = rideTimeActivity.Years.Max();
 
-                rideTimeActivity.RideTimeActivitiesDates = GetDistinctRideActivitiesByMonth(rides, latestYear);
+                rideTimeActivity.RideTimeActivitiesDates = 
+                    _distictRideActivitiesSupplier.GetDistinctRideActivitiesByMonth(rideActivities, latestYear);
 
                 return rideTimeActivity;
             }
 
-            rideTimeActivity.RideTimeActivitiesDates = GetDistinctRideActivitiesByMonth(rides, request.Year);
+            rideTimeActivity.RideTimeActivitiesDates = 
+                _distictRideActivitiesSupplier.GetDistinctRideActivitiesByMonth(rideActivities, request.Year);
 
             return rideTimeActivity;
-        }
-
-        private List<DateTime> GetDistinctRideActivitiesByMonth(List<Entity.Models.Ride> rides, int? latestYear)
-        {
-            if (!latestYear.HasValue)
-            {
-                return new List<DateTime>();
-            }
-
-            return rides.Where(r => r.StartingDateTime.Year == latestYear)
-                   .Select(r => r.StartingDateTime)
-                   .DistinctBy(r => r.ToString("MMMM"))
-                   .OrderBy(r => r, new RideTimeActivityDatesComparer())
-                   .ToList();
-        }
-    }
-
-    internal class RideTimeActivityDatesComparer : IComparer<DateTime>
-    {
-        public int Compare(DateTime x, DateTime y)
-        {
-            return x.CompareTo(y);
         }
     }
 }

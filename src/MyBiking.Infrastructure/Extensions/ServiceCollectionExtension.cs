@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using MyBiking.Application.Interfaces;
+using MyBiking.Application.Suppliers;
 using MyBiking.Entity.IRepository;
 using MyBiking.Entity.Models;
 using MyBiking.Infrastructure.Repository;
@@ -58,6 +60,7 @@ namespace MyBiking.Infrastructure.Extensions
             services.AddScoped<IRideRepository, RideRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IWheelieRideRepository, WheelieRideRepository>();
+            services.AddScoped<IDistictRideActivitiesSupplier, DistictRideActivitiesByMonthSupplier>();
 
             services.AddScoped<MyBikingDbSeeder>();
             services.AddSingleton<AuthenticationSettings>(authenticationSettings);

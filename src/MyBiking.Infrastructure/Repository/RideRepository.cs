@@ -21,7 +21,6 @@ namespace MyBiking.Infrastructure.Repository
         {
             _context = context;
             this._userHttpContext = userHttpContext;
-            _userHttpContext = userHttpContext;
         }
 
         public async Task<Status> CreateRide(Ride ride)
@@ -32,28 +31,21 @@ namespace MyBiking.Infrastructure.Repository
                 status.Code = Code.HTTP400;
                 return status;
             }
-            try
-            {
-                _context.Rides.Add(ride);
-                _context.SaveChanges();
-                status.Code = Code.HTTP201;
-                return status;
-            }
-            catch (Exception e)
-            {
-                status.Code = Code.HTTP201;
-                return status;
-            }
+
+            _context.Rides.Add(ride);
+            _context.SaveChanges();
+            status.Code = Code.HTTP201;
+            return status;
         }
 
         public async Task<Status> DeleteRide(int id)
         {
             Status status = new Status();
-            if (id == null)
-            {
-                status.Code = Code.HTTP400;
-                return status;
-            }
+            //if (id == null)
+            //{
+            //    status.Code = Code.HTTP400;
+            //    return status;
+            //}
 
             var rideToRemove = await _context.Rides.FirstOrDefaultAsync(r => r.Id == id);
             if (rideToRemove != null)
@@ -86,27 +78,34 @@ namespace MyBiking.Infrastructure.Repository
 
         public Task<List<Ride>> GetRideActivitiesSelectedByYear(int? year)
         {
-            var userID = _userHttpContext.GetUser()?.Id;
-            if (!year.HasValue)
-            {
-                return _context.Rides.
-                    Where(r => userID == r.ApplicationUserId).
-                    OrderBy(r => r.StartingDateTime).ToListAsync();
-            }
+            var userId = _userHttpContext.GetUser()?.Id;
 
             try
             {
-                var a = _context.Rides
+                if (userId == null)
+                {
+                    throw new Exception("User is not logged in");
+                }
+
+                if (!year.HasValue)
+                {
+                    return _context.Rides.
+                        Where(r => userId == r.ApplicationUserId).
+                        OrderByDescending(r => r.Creation_Date).ToListAsync();
+                }
+
+                var rides = _context.Rides
                     .AsNoTracking()
                     .Where(r => r.StartingDateTime.Year == year)
                     .ToListAsync();
-                return a;
+
+                return rides;
 
 
             }
             catch (Exception)
             {
-                return null;
+                return Task.FromResult<List<Ride>>(null);
             }
         }
 
@@ -121,16 +120,24 @@ namespace MyBiking.Infrastructure.Repository
 
         public async Task<List<Ride>> GetRidesByMonthAsync(string year, string month)
         {
-            var userID = _userHttpContext.GetUser()?.Id;
+            var userId = _userHttpContext.GetUser()?.Id;
             try
             {
+                if (userId == null ||
+                    year == null || 
+                    month==null || 
+                    !Month.Months.ContainsKey(month))
+                {
+                    throw new Exception("Error occured, while validating request to database");
+                }
+
                 var rides = await _context.Rides
                     .AsNoTracking()
                     .Include(r => r.WheeleRides).ThenInclude(w => w.WheeleItems)
                     .Include(r => r.Points)
                     .Where(r => r.StartingDateTime.Month == Month.Months[month] &&
                         r.StartingDateTime.Year.ToString() == year &&
-                        r.ApplicationUserId == userID)
+                        r.ApplicationUserId == userId)
                     .ToListAsync();
 
                 return rides;

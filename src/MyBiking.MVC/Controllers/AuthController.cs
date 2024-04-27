@@ -69,8 +69,6 @@ namespace MyBiking.MVC.Controllers
                 return View(loginUserDtoCommand);
                 throw;
             }
-            
-            
         }
 
         [HttpGet]

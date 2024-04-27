@@ -15,6 +15,7 @@ using AutoMapper;
 using MyBiking.Application.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using MyBiking.Entity.IRepository;
 
 
 namespace MyBiking.Application.Extensions

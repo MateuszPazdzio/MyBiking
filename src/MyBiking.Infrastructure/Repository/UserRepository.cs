@@ -53,7 +53,7 @@ namespace MyBiking.Infrastructure.Repository
 
             await _userManager.AddToRoleAsync(user, "Member");
 
-            status.StatusCode = 1;
+            status.Code = Entity.Enums.Code.HTTP201;
             status.Message = "You have registered successfully";
             return status;
         }
@@ -61,6 +61,11 @@ namespace MyBiking.Infrastructure.Repository
         public async Task<bool> GetUserByEmail(string email)
         {
             return await _context.Users.AnyAsync(p => p.Email == email);
+        }
+
+        public async Task<bool> GetUserByUserName(string usernname)
+        {
+            return await _context.Users.AnyAsync(p => p.UserName == usernname);
         }
 
         public async Task<Status> LoginApi(ApplicationUser user)

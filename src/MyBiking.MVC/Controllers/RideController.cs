@@ -36,14 +36,9 @@ namespace MyBiking.MVC.Controllers
                 RideDtos = result
             };
 
-            if(listRideViewModel.Year==String.Empty)
+            if(listRideViewModel.Year==String.Empty || listRideViewModel.Month == String.Empty)
             {
                 return RedirectToAction("index");
-            }
-
-            if(listRideViewModel.Month == String.Empty)
-            {
-                throw new Exception("Month does not exists");
             }
 
 
@@ -51,13 +46,17 @@ namespace MyBiking.MVC.Controllers
         }
         public async Task<ActionResult> Index(int? year)
         {
-            var RideActivities = await _mediator.Send(new RideTimeActivityQuery() { Year = year });
+            var rideActivities = await _mediator.Send(new RideTimeActivityQuery() { Year = year });
+            if (rideActivities == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
             if (!year.HasValue)
             {
-                return View(RideActivities);
+                return View(rideActivities);
             }
 
-            return Ok(RideActivities.RideTimeActivitiesDates);
+            return Ok(rideActivities.RideTimeActivitiesDates);
         }
         [HttpGet]
         [Route("Ride/Public")]

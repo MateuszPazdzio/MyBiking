@@ -3,13 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBiking.MVC", "MyBiking.MVC\MyBiking.MVC.csproj", "{928945CA-8891-4FE8-B8FC-658FFFDDB024}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBiking.MVC", "MyBiking.MVC\MyBiking.MVC.csproj", "{928945CA-8891-4FE8-B8FC-658FFFDDB024}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBiking.Infrastructure", "MyBiking.Infrastructure\MyBiking.Infrastructure.csproj", "{AD6D97EF-92ED-4272-9C7A-31741C134596}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBiking.Infrastructure", "MyBiking.Infrastructure\MyBiking.Infrastructure.csproj", "{AD6D97EF-92ED-4272-9C7A-31741C134596}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBiking.Application", "MyBiking.Application\MyBiking.Application.csproj", "{F2E3D624-7076-49C1-B4E8-B3C003A57397}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBiking.Application", "MyBiking.Application\MyBiking.Application.csproj", "{F2E3D624-7076-49C1-B4E8-B3C003A57397}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBiking.Entity", "MyBiking.Entity\MyBiking.Entity.csproj", "{C66D71DB-D87A-4A68-91D2-B13A1A168ED8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBiking.Entity", "MyBiking.Entity\MyBiking.Entity.csproj", "{C66D71DB-D87A-4A68-91D2-B13A1A168ED8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7BB7EF80-BC45-4DFA-92B0-E6BBE397B286}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBiking.Infrastructure.Tests", "tests\MyBiking.Infrastructure.Tests\MyBiking.Infrastructure.Tests.csproj", "{729ABEB9-B8F4-47C4-97BE-4A7E0B277ABB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBiking.Application.Tests", "MyBiking.Application.Tests\MyBiking.Application.Tests.csproj", "{769F7C9C-2348-43A2-9B05-97592BE8AB88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBiking.MVC.Tests", "MyBiking.MVC.Tests\MyBiking.MVC.Tests.csproj", "{1D0DDD71-5987-4DBB-940A-E99652AFC92E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +41,26 @@ Global
 		{C66D71DB-D87A-4A68-91D2-B13A1A168ED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C66D71DB-D87A-4A68-91D2-B13A1A168ED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C66D71DB-D87A-4A68-91D2-B13A1A168ED8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{729ABEB9-B8F4-47C4-97BE-4A7E0B277ABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{729ABEB9-B8F4-47C4-97BE-4A7E0B277ABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{729ABEB9-B8F4-47C4-97BE-4A7E0B277ABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{729ABEB9-B8F4-47C4-97BE-4A7E0B277ABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{769F7C9C-2348-43A2-9B05-97592BE8AB88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{769F7C9C-2348-43A2-9B05-97592BE8AB88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{769F7C9C-2348-43A2-9B05-97592BE8AB88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{769F7C9C-2348-43A2-9B05-97592BE8AB88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D0DDD71-5987-4DBB-940A-E99652AFC92E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D0DDD71-5987-4DBB-940A-E99652AFC92E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D0DDD71-5987-4DBB-940A-E99652AFC92E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D0DDD71-5987-4DBB-940A-E99652AFC92E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{729ABEB9-B8F4-47C4-97BE-4A7E0B277ABB} = {7BB7EF80-BC45-4DFA-92B0-E6BBE397B286}
+		{769F7C9C-2348-43A2-9B05-97592BE8AB88} = {7BB7EF80-BC45-4DFA-92B0-E6BBE397B286}
+		{1D0DDD71-5987-4DBB-940A-E99652AFC92E} = {7BB7EF80-BC45-4DFA-92B0-E6BBE397B286}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3ABA9882-A489-4674-BCD6-0A06FB6205A1}

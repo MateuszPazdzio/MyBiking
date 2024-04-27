@@ -24,7 +24,8 @@ namespace MyBiking.MVC.Controllers
         public async Task<IActionResult> CreateRide([FromBody] RideDtoApiCommand rideDto)
         {
             Status result =await _mediator.Send(rideDto);
-            if (result.StatusCode == 0)
+            result.Message = "Api error";
+            if (result.Code != Entity.Enums.Code.HTTP201)
             {
                 return BadRequest(result.Message);
             }

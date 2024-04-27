@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 using MyBiking.Application.Dtos;
+using MyBiking.Application.Functions.Command.User;
 using MyBiking.Entity.IRepository;
 using System.Linq;
 
 namespace MyBiking.Application.Validation
 {
-    public class RegisterUserDtoRule : AbstractValidator<RegisterUserDto>
+    public class RegisterUserDtoRule : AbstractValidator<RegisterUserDtoCommand>
     {
-        //private readonly IMyBikingRepository _context;
         private readonly IUserRepository _context;
 
         public RegisterUserDtoRule(IUserRepository context)
@@ -33,21 +33,18 @@ namespace MyBiking.Application.Validation
 
             RuleFor(u => u.Password)
                 .Equal(u => u.PasswordVerification)
-                .WithMessage("Passwords do not match ");
+                .WithMessage("Passwords do not match");
 
             RuleFor(u => u.UserName)
                 .Matches(@"[a-zA-Z\d']{3,20}")
                 .WithMessage("UserName must be less than 20 characters and greater than 3 characters. Use only letters or digits.")
-                .NotEmpty();
-
-            //RuleFor(u => u.SecondName)
-            //    .Matches(@"[a-zA-Z' -]{3,25}")
-            //    .WithMessage("SecondName must be less than 20 characters")
-            //    .NotEmpty();
-
-            //RuleFor(u => u.Nationality)
-            //    .Must(value => !string.IsNullOrEmpty(value) && value!="Select...")
-            //    .WithMessage(value => $"{value.Nationality} nationality does not exists");
+                .Custom((value, context) =>
+                {
+                    if (_context.GetUserByUserName(value).Result)
+                    {
+                        context.AddFailure("User with this email already exists");
+                    }
+                }).NotEmpty();
 
             RuleFor(u => u.DateOfBirth)
                 .Must(val=>(DateTime.Today.AddYears(-18)>=val))

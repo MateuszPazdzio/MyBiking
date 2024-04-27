@@ -33,29 +33,6 @@ namespace MyBiking.Infrastructure
 
             modelBuilder.Entity<ApplicationUser>()
                 .Ignore(p => p.Password);
-            //modelBuilder.Entity<IdentityRole>()
-            //    .Ignore(c => c.ConcurrencyStamp)
-            //    .Ignore(c => c.NormalizedName);
-
-            //modelBuilder.Entity<IdentityRole>().ToTable("Roles");
-
-            //modelBuilder.Entity<ApplicationUser>().Ignore(c => c.AccessFailedCount)
-            //                               .Ignore(c => c.LockoutEnabled)
-            //                               .Ignore(c => c.TwoFactorEnabled)
-            //                               .Ignore(c => c.EmailConfirmed)
-            //                               .Ignore(c => c.ConcurrencyStamp)
-            //                               .Ignore(c => c.LockoutEnd)
-            //                               .Ignore(c => c.PhoneNumberConfirmed)
-            //                               .Ignore(c => c.PhoneNumber);
-
-            //modelBuilder.Entity<ApplicationUser>()
-            //    .HasOne(p => p.Nationality)
-            //    .WithOne()
-            //    .HasForeignKey<ApplicationUser>(p => p.NationalityId)
-            //    .IsRequired(true);
-
-            //modelBuilder.Entity<ApplicationUser>().ToTable("Users");
-
 
             modelBuilder.Entity<Ride>()
                 .HasMany(r => r.WheeleRides)
@@ -72,7 +49,6 @@ namespace MyBiking.Infrastructure
                 .WithOne(p => p.Ride)
                 .HasForeignKey(p => p.RideId)
                 .IsRequired(true);
-            //.HasForeignKey("RideId");
 
             modelBuilder.Entity<WheelieRide>()
                 .HasMany(w => w.WheeleItems)
@@ -80,27 +56,14 @@ namespace MyBiking.Infrastructure
                 .HasForeignKey(p => p.WheelieRideId)
                 .IsRequired(true);
 
-            //.HasForeignKey("WheelieRideId");
-
             modelBuilder.Entity<WheelieItem>()
                 .OwnsOne(p => p.WheelePoint);
-
-            //modelBuilder.Entity<ApplicationUser>()
-            //    .Ignore(u => u.PasswordHelpers);
 
             modelBuilder.Entity<Ride>()
                 .HasOne(p => p.ApplicationUser)
                 .WithMany(p => p.Rides)
                 .HasForeignKey(p => p.ApplicationUserId)
                 .IsRequired(true);
-
-            //modelBuilder.Entity<User>()
-            //    .HasKey(p=>p.Id);
-            //modelBuilder.Entity<User>()
-            //    .HasMany(p => p.Rides)
-            //    .WithOne(p => p.User)
-            //    .HasForeignKey(p => p.UserId)
-            //    .IsRequired(true);
         }
 
     }

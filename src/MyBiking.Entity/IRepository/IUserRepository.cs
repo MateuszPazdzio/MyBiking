@@ -12,6 +12,7 @@ namespace MyBiking.Entity.IRepository
     {
         Task<Status> LoginUser(ApplicationUser user);
         public Task<bool> GetUserByEmail(string email);
+        public Task<bool> GetUserByUserName(string value);
         public Task<Status> CreateUser(ApplicationUser user);
         public Task LogoutAsync();
         public Task<Status> LoginApi(ApplicationUser user);
