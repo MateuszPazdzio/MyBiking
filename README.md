@@ -1,7 +1,7 @@
 # MyBikingApp
 
 ## General Information
-Created as a sample portfolio app : [MyBiking webapp] https://mybiking.azurewebsites.net/
+Created as a sample portfolio app : [MyBiking webapp](https://mybiking.azurewebsites.net/).
 Detects time duration and distance travelled while doing a bike wheelie.
 Gather data of free rides and bike tricks from mobile app. Present them classified by time letting analyzing activities.
 
