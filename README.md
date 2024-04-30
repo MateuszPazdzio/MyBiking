@@ -5,6 +5,9 @@ Created as a sample portfolio app : [MyBiking webapp](https://mybiking.azurewebs
 Detects time duration and distance travelled while doing a bike wheelie.
 Gather data of free rides and bike tricks from mobile app. Present them classified by time letting analyzing activities.
 
+<img src="./app.jpg" alt="Alt Text" width="300" height="600">
+
+
 ## Technologies Used
 - .Net 6.0
 - Javascript ES6
