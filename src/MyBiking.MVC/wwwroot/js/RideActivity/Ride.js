@@ -59,8 +59,8 @@ async function getRideDetails(rideId, aggregatedDatarowHtmlElement) {
 
 const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
         $(`<ul class="list-group details">
-            <li class="list-group-item">Wheelie Max V: <span class="detail-value">${data.wheelieMaxV}</span></li>
-            <li class="list-group-item">Wheelie Distance: <span class="detail-value">${data.totalWheelieDistance}</span></li>
+            <li class="list-group-item">Wheelie Max V: <span class="detail-value">${data.wheelieMaxV} km/h</span></li>
+            <li class="list-group-item">Wheelie Distance: <span class="detail-value">${data.totalWheelieDistance} m.</span></li>
             <li class="list-group-item">Wheelies: <span class="detail-value">${data.wheelies}</span></li>
         </ul>`).insertBefore(aggregatedDatarowHtmlElement.children("a"))
 

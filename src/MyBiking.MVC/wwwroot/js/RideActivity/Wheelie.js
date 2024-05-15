@@ -58,7 +58,7 @@ const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
         `<ul class="list-group details">
             <li class="list-group-item">Addrees: <span class="detail-value">${data.addrees}</span></li>
             <li class="list-group-item">Altitude: <span class="detail-value">${data.altitude}</span></li>
-            <li class="list-group-item">Max V: <span class="detail-value">${data.vMax}</span></li>
+            <li class="list-group-item">Max V: <span class="detail-value">${data.vMax} km/h</span></li>
             <li class="list-group-item">Rotate X: <span class="detail-value">${data.rotateX}</span></li>
         </ul>`)
 
