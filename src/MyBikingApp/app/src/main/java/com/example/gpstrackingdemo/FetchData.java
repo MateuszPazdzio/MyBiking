@@ -23,7 +23,7 @@ public class FetchData extends AsyncTask<Void,Void,Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
-        if(apiService.Login(new LoginData("",""))==Result.BadReuqest()){
+        if(apiService.Login(new LoginData("mateusz","Haslo123!"))==Result.BadReuqest()){
             return null;
         }
 

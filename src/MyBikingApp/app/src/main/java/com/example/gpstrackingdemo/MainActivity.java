@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.location.*;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -196,10 +197,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if(distaceTraveledBetwee2Locations<2.0){
                 distaceTraveledBetwee2Locations = 0.00d;
             }
-            RideDistance += (distaceTraveledBetwee2Locations/1000);
+            DecimalFormat df = new DecimalFormat("#.###");
+//            String val = df.format((distaceTraveledBetwee2Locations/1000));
+            String distanceFormatted =String.format("%.3f",distaceTraveledBetwee2Locations/1000);
+            distanceFormatted=distanceFormatted.replace(",",".");
+
+            double roundedNumberDouble = 0.0;
+            roundedNumberDouble = Double.parseDouble(distanceFormatted);
+
+            RideDistance += roundedNumberDouble;
 
             if(wheeleRide!=null){
-                wheeleRide.AddIWheeleItem(new WheeleItem(point,location.getSpeed(),location.getAltitude(),address,distaceTraveledBetwee2Locations, Collections.max(rotaionXList)));
+                DecimalFormat dfSpeed = new DecimalFormat("#.##");
+                float speed = Math.round(location.getSpeed());
+//                float speed = Float.parseFloat(dfSpeed.format(location.getSpeed()));
+//                float altitude = Float.parseFloat(df.format(location.getAltitude()));
+                float altitude = Math.round(location.getAltitude());
+
+                wheeleRide.AddIWheeleItem(new WheeleItem(point,speed,altitude,address,distaceTraveledBetwee2Locations, Collections.max(rotaionXList)));
             }
         }
 
@@ -252,7 +267,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         if(sensorEvent.sensor.getType()==Sensor.TYPE_GAME_ROTATION_VECTOR && isRideModeOn){
 
-            float x = sensorEvent.values[0];//Rotation around x-axis (roll)
+            String roundedNumberStr = String.format("%.3f", sensorEvent.values[0]);
+            roundedNumberStr = roundedNumberStr.replace(",", ".");
+            float x = 0f;
+            x = Float.parseFloat(roundedNumberStr);//Rotation around x-axis (roll)
 
             if(x>0.25f && startTime==0.00){
                 rotaionXList.add(x);
@@ -276,7 +294,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if(isWheeleMode){
                     wheeleRide.setDurationTime(tv_time.getText().toString());
                     wheeleRide.setEndingDateTime(LocalDateTime.now().toString());
-                    double totalWheelieDistance = Double.parseDouble(tv_totalWheelieDistance.getText().toString());
+
+                    String totalDistance = tv_totalWheelieDistance.getText().toString();
+                    totalDistance=totalDistance.substring(0,totalDistance.indexOf(".")+4);
+                    double totalWheelieDistance = Double.parseDouble(totalDistance);
 
                     if(Double.parseDouble(tv_time.getText().toString())>5.0 && totalWheelieDistance>=0.0){
                         wheeleRide.setDistance(totalWheelieDistance);

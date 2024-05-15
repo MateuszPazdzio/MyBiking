@@ -11,11 +11,9 @@ const setSlider = async() => {
     $(".previewBtn").click(async function (event) {
 
         let aggregatedDatarowHtmlElement = $(this).parent().parent().parent().parent().next().find(".dataRow")
-        console.log(aggregatedDatarowHtmlElement.children().length)
         if (aggregatedDatarowHtmlElement.children().length == 0) {
             $(this).text("Hide")
             let wheelieId = $(this).data("id");
-            console.log("dane")
             var response = await getRideDetails(wheelieId, aggregatedDatarowHtmlElement);
             $(this).parent().parent().parent().parent().next().find(".dataRow").slideToggle()
         }
@@ -43,13 +41,10 @@ async function getRideDetails(wheelieId, aggregatedDatarowHtmlElement) {
             "id": wheelieId,
         },
         success:async function (data) {
-            //console.log(data)
-            //console.log("succses")
             if (!data) {
                 aggregatedDatarowHtmlElement.html("No data found")
             } else {
                 await fillAggrData(data, aggregatedDatarowHtmlElement)
-                console.log("works")
             }
         },
         error: function () {
@@ -66,13 +61,6 @@ const fillAggrData = async (data, aggregatedDatarowHtmlElement) => {
             <li class="list-group-item">Max V: <span class="detail-value">${data.vMax}</span></li>
             <li class="list-group-item">Rotate X: <span class="detail-value">${data.rotateX}</span></li>
         </ul>`)
-    //await sleep(5000);
-    console.log(12432)
 
 }
-
-//function sleep(ms) {
-//    console.log(1243)
-//    return new Promise(resolve => setTimeout(resolve, ms));
-//}
 
