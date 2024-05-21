@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     wheeleRide.setEndingDateTime(LocalDateTime.now().toString());
 
                     String totalDistance = tv_totalWheelieDistance.getText().toString();
-                    totalDistance=totalDistance.substring(0,totalDistance.indexOf(".")+4);
+                    totalDistance=totalDistance.substring(0,totalDistance.indexOf(".")+getCountOfDigitsAfterComma(totalDistance));
                     double totalWheelieDistance = Double.parseDouble(totalDistance);
 
                     if(Double.parseDouble(tv_time.getText().toString())>5.0 && totalWheelieDistance>=0.0){
@@ -318,22 +318,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-//    private double calcRotationValue(double rotationValue) {
-//        //calculation only when count of rotation x values is greater than 50 for better factor adjustment
-//        int rotationValuesSize = rotationsValues.size();
-//        if(rotationValuesSize>=50){
-//            double sum = rotationsValues.stream()
-//                    .mapToDouble(Double::doubleValue)
-//                    .sum();
-//            double mean = sum/rotationValuesSize;
-//
-//            return  mean;
-//        }
-//        else{
-//            rotationsValues.add(rotationValue);
-//        }
-//        return 025d;
-//    }
+    private int getCountOfDigitsAfterComma(String totalDistance) {
+        if(totalDistance.contains(".")){
+            int charCount = totalDistance.substring(totalDistance.indexOf(".")+1).toCharArray().length;
+            return charCount>3?4:charCount+1;
+        }
+        return 0;
+    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
