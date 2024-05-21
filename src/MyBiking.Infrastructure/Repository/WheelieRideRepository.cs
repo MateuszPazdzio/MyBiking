@@ -57,7 +57,7 @@ namespace MyBiking.Infrastructure.Repository
 
             var wheeleRides = await _context.WheelieRides
                 .Where(w => w.RideId == rideId &&
-                    w.Ride.IsPublic || w.Ride.ApplicationUserId == userID)
+                    (w.Ride.IsPublic || w.Ride.ApplicationUserId == userID))
                 .Include(w => w.Ride).ThenInclude(r => r.ApplicationUser)
                 .Include(w => w.WheeleItems)
                 .ToListAsync();
