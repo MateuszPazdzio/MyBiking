@@ -221,6 +221,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private void updateUIValues(Location location) {
+
+        if (location == null) {
+            // Optionally log or show something to user
+            return;
+        }
+
         updateRideDetails(location);
         rotaionXList.clear();
 
