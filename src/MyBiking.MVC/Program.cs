@@ -19,18 +19,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-var supportedCultures = new[]
-{
-        new CultureInfo("en-US"),
-        //new CultureInfo("pl-PL"),
-    };
+//var supportedCultures = new[]
+//{
+//        new CultureInfo("en-US"),
+//        //new CultureInfo("pl-PL"),
+//    };
 
-app.UseRequestLocalization(new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture("en-US"),
-    SupportedCultures = supportedCultures,
-    SupportedUICultures = supportedCultures
-});
+//app.UseRequestLocalization(new RequestLocalizationOptions
+//{
+//    DefaultRequestCulture = new RequestCulture("en-US"),
+//    SupportedCultures = supportedCultures,
+//    SupportedUICultures = supportedCultures
+//});
 
 app.UseSwagger();
 app.UseSwaggerUI();
