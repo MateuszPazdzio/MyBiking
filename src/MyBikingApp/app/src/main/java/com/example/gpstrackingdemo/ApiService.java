@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.net.ssl.*;
+import java.security.cert.X509Certificate;
 
 public class ApiService {
     private String token;
@@ -20,7 +22,8 @@ public class ApiService {
 
         HttpURLConnection httpURLConnection = null;
         try {
-            URL url = new URL("https://mybiking.azurewebsites.net/api/auth/login");
+            trustAllHosts();
+            URL url = new URL("https://x50gtstang.gotdns.ch:8080/api/auth/login");
             httpURLConnection = (HttpURLConnection) url.openConnection();
 
             httpURLConnection.setRequestMethod("POST");
@@ -61,6 +64,32 @@ public class ApiService {
             }
         }
     }
+    // Add this before making the HTTPS request
+    private void trustAllHosts() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[] {
+                    new X509TrustManager() {
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[]{};
+                        }
+                        public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+                        public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+                    }
+            };
+
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true; // accept all hostnames
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private static String getHttpResponse(HttpURLConnection connection) throws IOException {
         StringBuilder response = new StringBuilder();
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -78,7 +107,8 @@ public class ApiService {
         HttpURLConnection httpURLConnection = null;
         try {
 
-            URL url = new URL("https://mybiking.azurewebsites.net/api/ride");
+            trustAllHosts();
+            URL url = new URL("https://x50gtstang.gotdns.ch:8080/api/ride");
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoInput(true);
