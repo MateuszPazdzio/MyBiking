@@ -45,7 +45,7 @@ namespace MyBiking.Application.Extensions
                 //options.Cookie.Name = "YourAppNameCookie";
                 //options.Cookie.HttpOnly = true;
                 //options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Adjust expiration time as needed
-                options.LoginPath = "/Auth/Login"; // Specify your login path
+                options.LoginPath = "/api/auth/login"; // Specify your login path
                 //options.AccessDeniedPath = "/Account/AccessDenied"; // Specify your access denied path
                 //options.SlidingExpiration = true;
             });
