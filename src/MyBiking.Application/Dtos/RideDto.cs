@@ -21,7 +21,8 @@ namespace MyBiking.Application.Dtos
         [Display(Name = "End")]
 
         public DateTime EndingDateTime { get; set; }
-        [Display(Name = "Distance (km)")]
+        [Display(Name = "Distance")]
+        [DisplayFormat(DataFormatString = "{0} km")]
         public double Distance { get; set; }
         [Display(Name ="Public")]
         public bool IsPublic { get; set; }
