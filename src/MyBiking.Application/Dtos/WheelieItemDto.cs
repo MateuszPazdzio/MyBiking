@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MyBikingApi.Models.Dtos
 {
@@ -11,6 +12,7 @@ namespace MyBikingApi.Models.Dtos
         public string Address { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        [DisplayFormat(DataFormatString = "{0} m")]
         public double Altitude { get; set; }
         //[JsonIgnore]
         //public WheelieRideDto WheelieRide { get; set; }
